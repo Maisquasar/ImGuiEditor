@@ -14,7 +14,9 @@ public:
 
 	void Initialize() override;
 	void Draw() override;
+	void DisplayOnInspector() override;
 
 	std::string GetTypeName() const override { return "Button"; }
 private:
+	std::string m_text;
 };

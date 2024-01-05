@@ -40,9 +40,17 @@ void Button::Initialize()
 	AddStyleVar("Frame Padding", ImGui::GetStyle().FramePadding, ImGuiStyleVar_FramePadding);
 	AddStyleVar("Frame Border Size", ImGui::GetStyle().FrameBorderSize, ImGuiStyleVar_FrameBorderSize);
 	AddStyleVar("Button Text Align", ImGui::GetStyle().ButtonTextAlign, ImGuiStyleVar_ButtonTextAlign);
+
+	m_text = "Button";
 }
 
 void Button::Draw()
 {
-	ImGui::Button(p_name.c_str(), p_size);
+	ImGui::Button(m_text.c_str(), p_size);
+}
+
+void Button::DisplayOnInspector()
+{
+	ImGui::InputText("Text", &m_text);
+	Object::DisplayOnInspector();
 }

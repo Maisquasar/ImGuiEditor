@@ -67,7 +67,7 @@ public:
 		}
 	}
 
-	void DisplayVariable() override 
+	void DisplayVariable() override
 	{
 		ImGui::DragFloat2(name.c_str(), &value.x, 1.f, 0.0f, 0.0f, "%.2f");
 	}
@@ -97,7 +97,7 @@ public:
 
 	void DisplayVariable() override
 	{
-		ImGui::DragFloat(name.c_str(), &value,1.f, 0.0f, 0.0f, "%.2f");
+		ImGui::DragFloat(name.c_str(), &value, 1.f, 0.0f, 0.0f, "%.2f");
 	}
 public:
 	float value;
@@ -146,20 +146,11 @@ public:
 	virtual void Draw() = 0;
 	virtual std::shared_ptr<Object> Clone() = 0;
 	virtual std::string GetTypeName() const = 0;
-	virtual void DisplayOnInspector()
-	{
-		ImGui::SeparatorText("Style Color");
-		for (auto& style : p_styleColors)
-		{
-			style.Display();
-		}
-		ImGui::SeparatorText("Style Var");
-		for (auto& style : p_styleVars)
-		{
-			style->Display();
-		}
-	}
+	virtual void DisplayOnInspector();
 	virtual void PostDraw();
+
+	bool IsAParent(Object* object);
+	void AddChild(std::shared_ptr<Object> child);
 
 	Vec2f GetPosition() const { return p_position; }
 	Vec2f GetSize() const { return p_size; }
@@ -181,8 +172,15 @@ protected:
 
 	bool p_selected = false;
 
+	bool p_open = true;
+
+	size_t p_index = -1;
+
 	Vec2f p_position;
 	Vec2f p_size;
+
+	Object* p_parent;
+	std::vector<std::weak_ptr<Object>> p_children;
 
 	std::vector<StyleColor> p_styleColors;
 	std::vector<std::shared_ptr<BaseStyleVar>> p_styleVars;

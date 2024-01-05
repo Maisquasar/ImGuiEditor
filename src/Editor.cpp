@@ -13,7 +13,9 @@ void Editor::Initialize()
 	m_inspector = new Inspector();
 	m_canvas = new Canvas();
 	m_objectWindow = new ObjectWindow();
+
 	m_objectWindow->Initialize();
+	m_hierarchy->Initialize();
 	m_canvas->Initialize();
 }
 

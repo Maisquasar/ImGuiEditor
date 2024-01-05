@@ -10,6 +10,7 @@ public:
 
 	void Draw() const;
 	void Update();
+	void DisplayObject(std::shared_ptr<Object> object) const;
 
 	bool IsStatic() const { return m_isStatic; }
 	void SetStatic(const bool val) { m_isStatic = val; }

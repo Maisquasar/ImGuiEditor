@@ -22,7 +22,7 @@ void ObjectWindow::Draw() const
 		{
 			if (ImGui::Button(object->GetTypeName().c_str(), buttonSize))
 			{
-				Editor::Get()->GetHierarchy()->AddObject(object->Clone());
+				Editor::Get()->GetHierarchy()->AddObjectToRoot(object->Clone());
 			}
 		}
 	}

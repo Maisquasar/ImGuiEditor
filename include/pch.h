@@ -10,6 +10,7 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 // Galaxy Headers
 #define IMGUI_IMPLEMENTATION
