@@ -1,9 +1,17 @@
 #include "pch.h"
+
+#include "Editor.h"
 #include "Inspector.h"
+#include "Hierarchy.h"
+
 #include "Object/IObject.h"
 
 void Inspector::Draw()
 {
+	if (ImGui::IsKeyPressed(ImGuiKey_Delete) && m_selectedObject.lock())
+	{
+		m_selectedObject.lock()->Destroy();
+	}
 	if (ImGui::Begin("Inspector"))
 	{
 		DrawSelected();
@@ -13,39 +21,37 @@ void Inspector::Draw()
 
 void Inspector::SetSelected(Object* object)
 {
-	if (m_selectedObject)
+	const auto weakObject = Editor::Get()->GetHierarchy()->GetWithPtr(object);
+
+	if (m_selectedObject.lock())
 	{
-		m_selectedObject->p_selected = false;
+		m_selectedObject.lock()->p_selected = false;
 	}
 
-	m_selectedObject = object;
-	if (m_selectedObject)
+	m_selectedObject = weakObject;
+	if (m_selectedObject.lock())
 	{
-		m_selectedObject->p_selected = true;
+		m_selectedObject.lock()->p_selected = true;
 	}
-}
-
-void Inspector::SetHovered(Object* object)
-{
-	m_hoveredObject = object;
 }
 
 void Inspector::DrawSelected() const
 {
-	if (!m_selectedObject)
+	const auto selectedObject = m_selectedObject.lock();
+	if (!selectedObject)
 		return;
-	ImGui::InputText("Name", &m_selectedObject->p_name);
+	ImGui::InputText("Name", &selectedObject->p_name);
 
-	const auto pos = m_selectedObject->p_position.ToVec2i();
+	const auto pos = selectedObject->p_position.ToVec2i();
 	if (ImGui::DragInt2("Position", pos.Data()))
 	{
-		m_selectedObject->p_position = pos;
+		selectedObject->p_position = pos;
 	}
-	const auto size = m_selectedObject->p_size.ToVec2i();
+	const auto size = selectedObject->p_size.ToVec2i();
 	if (ImGui::DragInt2("Size", size.Data()))
 	{
-		m_selectedObject->p_size = size;
+		selectedObject->p_size = size;
 	}
 	ImGui::SeparatorText("Parameters");
-	m_selectedObject->DisplayOnInspector();
+	selectedObject->DisplayOnInspector();
 }

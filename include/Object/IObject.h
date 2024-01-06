@@ -23,6 +23,8 @@ public:
 		ImGui::EndDisabled();
 		ImGui::PopID();
 	}
+
+	virtual void Serialize(std::string& content) const;
 public:
 	std::string name;
 	ImGuiStyleVar_ enumValue;
@@ -42,6 +44,8 @@ public:
 	void ApplyStyle(int& count) const override {}
 
 	void DisplayVariable() override {}
+
+	void Serialize(std::string& content) const override {}
 public:
 	T value;
 
@@ -65,6 +69,14 @@ public:
 			ImGui::PushStyleVar(enumValue, value);
 			count++;
 		}
+	}
+
+	void Serialize(std::string& content) const override
+	{
+		if (inherit)
+			return;
+		BaseStyleVar::Serialize(content);
+		content += "ImVec2(" + std::to_string(value.x) + ", " + std::to_string(value.y) + "));\n";
 	}
 
 	void DisplayVariable() override
@@ -95,6 +107,14 @@ public:
 		}
 	}
 
+	void Serialize(std::string& content) const override
+	{
+		if (inherit)
+			return;
+		BaseStyleVar::Serialize(content);
+		content += "ImVec2(" + std::to_string(value) + "));\n";
+	}
+
 	void DisplayVariable() override
 	{
 		ImGui::DragFloat(name.c_str(), &value, 1.f, 0.0f, 0.0f, "%.2f");
@@ -109,6 +129,8 @@ struct StyleColor
 	ImGuiCol_ enumValue;
 	Vec4f color;
 	bool inherit = true;
+
+	void Serialize(std::string& content) const;
 
 	void Initialize()
 	{
@@ -142,15 +164,32 @@ public:
 	Object() = default;
 	virtual ~Object() = default;
 
+	// Called on creation
 	virtual void Initialize() {}
+
+	// Called before draw all children
+	virtual void Begin() {}
+
+	void Destroy();
+
+	// Called after draw all children
+	virtual void End() {}
+
 	virtual void Draw() = 0;
 	virtual std::shared_ptr<Object> Clone() = 0;
 	virtual std::string GetTypeName() const = 0;
 	virtual void DisplayOnInspector();
 	virtual void PostDraw();
+	virtual void Serialize(std::string& content) const = 0;
 
-	bool IsAParent(Object* object);
+	void SerializeChildren(std::string& content) const;
+	void BeginSerializeStyle(std::string& content) const;
+	void EndSerializeStyle(std::string& content) const;
+
+	bool IsAParentOfThis(Object* object) const;
+	bool IsAParent() const { return !p_children.empty(); }
 	void AddChild(std::shared_ptr<Object> child);
+	void RemoveChild(Object* child);
 
 	Vec2f GetPosition() const { return p_position; }
 	Vec2f GetSize() const { return p_size; }
@@ -178,6 +217,7 @@ protected:
 
 	Vec2f p_position;
 	Vec2f p_size;
+	Vec2f p_realPos;
 
 	Object* p_parent;
 	std::vector<std::weak_ptr<Object>> p_children;
@@ -201,4 +241,12 @@ public:
 	std::string GetTypeName() const override = 0;
 
 	void Draw() override = 0;
+
+	virtual void Serialize(std::string& content) const override;
 };
+
+template <typename T>
+void IObject<T>::Serialize(std::string& content) const
+{
+
+}

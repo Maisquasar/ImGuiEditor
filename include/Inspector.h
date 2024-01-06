@@ -8,14 +8,12 @@ public:
 
 	void Draw();
 
+	bool HasSelected() const { return m_selectedObject.lock() != nullptr; }
 	void SetSelected(Object* object);
-	void SetHovered(Object* object);
+	Object* GetSelected() const { return m_selectedObject.lock().get(); }
 
 	void DrawSelected() const;
-
-	Object* GetHoveredObject() const { return m_hoveredObject; }
 private:
-	Object* m_selectedObject;
-	Object* m_hoveredObject;
+	std::weak_ptr<Object> m_selectedObject;
 
 };

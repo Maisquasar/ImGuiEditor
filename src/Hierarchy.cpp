@@ -5,6 +5,7 @@
 
 #include "Object/IObject.h"
 #include "Object/Button.h"
+#include "Object/ChildObject.h"
 
 void Hierarchy::Initialize()
 {
@@ -18,8 +19,18 @@ void Hierarchy::Draw()
 	{
 		size_t index = 0;
 		DisplayOnHierarchy(m_root, index);
+
+		if (ImGui::Button("Print"))
+			Serialize();
 	}
 	ImGui::End();
+}
+
+void Hierarchy::Serialize() const
+{
+	std::string content;
+	m_root->SerializeChildren(content);
+	std::cout << content << std::endl;
 }
 
 void Hierarchy::DisplayOnHierarchy(std::shared_ptr<Object> object, size_t& index)
@@ -51,7 +62,8 @@ void Hierarchy::DisplayOnHierarchy(std::shared_ptr<Object> object, size_t& index
 
 	if (ImGui::BeginDragDropTarget())
 	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("OBJECT_CELL"))
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("OBJECT_CELL");
+			payload /*&& std::dynamic_pointer_cast<ChildObject>(object)*/)
 		{
 			IM_ASSERT(payload->DataSize == sizeof(size_t));
 			size_t draggedIndex = *(const size_t*)payload->Data;
@@ -85,9 +97,24 @@ void Hierarchy::AddObject(std::shared_ptr<Object> object)
 	m_objects.push_back(object);
 }
 
+void Hierarchy::RemoveObject(const Object* object)
+{
+	for (auto it = m_objects.begin(); it != m_objects.end(); it++)
+	{
+		if (it->get() == object)
+		{
+			m_objects.erase(it);
+			break;
+		}
+	}
+}
+
 void Hierarchy::AddObjectToRoot(std::shared_ptr<Object> object)
 {
-	m_root->AddChild(object);
+	auto parent = m_root.get();
+	if (auto select = Editor::Get()->GetInspector()->GetSelected())
+		parent = select;
+	parent->AddChild(object);
 	object->Initialize();
 	m_objects.push_back(object);
 }
@@ -100,4 +127,14 @@ std::shared_ptr<Object> Hierarchy::GetWithIndex(size_t index)
 			return object;
 	}
 	return nullptr;
+}
+
+std::weak_ptr<Object> Hierarchy::GetWithPtr(const Object* object)
+{
+	for (auto& sharedObject : m_objects)
+	{
+		if (sharedObject.get() == object)
+			return sharedObject;
+	}
+	return {};
 }

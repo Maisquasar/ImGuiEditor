@@ -54,3 +54,11 @@ void Button::DisplayOnInspector()
 	ImGui::InputText("Text", &m_text);
 	Object::DisplayOnInspector();
 }
+
+void Button::Serialize(std::string& content) const
+{
+	BeginSerializeStyle(content);
+	content += "ImGui::Button(\"" + m_text + "\");\n";
+	SerializeChildren(content);
+	EndSerializeStyle(content);
+}

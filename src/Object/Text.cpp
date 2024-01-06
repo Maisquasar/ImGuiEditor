@@ -8,6 +8,7 @@ void Text::Initialize()
 	AddStyleColor(textColor);
 }
 
+
 void Text::Draw()
 {
 	if (m_wrap) {
@@ -41,4 +42,13 @@ void Text::DisplayOnInspector()
 	ImGui::EndDisabled();
 
 	Object::DisplayOnInspector();
+}
+
+void Text::Serialize(std::string& content) const
+{
+	BeginSerializeStyle(content);
+	//TODO: Add support for text wrapping
+	content += "ImGui::Text(" + m_text + ");\n";
+	SerializeChildren(content);
+	EndSerializeStyle(content);
 }

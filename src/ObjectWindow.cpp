@@ -2,6 +2,7 @@
 
 #include "Object/Button.h"
 #include "Object/Text.h"
+#include "Object/ChildObject.h"
 
 #include "Editor.h"
 #include "Hierarchy.h"
@@ -10,6 +11,7 @@ void ObjectWindow::Initialize()
 {
 	m_availableObjects.push_back(std::make_shared<Button>());
 	m_availableObjects.push_back(std::make_shared<Text>());
+	m_availableObjects.push_back(std::make_shared<ChildObject>());
 }
 
 void ObjectWindow::Draw() const

@@ -11,11 +11,16 @@ public:
 
 	void Draw();
 
+	void Serialize() const;
+
 	void AddObject(std::shared_ptr<Object> object);
+
+	void RemoveObject(const Object* object);
 
 	void AddObjectToRoot(std::shared_ptr<Object> object);
 
 	std::shared_ptr<Object> GetWithIndex(size_t index);
+	std::weak_ptr<Object> GetWithPtr(const Object* object);
 
 	void DisplayOnHierarchy(std::shared_ptr<Object> object, size_t& index);
 

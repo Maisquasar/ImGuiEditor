@@ -3,6 +3,7 @@
 build/
 vsxmake*/
 .vscode/
+.vs/
 CMakeLists.txt
 
 # MacOS Cache

@@ -13,13 +13,19 @@ void Canvas::Initialize()
 void Canvas::Draw() const
 {
 	static Hierarchy* hierarchy = Editor::Get()->GetHierarchy();
-	ImGui::ShowStyleEditor();
-	if (ImGui::Begin("Canvas")) {
-
+	//ImGui::ShowStyleEditor();
+	//ImGui::ShowMetricsWindow();
+	if (ImGui::Begin("Canvas")) 
+	{
 		for (const auto& weakObject : hierarchy->GetRoot()->p_children)
 		{
 			DisplayObject(weakObject.lock());
 		}
+		/*
+		ImGui::BeginChild("a", {0, 0}, true);
+		ImGui::Text("Text");
+		ImGui::EndChild();
+		*/
 	}
 	ImGui::End();
 }
@@ -27,10 +33,14 @@ void Canvas::Draw() const
 void Canvas::DisplayObject(std::shared_ptr<Object> object) const
 {
 	if (!m_isStatic) {
-		auto vec = ImGui::GetCursorPos();
-		auto pos = object->GetPosition() - object->GetSize();
-		ImGui::SetCursorPos(Vec2f(8, 27) + object->GetPosition());
+		Vec2f value = object->GetPosition() + ImGui::GetWindowContentRegionMin();
+		object->p_realPos = value;
 	}
+	else
+	{
+		object->p_realPos = ImGui::GetCursorPos() + object->GetPosition();
+	}
+	ImGui::SetCursorPos(object->p_realPos);
 
 	int styleColorCount = 0;
 	for (auto& style : object->p_styleColors)
@@ -46,12 +56,12 @@ void Canvas::DisplayObject(std::shared_ptr<Object> object) const
 	object->Draw();
 	object->PostDraw();
 
-	//ImGui::BeginChild(object->GetName().c_str(), object->GetSize());
+	object->Begin();
 	for (auto& child : object->p_children)
 	{
 		DisplayObject(child.lock());
 	}
-	//ImGui::EndChild();
+	object->End();
 
 	ImGui::PopStyleColor(styleColorCount);
 	ImGui::PopStyleVar(styleVarCount);
