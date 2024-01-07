@@ -46,9 +46,18 @@ void Text::DisplayOnInspector()
 
 void Text::Serialize(std::string& content) const
 {
-	BeginSerializeStyle(content);
-	//TODO: Add support for text wrapping
-	content += "ImGui::Text(" + m_text + ");\n";
+	if (m_wrap) {
+		if (m_autoWrap) {
+			content += "ImGui::TextWrapped(\"" + m_text + "\");\n";
+		}
+		else
+		{
+			content += "ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + m_wrapWidth);\n";
+			content += "ImGui::TextUnformatted(\"" + m_text + "\");\n";
+			content += "ImGui::PopTextWrapPos();\n";
+		}
+	}
+	else
+		content += "ImGui::TextUnformatted(\"" + m_text + "\");\n";
 	SerializeChildren(content);
-	EndSerializeStyle(content);
 }

@@ -37,19 +37,30 @@ void Object::PostDraw()
 	static Inspector* inspector = Editor::Get()->GetInspector();
 
 	// MB TODO : add for all object a invisible button or selectable to check if the object is selected or hovered
-	if (ImGui::IsItemClicked(ImGuiMouseButton_Left) && !inspector->HasSelected())
+	if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
 		inspector->SetSelected(this);
-	if (ImGui::IsItemHovered(ImGuiMouseButton_Left))
+	if (ImGui::IsItemHovered(ImGuiMouseButton_Left)) {
 		canvas->SetHoveredObject(this);
+	}
 	else if (canvas->GetHoveredObject() == this && !ImGui::IsMouseDown(ImGuiMouseButton_Left))
 		canvas->SetHoveredObject(nullptr);
+
+	if (p_selected)
+		ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255));
+}
+
+void Object::InternalSerialize(std::string& content) const
+{
+	BeginSerializeStyle(content);
+	Serialize(content);
+	EndSerializeStyle(content);
 }
 
 void Object::SerializeChildren(std::string& content) const
 {
 	for (auto& child : p_children)
 	{
-		child.lock()->Serialize(content);
+		child.lock()->InternalSerialize(content);
 	}
 }
 

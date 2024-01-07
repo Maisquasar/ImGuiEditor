@@ -4,6 +4,8 @@
 class ChildObject : public IObject<ChildObject>
 {
 public:
+	void Initialize() override;
+	void PostDraw() override {}
 	void Begin() override;
 	void End() override;
 

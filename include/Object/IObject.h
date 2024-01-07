@@ -181,6 +181,7 @@ public:
 	virtual void DisplayOnInspector();
 	virtual void PostDraw();
 	virtual void Serialize(std::string& content) const = 0;
+	void InternalSerialize(std::string& content) const;
 
 	void SerializeChildren(std::string& content) const;
 	void BeginSerializeStyle(std::string& content) const;
@@ -195,7 +196,17 @@ public:
 	Vec2f GetSize() const { return p_size; }
 	std::string GetName() const { return p_name; }
 protected:
-	void AddStyleColor(StyleColor styleColor) { styleColor.Initialize(); p_styleColors.push_back(styleColor); }
+	void AddStyleColor(const std::string& name, const ImGuiCol_ enumValue)
+	{
+		StyleColor styleColor = StyleColor(name, enumValue);
+		styleColor.Initialize();
+		p_styleColors.push_back(styleColor);
+	}
+	void AddStyleColor(StyleColor styleColor)
+	{
+		styleColor.Initialize();
+		p_styleColors.push_back(styleColor);
+	}
 
 	template<typename T>
 	void AddStyleVar(const std::string& name, T value, ImGuiStyleVar_ enumValue) {
