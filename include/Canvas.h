@@ -22,5 +22,5 @@ private:
 
 	Object* m_hoveredObject = nullptr;
 
-	bool m_isStatic = false;
+	bool m_isStatic = true;
 };

@@ -39,14 +39,16 @@ void Object::PostDraw()
 	// MB TODO : add for all object a invisible button or selectable to check if the object is selected or hovered
 	if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
 		inspector->SetSelected(this);
-	if (ImGui::IsItemHovered(ImGuiMouseButton_Left)) {
+	if (ImGui::IsItemHovered(ImGuiMouseButton_Left))
 		canvas->SetHoveredObject(this);
-	}
 	else if (canvas->GetHoveredObject() == this && !ImGui::IsMouseDown(ImGuiMouseButton_Left))
 		canvas->SetHoveredObject(nullptr);
 
 	if (p_selected)
 		ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255));
+
+	if (p_sameLine)
+		ImGui::SameLine();
 }
 
 void Object::InternalSerialize(std::string& content) const
@@ -58,6 +60,8 @@ void Object::InternalSerialize(std::string& content) const
 
 void Object::SerializeChildren(std::string& content) const
 {
+	if (p_sameLine)
+		content += "ImGui::SameLine();\n";
 	for (auto& child : p_children)
 	{
 		child.lock()->InternalSerialize(content);
@@ -81,8 +85,12 @@ void Object::BeginSerializeStyle(std::string& content) const
 		const auto value = p_position.ToVec2i();
 		if (value != Vec2f{ 0, 0 }) {
 			content += "ImGui::SetCursorPos(";
-			content += "ImVec2(ImGui::GetWindowContentRegionMin().x +" + std::to_string(value.x) + ", ImGui::GetWindowContentRegionMin().y +" + std::to_string(value.y) + ")";
-			content += '\n';
+			content += "ImVec2(ImGui::GetWindowContentRegionMin().x +" + std::to_string(value.x) + ", ImGui::GetWindowContentRegionMin().y +" + std::to_string(value.y) + ")\n";
+		}
+		else
+		{
+			content += "ImGui::SetCursorPos(";
+			content += "ImVec2(ImGui::GetWindowContentRegionMin())\n";
 		}
 	}
 	else
@@ -129,18 +137,17 @@ bool Object::IsAParentOfThis(Object* object) const
 
 void Object::AddChild(std::shared_ptr<Object> child)
 {
+	if (!child)
+	{
+		std::cout << "Object::AddChild - child is nullptr" << std::endl;
+		return;
+	}
 	if (IsAParentOfThis(child.get()))
 		return;
 
 	// Remove the child from its previous parent's children list, if it has one
-	if (auto prevParent = child->p_parent) {
-		prevParent->p_children.erase(
-			std::remove_if(prevParent->p_children.begin(), prevParent->p_children.end(),
-				[&child](const std::weak_ptr<Object>& o) {
-					return o.lock() == child;
-				}),
-			prevParent->p_children.end());
-	}
+	if (child->p_parent)
+		child->p_parent->RemoveChild(child.get());
 
 	p_children.push_back(child);
 	child->p_parent = this;

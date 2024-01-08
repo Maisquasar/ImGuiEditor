@@ -52,6 +52,7 @@ void Inspector::DrawSelected() const
 	{
 		selectedObject->p_size = size;
 	}
+	ImGui::Checkbox("Same Line", &selectedObject->p_sameLine);
 	ImGui::SeparatorText("Parameters");
 	selectedObject->DisplayOnInspector();
 }

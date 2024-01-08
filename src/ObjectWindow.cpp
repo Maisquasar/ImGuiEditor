@@ -1,17 +1,21 @@
 #include "ObjectWindow.h"
 
+#include "Editor.h"
+#include "Hierarchy.h"
+
 #include "Object/Button.h"
 #include "Object/Text.h"
 #include "Object/ChildObject.h"
-
-#include "Editor.h"
-#include "Hierarchy.h"
+#include "Object/Rect.h"
+#include "Object/Group.h"
 
 void ObjectWindow::Initialize()
 {
 	m_availableObjects.push_back(std::make_shared<Button>());
 	m_availableObjects.push_back(std::make_shared<Text>());
 	m_availableObjects.push_back(std::make_shared<ChildObject>());
+	m_availableObjects.push_back(std::make_shared<Rect>());
+	m_availableObjects.push_back(std::make_shared<Group>());
 }
 
 void ObjectWindow::Draw() const

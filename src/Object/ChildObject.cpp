@@ -17,9 +17,9 @@ void ChildObject::Initialize()
 }
 
 void ChildObject::Begin()
-{/*
-	if (p_selected)
-		ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1, 1, 0, 1));*/
+{
+	//if (p_selected)
+		//ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1, 1, 0, 1));
 	ImGui::BeginChild(p_name.c_str(), p_size, m_hasBorder);
 	static Canvas* canvas = Editor::Get()->GetCanvas();
 	static Inspector* inspector = Editor::Get()->GetInspector();
@@ -35,10 +35,13 @@ void ChildObject::Begin()
 
 void ChildObject::End()
 {
-	ImGui::EndChild();/*
+	ImGui::EndChild();
 
-	if (p_selected)
-		ImGui::PopStyleColor(1);*/
+	//if (p_selected)
+		//ImGui::PopStyleColor(1);
+
+	if (p_sameLine)
+		ImGui::SameLine();
 }
 
 std::string ChildObject::GetTypeName() const

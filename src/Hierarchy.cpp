@@ -81,10 +81,17 @@ void Hierarchy::DisplayOnHierarchy(std::shared_ptr<Object> object, size_t& index
 	//TODO : only children item can have children
 	if (object->p_open)
 	{
+		size_t indexChild = 0;
 		for (auto child : object->p_children)
 		{
+			if (!child.lock()) {
+				std::cout << "Error with child, delete it" << std::endl;
+				object->p_children.erase(std::next(object->p_children.begin(), index));
+				continue;
+			}
 			ImGui::TreePush(child.lock()->p_name.c_str());
 			index++;
+			indexChild++;
 			DisplayOnHierarchy(child.lock(), index);
 			ImGui::TreePop();
 		}

@@ -170,17 +170,18 @@ public:
 	// Called before draw all children
 	virtual void Begin() {}
 
-	void Destroy();
-
 	// Called after draw all children
 	virtual void End() {}
 
 	virtual void Draw() = 0;
 	virtual std::shared_ptr<Object> Clone() = 0;
 	virtual std::string GetTypeName() const = 0;
+	virtual void Serialize(std::string& content) const = 0;
 	virtual void DisplayOnInspector();
 	virtual void PostDraw();
-	virtual void Serialize(std::string& content) const = 0;
+
+	void Destroy();
+
 	void InternalSerialize(std::string& content) const;
 
 	void SerializeChildren(std::string& content) const;
@@ -229,6 +230,8 @@ protected:
 	Vec2f p_position;
 	Vec2f p_size;
 	Vec2f p_realPos;
+
+	bool p_sameLine = false;
 
 	Object* p_parent;
 	std::vector<std::weak_ptr<Object>> p_children;
