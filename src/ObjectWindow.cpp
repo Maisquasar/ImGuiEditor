@@ -8,6 +8,7 @@
 #include "Object/ChildObject.h"
 #include "Object/Rect.h"
 #include "Object/Group.h"
+#include "Object/Image.h"
 
 void ObjectWindow::Initialize()
 {
@@ -16,6 +17,7 @@ void ObjectWindow::Initialize()
 	m_availableObjects.push_back(std::make_shared<ChildObject>());
 	m_availableObjects.push_back(std::make_shared<Rect>());
 	m_availableObjects.push_back(std::make_shared<Group>());
+	m_availableObjects.push_back(std::make_shared<Image>());
 }
 
 void ObjectWindow::Draw() const

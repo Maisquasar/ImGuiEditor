@@ -37,6 +37,7 @@ void Inspector::SetSelected(Object* object)
 
 void Inspector::DrawSelected() const
 {
+	static bool KeepAspectRatio = false;
 	const auto selectedObject = m_selectedObject.lock();
 	if (!selectedObject)
 		return;
@@ -47,12 +48,25 @@ void Inspector::DrawSelected() const
 	{
 		selectedObject->p_position = pos;
 	}
-	const auto size = selectedObject->p_size.ToVec2i();
+	auto size = selectedObject->p_size.ToVec2i();
 	if (ImGui::DragInt2("Size", size.Data()))
 	{
-		selectedObject->p_size = size;
+		Vec2f newSize = size;
+		if (KeepAspectRatio) {
+			if (size.x != static_cast<int>(selectedObject->p_size.x))
+			{
+				newSize.y = newSize.x * selectedObject->p_size.y / selectedObject->p_size.x;
+			}
+			else if (size.y != static_cast<int>(selectedObject->p_size.y))
+			{
+				newSize.x = newSize.y * selectedObject->p_size.x / selectedObject->p_size.y;
+			}
+		}
+		selectedObject->p_size = newSize;
 	}
-	ImGui::Checkbox("Same Line", &selectedObject->p_sameLine);
+	ImGui::Checkbox("Keep aspect ratio", &KeepAspectRatio);
+	ImGui::NewLine();
+	ImGui::Checkbox("Same line", &selectedObject->p_sameLine);
 	ImGui::SeparatorText("Parameters");
 	selectedObject->DisplayOnInspector();
 }

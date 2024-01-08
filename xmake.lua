@@ -3,6 +3,12 @@ add_rules("plugin.vsxmake.autoupdate")
 
 if is_plat("windows") then
     set_runtimes(is_mode("debug") and "MDd" or "MD")
+    if is_mode("debug") and is_kind("binary") then
+        if is_host("windows") then
+            add_cxflags("/ZI", {force = true})
+            add_ldflags("/INCREMENTAL", {force = true})
+        end
+    end
 end
 
 -- Custom repo

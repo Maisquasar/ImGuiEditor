@@ -1,0 +1,26 @@
+#pragma once
+#include "IObject.h"
+
+class Image : public IObject<Image>
+{
+public:
+	Image() = default;
+	Image& operator=(const Image& other) = default;
+	Image(const Image&) = default;
+	Image(Image&&) noexcept = default;
+	~Image() override = default;
+
+	void Initialize() override;
+	void Draw() override;
+	void DisplayOnInspector() override;
+
+	void LoadImageFromExplorer();
+
+	void Serialize(std::string& content) const override;
+
+	std::string GetTypeName() const override { return "Image"; }
+private:
+	uint32_t m_id = -1;
+	std::string m_imagePath;
+	Vec2i m_size;
+};
