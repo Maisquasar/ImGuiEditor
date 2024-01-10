@@ -17,9 +17,13 @@ public:
 
 	void RemoveObject(const Object* object);
 
-	void AddObjectToRoot(std::shared_ptr<Object> object);
+	void AddObjectToRoot(std::shared_ptr<Object> object, bool addToSelected = true);
 
-	std::shared_ptr<Object> GetWithIndex(size_t index);
+	void SaveScene(const std::string& path) const;
+
+	void LoadScene(const std::string& path);
+
+	std::shared_ptr<Object> GetWithIndex(size_t index) const;
 	std::weak_ptr<Object> GetWithPtr(const Object* object);
 
 	void DisplayOnHierarchy(std::shared_ptr<Object> object, size_t& index);

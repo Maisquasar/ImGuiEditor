@@ -3,8 +3,11 @@
 #include "Editor.h"
 #include "Inspector.h"
 #include "Hierarchy.h"
+#include "ObjectWindow.h"
 
 #include "Object/IObject.h"
+
+#include "Parser.h"
 
 void Inspector::Draw()
 {
@@ -17,6 +20,60 @@ void Inspector::Draw()
 		DrawSelected();
 	}
 	ImGui::End();
+
+	if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_C))
+	{
+		CopyObject();
+	}
+	else if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_V))
+	{
+		PasteObject();
+	}
+}
+
+void Inspector::CopyObject()
+{
+	auto selected = m_selectedObject.lock();
+	if (!selected)
+		return;
+
+	Serializer serializer;
+
+	serializer << Pair::BEGIN_MAP << selected->GetTypeName();
+	selected->Serialize(serializer);
+	serializer << Pair::END_MAP << selected->GetTypeName();
+
+	m_clipBoard = serializer.GetContent();
+}
+
+void Inspector::PasteObject()
+{
+	if (m_clipBoard.empty())
+		return;
+	const auto objectList = Editor::Get()->GetObjectWindow()->GetAvailableObjects();
+
+	auto hierarchy = Editor::Get()->GetHierarchy();
+
+	Parser parser(m_clipBoard);
+
+	std::shared_ptr<Object> object;
+	const auto typeName = parser["Type"].As<std::string>();
+	for (auto& _object : objectList)
+	{
+		if (_object->GetTypeName() == typeName)
+		{
+			object = _object->Clone();
+			break;
+		}
+	}
+	hierarchy->AddObject(object);
+	auto selected = m_selectedObject.lock();
+	if (selected)
+		selected->AddChild(object);
+	else
+		hierarchy->GetRoot()->AddChild(object);
+
+	object->Deserialize(parser);
 }
 
 void Inspector::SetSelected(Object* object)

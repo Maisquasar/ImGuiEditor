@@ -1,3 +1,4 @@
+#pragma once
 #include "pch.h"
 
 class Object;
@@ -8,6 +9,9 @@ public:
 
 	void Draw();
 
+	void CopyObject();
+	void PasteObject();
+
 	bool HasSelected() const { return m_selectedObject.lock() != nullptr; }
 	void SetSelected(Object* object);
 	Object* GetSelected() const { return m_selectedObject.lock().get(); }
@@ -15,5 +19,7 @@ public:
 	void DrawSelected() const;
 private:
 	std::weak_ptr<Object> m_selectedObject;
+
+	std::string m_clipBoard;
 
 };

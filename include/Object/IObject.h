@@ -1,6 +1,8 @@
 #pragma once
 #include "pch.h"
 
+#include "Parser.h"
+
 class BaseStyleVar
 {
 public:
@@ -25,6 +27,8 @@ public:
 	}
 
 	virtual void Serialize(std::string& content) const;
+	virtual void Serialize(Serializer& serializer) const {}
+	virtual void Deserialize(Parser& parser) {}
 public:
 	std::string name;
 	ImGuiStyleVar_ enumValue;
@@ -46,6 +50,8 @@ public:
 	void DisplayVariable() override {}
 
 	void Serialize(std::string& content) const override {}
+	void Serialize(Serializer& serializer) const override {}
+	void Deserialize(Parser& parser) override {}
 public:
 	T value;
 
@@ -77,6 +83,23 @@ public:
 			return;
 		BaseStyleVar::Serialize(content);
 		content += "ImVec2(" + std::to_string(value.x) + ", " + std::to_string(value.y) + "));\n";
+	}
+
+	void Serialize(Serializer& serializer) const override
+	{
+		if (inherit)
+			return;
+		serializer << Pair::KEY << name << Pair::VALUE << static_cast<Vec2f>(value);
+	}
+
+	void Deserialize(Parser& parser) override
+	{
+		const std::unordered_map<std::string, StringSerializer> valueMap = parser.GetValueMap()[parser.GetCurrentDepth()];
+		if (valueMap.contains(name))
+		{
+			value = parser[name].As<Vec2f>();
+			inherit = false;
+		}
 	}
 
 	void DisplayVariable() override
@@ -113,6 +136,23 @@ public:
 			return;
 		BaseStyleVar::Serialize(content);
 		content += "ImVec2(" + std::to_string(value) + "));\n";
+	}
+
+	void Serialize(Serializer& serializer) const override
+	{
+		if (inherit)
+			return;
+		serializer << Pair::KEY << name << Pair::VALUE << value;
+	}
+
+	void Deserialize(Parser& parser) override
+	{
+		const std::unordered_map<std::string, StringSerializer> valueMap = parser.GetValueMap()[parser.GetCurrentDepth()];
+		if (valueMap.contains(name))
+		{
+			value = parser[name].As<float>();
+			inherit = false;
+		}
 	}
 
 	void DisplayVariable() override
@@ -177,6 +217,8 @@ public:
 	virtual std::shared_ptr<Object> Clone() = 0;
 	virtual std::string GetTypeName() const = 0;
 	virtual void Serialize(std::string& content) const = 0;
+	virtual void Serialize(Serializer& serializer) const;
+	virtual void Deserialize(Parser& parser);
 	virtual void DisplayOnInspector();
 	virtual void PostDraw();
 

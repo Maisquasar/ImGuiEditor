@@ -16,6 +16,8 @@ public:
 	void Draw() override;
 	void DisplayOnInspector() override;
 	void Serialize(std::string& content) const override;
+	void Serialize(Serializer& serializer) const override;
+	void Deserialize(Parser& parser) override;
 
 	std::string GetTypeName() const override { return "Text"; }
 private:

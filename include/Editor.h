@@ -1,3 +1,4 @@
+#pragma once
 #include "pch.h"
 
 class Editor
@@ -28,3 +29,14 @@ private:
 	class Canvas* m_canvas;
 	class ObjectWindow* m_objectWindow;
 };
+
+struct Filter
+{
+	std::string name;
+	// ex : "Text file"
+	std::string spec;
+	// ex : "txt"
+};
+
+std::string OpenFileExplorer(const std::vector<Filter>& filters);
+std::string SaveFileExplorer(const std::vector<Filter>& filters);

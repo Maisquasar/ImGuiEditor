@@ -1,3 +1,4 @@
+
 #include "Object/Text.h"
 
 void Text::Initialize()
@@ -11,6 +12,9 @@ void Text::Initialize()
 
 void Text::Draw()
 {
+	//auto textWidth = ImGui::CalcTextSize(m_text.c_str()).x;
+
+	//ImGui::SetCursorPosX((ImGui::GetWindowWidth() - textWidth) * 0.5f);
 	if (m_wrap) {
 		if (m_autoWrap) {
 			ImGui::TextWrapped(m_text.c_str());
@@ -60,4 +64,24 @@ void Text::Serialize(std::string& content) const
 	else
 		content += "ImGui::TextUnformatted(\"" + m_text + "\");\n";
 	SerializeChildren(content);
+}
+
+void Text::Serialize(Serializer& serializer) const
+{
+	Object::Serialize(serializer);
+
+	serializer << Pair::KEY << "Text" << Pair::VALUE << m_text;
+	serializer << Pair::KEY << "Wrap" << Pair::VALUE << m_wrap;
+	serializer << Pair::KEY << "AutoWrap" << Pair::VALUE << m_autoWrap;
+	serializer << Pair::KEY << "WrapWidth" << Pair::VALUE << m_wrapWidth;
+}
+
+void Text::Deserialize(Parser& parser)
+{
+	Object::Deserialize(parser);
+
+	m_text = parser["Text"];
+	m_wrap = parser["Wrap"].As<bool>();
+	m_autoWrap = parser["AutoWrap"].As<bool>();
+	m_wrapWidth = parser["WrapWidth"].As<float>();
 }

@@ -60,3 +60,15 @@ void Button::Serialize(std::string& content) const
 	content += "ImGui::Button(\"" + m_text + "\");\n";
 	SerializeChildren(content);
 }
+
+void Button::Serialize(Serializer& serializer) const
+{
+	Object::Serialize(serializer);
+	serializer << Pair::KEY << "Text" << Pair::VALUE << m_text;
+}
+
+void Button::Deserialize(Parser& parser)
+{
+	Object::Deserialize(parser);
+	m_text = parser["Text"].As<std::string>();
+}

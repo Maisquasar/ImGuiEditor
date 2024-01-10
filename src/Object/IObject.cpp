@@ -5,6 +5,7 @@
 #include "Canvas.h"
 #include "Inspector.h"
 #include "Hierarchy.h"
+#include "ObjectWindow.h"
 
 void Object::Destroy()
 {
@@ -162,6 +163,91 @@ void Object::RemoveChild(Object* child)
 			p_children.erase(it);
 			child->p_parent = nullptr;
 			return;
+		}
+	}
+}
+
+void Object::Serialize(Serializer& serializer) const
+{
+	serializer << Pair::KEY << "Type" << Pair::VALUE << GetTypeName();
+	serializer << Pair::KEY << "Name" << Pair::VALUE << p_name;
+	serializer << Pair::KEY << "Position" << Pair::VALUE << p_position;
+	serializer << Pair::KEY << "Size" << Pair::VALUE << p_size;
+	serializer << Pair::KEY << "SameLine" << Pair::VALUE << p_sameLine;
+	serializer << Pair::KEY << "Child Number" << Pair::VALUE << p_children.size();
+
+	for (auto& child : p_children)
+	{
+		const auto object = child.lock();
+		if (!object)
+			continue;
+		serializer << Pair::BEGIN_MAP << object->GetTypeName();
+		serializer << Pair::BEGIN_TAB;
+		object->Serialize(serializer);
+		serializer << Pair::END_TAB;
+		serializer << Pair::END_MAP << object->GetTypeName();
+	}
+
+	for (auto& style : p_styleVars)
+	{
+		if (style->inherit)
+			continue;
+		style->Serialize(serializer);
+	}
+
+	for (auto& style : p_styleColors)
+	{
+		if (style.inherit)
+			continue;
+		serializer << Pair::KEY << style.name << Pair::VALUE << style.color;
+	}
+}
+
+void Object::Deserialize(Parser& parser)
+{
+	const auto objectList = Editor::Get()->GetObjectWindow()->GetAvailableObjects();
+	const auto hierarchy = Editor::Get()->GetHierarchy();
+
+	p_name = parser["Name"].As<std::string>();
+	p_position = parser["Position"].As<Vec2f>();
+	p_size = parser["Size"].As<Vec2f>();
+	p_sameLine = parser["SameLine"].As<bool>();
+	const size_t childNumber = parser["Child Number"].As<size_t>();
+
+	for (size_t i = 0; i < childNumber; i++)
+	{
+		std::shared_ptr<Object> object;
+		parser.NewDepth();
+		auto typeName = parser["Type"].As<std::string>();
+		for (auto& _object : objectList)
+		{
+			if (_object->GetTypeName() == typeName)
+			{
+				object = _object->Clone();
+				break;
+			}
+		}
+		if (!object)
+			continue;
+
+		hierarchy->AddObject(object);
+		this->AddChild(object);
+		object->Initialize();
+		object->Deserialize(parser);
+	}
+
+	for (auto& style : p_styleVars)
+	{
+		style->Deserialize(parser);
+	}
+
+	for (auto& style : p_styleColors)
+	{
+		const std::unordered_map<std::string, StringSerializer> valueMap = parser.GetValueMap()[parser.GetCurrentDepth()];
+		if (valueMap.contains(style.name))
+		{
+			style.color = parser[style.name].As<Vec4f>();
+			style.inherit = false;
 		}
 	}
 }

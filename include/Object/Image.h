@@ -16,7 +16,11 @@ public:
 
 	void LoadImageFromExplorer();
 
+	void LoadTexture(const std::string filePath, bool setSizeToImageSize = true);
+
 	void Serialize(std::string& content) const override;
+	void Serialize(Serializer& serializer) const override;
+	void Deserialize(Parser& parser) override;
 
 	std::string GetTypeName() const override { return "Image"; }
 private:

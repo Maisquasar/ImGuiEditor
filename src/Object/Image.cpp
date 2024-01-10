@@ -1,22 +1,11 @@
 #include "Object/Image.h"
 
-#include <nfd.hpp>
-
 #include "ImageLoader.h"
-
-struct Filter
-{
-	std::string name;
-	// ex : "Text file"
-	std::string spec;
-	// ex : "txt"
-};
-
-static std::string OpenFileExplorer(const std::vector<Filter>& filters);
+#include "Editor.h"
 
 void Image::Initialize()
 {
-	LoadImageFromExplorer();
+	//LoadImageFromExplorer();
 }
 
 void Image::Draw()
@@ -39,66 +28,54 @@ void Image::LoadImageFromExplorer()
 	const std::vector<Filter> filters = { { "Image", "png\0jpeg\0jpg" } };
 	if (const auto filePath = OpenFileExplorer(filters); !filePath.empty())
 	{
-		m_imagePath = filePath;
-		int numColCh;
-		const auto bytes = ImageLoader::Load(m_imagePath.c_str(), &m_size.x, &m_size.y, &numColCh, 4);
-
-		glGenTextures(1, &m_id);
-		glBindTexture(GL_TEXTURE_2D, m_id);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_size.x, m_size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, bytes);
-
-		//glGenerateMipmap(GL_TEXTURE_2D);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		ImageLoader::ImageFree(bytes);
-
-		p_size = m_size;
+		LoadTexture(filePath);
 	}
+}
+
+void Image::LoadTexture(const std::string filePath, bool setSizeToImageSize /*= true*/)
+{
+	m_imagePath = filePath;
+	int numColCh;
+	const auto bytes = ImageLoader::Load(m_imagePath.c_str(), &m_size.x, &m_size.y, &numColCh, 4);
+
+	glGenTextures(1, &m_id);
+	glBindTexture(GL_TEXTURE_2D, m_id);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_size.x, m_size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, bytes);
+
+	//glGenerateMipmap(GL_TEXTURE_2D);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	ImageLoader::ImageFree(bytes);
+
+	if (setSizeToImageSize)
+		p_size = m_size;
 }
 
 void Image::Serialize(std::string& content) const
 {
-
+	content += "ImGui::Image(\"" + m_imagePath + "\", ImVec2(" + std::to_string(m_size.x) + ", " + std::to_string(m_size.y) + "));\n";
+	SerializeChildren(content);
 }
 
-static std::string OpenFileExplorer(const std::vector<Filter>& filters)
+void Image::Serialize(Serializer& serializer) const
 {
-	std::string resultString = "";
+	Object::Serialize(serializer);
 
-	// initialize NFD
-	NFD::Guard nfdGuard;
+	serializer << Pair::KEY << "Image Path" << Pair::VALUE << m_imagePath;
+}
 
-	// auto-freeing memory
-	NFD::UniquePath outPath;
+void Image::Deserialize(Parser& parser)
+{
+	Object::Deserialize(parser);
 
-	const size_t count = filters.size();
-	// prepare filters for the dialog
-	std::vector<nfdfilteritem_t> filterItems(count);
-
-	for (size_t i = 0; i < count; i++)
-	{
-		filterItems[i].name = filters[i].name.c_str();
-		filterItems[i].spec = filters[i].spec.c_str();
-	}
-
-	// show the dialog
-	const nfdresult_t result = NFD::OpenDialog(outPath, filterItems.data(), static_cast<uint32_t>(count));
-	if (result == NFD_OKAY) {
-		resultString = std::string(outPath.get());
-	}
-	else if (result == NFD_CANCEL) {
-	}
-	else {
-	}
-
-	// NFD::Guard will automatically quit NFD.
-	return resultString;
+	m_imagePath = parser["Image Path"].As<std::string>();
+	LoadTexture(m_imagePath, false);
 }

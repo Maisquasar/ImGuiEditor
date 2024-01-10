@@ -1,11 +1,13 @@
 #include "Hierarchy.h"
 
+#include "Parser.h"
+
 #include "Editor.h"
 #include "Inspector.h"
+#include "ObjectWindow.h"
 
 #include "Object/IObject.h"
 #include "Object/Button.h"
-#include "Object/ChildObject.h"
 
 void Hierarchy::Initialize()
 {
@@ -116,17 +118,66 @@ void Hierarchy::RemoveObject(const Object* object)
 	}
 }
 
-void Hierarchy::AddObjectToRoot(std::shared_ptr<Object> object)
+void Hierarchy::AddObjectToRoot(std::shared_ptr<Object> object, bool addToSelected /*= true*/)
 {
 	auto parent = m_root.get();
-	if (auto select = Editor::Get()->GetInspector()->GetSelected())
-		parent = select;
+	if (addToSelected) {
+		if (auto select = Editor::Get()->GetInspector()->GetSelected())
+			parent = select;
+	}
 	parent->AddChild(object);
 	object->Initialize();
 	m_objects.push_back(object);
 }
 
-std::shared_ptr<Object> Hierarchy::GetWithIndex(size_t index)
+void Hierarchy::SaveScene(const std::string& path) const
+{
+	Serializer serializer(path);
+	for (auto& child : m_root->p_children)
+	{
+		serializer << Pair::BEGIN_MAP << child.lock()->GetTypeName();
+		child.lock()->Serialize(serializer);
+		serializer << Pair::END_MAP << child.lock()->GetTypeName();
+	}
+}
+
+void Hierarchy::LoadScene(const std::string& path)
+{
+	for (auto child : m_root->p_children)
+		child.lock()->Destroy();
+
+	const auto filePath = std::filesystem::path(path);
+	Parser parser(filePath);
+	const auto objectList = Editor::Get()->GetObjectWindow()->GetAvailableObjects();
+	do
+	{
+		std::shared_ptr<Object> object;
+		auto typeName = parser["Type"].As<std::string>();
+		for (auto& _object : objectList)
+		{
+			if (_object->GetTypeName() == typeName)
+			{
+				object = _object->Clone();
+				break;
+			}
+		}
+		AddObject(object);
+		m_root->AddChild(object);
+		object->Deserialize(parser);
+		parser.NewDepth();
+		/*
+		object->SetParent(parent);
+
+		object->Deserialize(parser, false);
+
+		m_editorUI->GetInspector()->AddSelected(object);
+
+		parser.NewDepth();
+		*/
+	} while (parser.GetValueMap().size() != parser.GetCurrentDepth());
+}
+
+std::shared_ptr<Object> Hierarchy::GetWithIndex(size_t index) const
 {
 	for (auto object : m_objects)
 	{

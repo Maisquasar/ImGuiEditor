@@ -44,6 +44,12 @@ void ChildObject::End()
 		ImGui::SameLine();
 }
 
+void ChildObject::DisplayOnInspector()
+{
+	ImGui::Checkbox("Has border", &m_hasBorder);
+	Object::DisplayOnInspector();
+}
+
 std::string ChildObject::GetTypeName() const
 {
 	return "ChildObject";
@@ -55,4 +61,18 @@ void ChildObject::Serialize(std::string& content) const
 	content += "ImGui::BeginChild(" + p_name + ", ImVec2(" + std::to_string(size.x) + ", " + std::to_string(size.y) + "), " + std::to_string(m_hasBorder) + ");\n";
 	SerializeChildren(content);
 	content += "ImGui::EndChild();\n";
+}
+
+void ChildObject::Serialize(Serializer& serializer) const
+{
+	Object::Serialize(serializer);
+
+	serializer << Pair::KEY << "HasBorder" << Pair::VALUE << m_hasBorder;
+}
+
+void ChildObject::Deserialize(Parser& parser)
+{
+	Object::Deserialize(parser);
+
+	m_hasBorder = parser["HasBorder"].As<bool>();
 }

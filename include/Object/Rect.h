@@ -18,6 +18,8 @@ public:
 
 	std::string GetTypeName() const override;
 	void Serialize(std::string& content) const override;
+	void Serialize(Serializer& serializer) const override;
+	void Deserialize(Parser& parser) override;
 
 	Vec2f GetMin() const;
 	Vec2f GetMax() const;

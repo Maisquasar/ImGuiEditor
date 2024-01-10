@@ -1,0 +1,34 @@
+ ------------- ChildObject ------------- 
+[Type] : ChildObject
+[Name] : ChildObject
+[Position] : 0.000000, 0.000000
+[Size] : 0.000000, 0.000000
+[SameLine] : 0
+[Child Number] : 2
+ ------------- Button ------------- 
+ [Type] : Button
+ [Name] : Button
+ [Position] : 0.000000, 0.000000
+ [Size] : 0.000000, 0.000000
+ [SameLine] : 0
+ [Child Number] : 0
+ [Text Color] : 0.205882, 1.000000, 0.000000, 1.000000
+ [Text Color] : 0.205882, 1.000000, 0.000000, 1.000000
+ [Text] : This is a Button
+ ============= Button ============= 
+ ------------- Text ------------- 
+ [Type] : Text
+ [Name] : Text
+ [Position] : 0.000000, 0.000000
+ [Size] : 0.000000, 0.000000
+ [SameLine] : 0
+ [Child Number] : 0
+ [Text Color] : 0.941176, 0.226067, 0.226067, 1.000000
+ [Text Color] : 0.941176, 0.226067, 0.226067, 1.000000
+ [Text] : Text Here
+ [Wrap] : 0
+ [AutoWrap] : 1
+ [WrapWidth] : 200.000000
+ ============= Text ============= 
+[HasBorder] : 1
+ ============= ChildObject ============= 

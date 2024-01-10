@@ -5,6 +5,8 @@
 #include "Canvas.h"
 #include "ObjectWindow.h"
 
+#include <nfd.hpp>
+
 Editor* Editor::m_instance;
 
 void Editor::Initialize()
@@ -23,6 +25,24 @@ void Editor::Draw()
 {
 	DrawMainDock();
 	ImGui::BeginMainMenuBar();
+	if (ImGui::BeginMenu("File"))
+	{
+		if (ImGui::MenuItem("Save"))
+		{
+			if (const std::string path = SaveFileExplorer({}); !path.empty())
+			{
+				m_hierarchy->SaveScene(path);
+			}
+		}
+		if (ImGui::MenuItem("Load"))
+		{
+			if (const std::string path = OpenFileExplorer({}); !path.empty())
+			{
+				m_hierarchy->LoadScene(path);
+			}
+		}
+		ImGui::EndMenu();
+	}
 	if (ImGui::BeginMenu("Edit"))
 	{
 		bool isStatic = m_canvas->IsStatic();
@@ -95,3 +115,67 @@ void Editor::Destroy() const
 	delete m_objectWindow;
 }
 
+std::string OpenFileExplorer(const std::vector<Filter>& filters)
+{
+	std::string resultString = "";
+
+	// initialize NFD
+	NFD::Guard nfdGuard;
+
+	// auto-freeing memory
+	NFD::UniquePath outPath;
+
+	const size_t count = filters.size();
+	// prepare filters for the dialog
+	std::vector<nfdfilteritem_t> filterItems(count);
+
+	for (size_t i = 0; i < count; i++)
+	{
+		filterItems[i].name = filters[i].name.c_str();
+		filterItems[i].spec = filters[i].spec.c_str();
+	}
+
+	// show the dialog
+	const nfdresult_t result = NFD::OpenDialog(outPath, filterItems.data(), static_cast<uint32_t>(count));
+	if (result == NFD_OKAY) {
+		resultString = std::string(outPath.get());
+	}
+	else if (result == NFD_CANCEL) {
+	}
+	else {
+	}
+
+	// NFD::Guard will automatically quit NFD.
+	return resultString;
+}
+
+std::string SaveFileExplorer(const std::vector<Filter>& filters)
+{
+	std::string resultString = "";
+
+	NFD::Guard nfdGuard;
+
+	NFD::UniquePath outPath;
+
+	const size_t count = filters.size();
+	std::vector<nfdfilteritem_t> filterItems(count);
+
+	for (size_t i = 0; i < count; i++)
+	{
+		filterItems[i].name = filters[i].name.c_str();
+		filterItems[i].spec = filters[i].spec.c_str();
+	}
+
+	// show the dialog
+	const nfdresult_t result = NFD::SaveDialog(outPath, filterItems.data(), static_cast<uint32_t>(count));
+	if (result == NFD_OKAY) {
+		resultString = std::string(outPath.get());
+	}
+	else if (result == NFD_CANCEL) {
+	}
+	else {
+	}
+
+	// NFD::Guard will automatically quit NFD.
+	return resultString;
+}
