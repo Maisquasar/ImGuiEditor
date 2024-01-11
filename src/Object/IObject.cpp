@@ -37,16 +37,18 @@ void Object::PostDraw()
 	static Canvas* canvas = Editor::Get()->GetCanvas();
 	static Inspector* inspector = Editor::Get()->GetInspector();
 
-	// MB TODO : add for all object a invisible button or selectable to check if the object is selected or hovered
-	if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
-		inspector->SetSelected(this);
-	if (ImGui::IsItemHovered(ImGuiMouseButton_Left))
-		canvas->SetHoveredObject(this);
-	else if (canvas->GetHoveredObject() == this && !ImGui::IsMouseDown(ImGuiMouseButton_Left))
-		canvas->SetHoveredObject(nullptr);
+	if (!Editor::Get()->IsUserMode()) {
+		// MB TODO : add for all object a invisible button or selectable to check if the object is selected or hovered
+		if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
+			inspector->SetSelected(this);
+		if (ImGui::IsItemHovered(ImGuiMouseButton_Left))
+			canvas->SetHoveredObject(this);
+		else if (canvas->GetHoveredObject() == this && !ImGui::IsMouseDown(ImGuiMouseButton_Left))
+			canvas->SetHoveredObject(nullptr);
 
-	if (p_selected)
-		ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255));
+		if (p_selected)
+			ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255));
+	}
 
 	if (p_sameLine)
 		ImGui::SameLine();
@@ -65,9 +67,14 @@ void Object::SerializeChildren(std::string& content) const
 		content += "ImGui::SameLine();\n";
 	for (auto& child : p_children)
 	{
-		content += "ImGui::PushID(" + std::to_string(child.lock()->p_id) + ");\n";
-		child.lock()->InternalSerialize(content);
+		const auto object = child.lock();
+		content += "ImGui::PushID(" + std::to_string(object->p_id) + ");\n";
+		if (object->p_disabled)
+			content += "ImGui::BeginDisabled(true);\n";
+		object->InternalSerialize(content);
 		content += "ImGui::PopID();\n";
+		if (object->p_disabled)
+			content += "ImGui::EndDisabled();\n";
 	}
 }
 
@@ -176,6 +183,7 @@ void Object::Serialize(Serializer& serializer) const
 	serializer << Pair::KEY << "Position" << Pair::VALUE << p_position;
 	serializer << Pair::KEY << "Size" << Pair::VALUE << p_size;
 	serializer << Pair::KEY << "SameLine" << Pair::VALUE << p_sameLine;
+	serializer << Pair::KEY << "Disabled" << Pair::VALUE << p_disabled;
 	serializer << Pair::KEY << "Child Number" << Pair::VALUE << p_children.size();
 
 	for (auto& child : p_children)
@@ -214,6 +222,7 @@ void Object::Deserialize(Parser& parser)
 	p_position = parser["Position"].As<Vec2f>();
 	p_size = parser["Size"].As<Vec2f>();
 	p_sameLine = parser["SameLine"].As<bool>();
+	p_disabled = parser["Disabled"].As<bool>();
 	const size_t childNumber = parser["Child Number"].As<size_t>();
 
 	for (size_t i = 0; i < childNumber; i++)

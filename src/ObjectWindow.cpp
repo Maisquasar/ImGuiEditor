@@ -9,6 +9,9 @@
 #include "Object/Rect.h"
 #include "Object/Group.h"
 #include "Object/Image.h"
+#include "Object/MainMenuBar.h"
+#include "Object/Menu.h"
+#include "Object/MenuItem.h"
 #include "Object/TabBar.h"
 #include "Object/TabItem.h"
 
@@ -24,6 +27,9 @@ void ObjectWindow::Initialize()
 	m_availableObjects.push_back(std::make_shared<Group>());
 
 	m_availableObjects.push_back(std::make_shared<Rect>());
+	m_availableObjects.push_back(std::make_shared<MainMenuBar>());
+	m_availableObjects.push_back(std::make_shared<Menu>());
+	m_availableObjects.push_back(std::make_shared<MenuItem>());
 }
 
 void ObjectWindow::Draw() const

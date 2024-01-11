@@ -21,6 +21,7 @@ public:
 	class Inspector* GetInspector() const { return m_inspector; }
 	class Canvas* GetCanvas() const { return m_canvas; }
 	class ObjectWindow* GetObjectWindow() const { return m_objectWindow; }
+	bool IsUserMode() const { return m_userMode; }
 private:
 	static Editor* m_instance;
 
@@ -28,6 +29,8 @@ private:
 	class Inspector* m_inspector;
 	class Canvas* m_canvas;
 	class ObjectWindow* m_objectWindow;
+
+	bool m_userMode = false;
 };
 
 struct Filter

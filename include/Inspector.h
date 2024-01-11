@@ -10,7 +10,7 @@ public:
 	void Draw();
 
 	void CopyObject();
-	void PasteObject();
+	void PasteObject() const;
 
 	bool HasSelected() const { return m_selectedObject.lock() != nullptr; }
 	void SetSelected(Object* object);

@@ -33,7 +33,7 @@ void Inspector::Draw()
 
 void Inspector::CopyObject()
 {
-	auto selected = m_selectedObject.lock();
+	const auto selected = m_selectedObject.lock();
 	if (!selected)
 		return;
 
@@ -46,7 +46,7 @@ void Inspector::CopyObject()
 	m_clipBoard = serializer.GetContent();
 }
 
-void Inspector::PasteObject()
+void Inspector::PasteObject() const
 {
 	if (m_clipBoard.empty())
 		return;
@@ -126,6 +126,7 @@ void Inspector::DrawSelected() const
 	ImGui::Checkbox("Keep aspect ratio", &KeepAspectRatio);
 	ImGui::NewLine();
 	ImGui::Checkbox("Same line", &selectedObject->p_sameLine);
+	ImGui::Checkbox("Disabled", &selectedObject->p_disabled);
 	ImGui::SeparatorText("Parameters");
 	selectedObject->DisplayOnInspector();
 }

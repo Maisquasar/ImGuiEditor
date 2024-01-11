@@ -278,6 +278,7 @@ protected:
 	Vec2f p_realPos;
 
 	bool p_sameLine = false;
+	bool p_disabled = false;
 
 	Object* p_parent;
 	std::vector<std::weak_ptr<Object>> p_children;

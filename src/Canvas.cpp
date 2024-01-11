@@ -14,7 +14,7 @@ void Canvas::Draw() const
 {
 	static Hierarchy* hierarchy = Editor::Get()->GetHierarchy();
 	//ImGui::ShowStyleEditor();
-	//ImGui::ShowMetricsWindow();
+	ImGui::ShowMetricsWindow();
 	if (ImGui::Begin("Canvas"))
 	{
 		size_t index = 0;
@@ -65,18 +65,19 @@ void Canvas::DisplayObject(std::shared_ptr<Object> object, size_t& index) const
 	ImGui::SetCursorPos(object->p_realPos);
 
 	int styleColorCount = 0;
-	for (auto& style : object->p_styleColors)
+	for (const auto& style : object->p_styleColors)
 	{
 		style.Use(styleColorCount);
 	}
 	int styleVarCount = 0;
-	for (size_t i = 0; i < object->p_styleVars.size(); i++)
+	for (const auto& p_styleVar : object->p_styleVars)
 	{
-		object->p_styleVars[i]->ApplyStyle(styleVarCount);
+		p_styleVar->ApplyStyle(styleVarCount);
 	}
 
 
 	ImGui::PushID(index);
+	ImGui::BeginDisabled(object->p_disabled);
 	object->Draw();
 	ImGui::PopID();
 	object->PostDraw();
@@ -92,10 +93,13 @@ void Canvas::DisplayObject(std::shared_ptr<Object> object, size_t& index) const
 
 	ImGui::PopStyleColor(styleColorCount);
 	ImGui::PopStyleVar(styleVarCount);
+	ImGui::EndDisabled();
 }
 
 void Canvas::Update() const
 {
+	if (Editor::Get()->IsUserMode())
+		return;
 	if (m_hoveredObject && ImGui::IsMouseDown(ImGuiMouseButton_Left))
 	{
 		m_hoveredObject->p_position = m_hoveredObject->p_position + ImGui::GetIO().MouseDelta;

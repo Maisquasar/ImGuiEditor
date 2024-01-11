@@ -24,33 +24,27 @@ void Editor::Initialize()
 void Editor::Draw()
 {
 	DrawMainDock();
-	ImGui::BeginMainMenuBar();
-	if (ImGui::BeginMenu("File"))
-	{
-		if (ImGui::MenuItem("Save"))
+	if (ImGui::Begin("Editor")) {
+		if (ImGui::Button("Save"))
 		{
 			if (const std::string path = SaveFileExplorer({}); !path.empty())
 			{
 				m_hierarchy->SaveScene(path);
 			}
 		}
-		if (ImGui::MenuItem("Load"))
+		if (ImGui::Button("Load"))
 		{
 			if (const std::string path = OpenFileExplorer({}); !path.empty())
 			{
 				m_hierarchy->LoadScene(path);
 			}
 		}
-		ImGui::EndMenu();
-	}
-	if (ImGui::BeginMenu("Edit"))
-	{
 		bool isStatic = m_canvas->IsStatic();
 		ImGui::Checkbox("Is Static", &isStatic);
 		m_canvas->SetStatic(isStatic);
-		ImGui::EndMenu();
+		ImGui::Checkbox("User Mode", &m_userMode);
 	}
-	ImGui::EndMainMenuBar();
+	ImGui::End();
 
 	m_canvas->Update();
 

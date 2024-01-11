@@ -19,17 +19,20 @@ void Rect::PostDraw()
 {
 	static Canvas* canvas = Editor::Get()->GetCanvas();
 	static Inspector* inspector = Editor::Get()->GetInspector();
-	const bool hovered = ImGui::IsMouseHoveringRect(GetMin(), GetMax());
-	// MB TODO : add for all object a invisible button or selectable to check if the object is selected or hovered
-	if (hovered && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
-		inspector->SetSelected(this);
-	if (hovered)
-		canvas->SetHoveredObject(this);
-	else if (canvas->GetHoveredObject() == this && !ImGui::IsMouseDown(ImGuiMouseButton_Left))
-		canvas->SetHoveredObject(nullptr);
 
-	if (p_selected)
-		ImGui::GetWindowDrawList()->AddRect(GetMin(), GetMax(), IM_COL32(255, 255, 0, 255));
+	if (!Editor::Get()->IsUserMode()) {
+		const bool hovered = ImGui::IsMouseHoveringRect(GetMin(), GetMax());
+		// MB TODO : add for all object a invisible button or selectable to check if the object is selected or hovered
+		if (hovered && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+			inspector->SetSelected(this);
+		if (hovered)
+			canvas->SetHoveredObject(this);
+		else if (canvas->GetHoveredObject() == this && !ImGui::IsMouseDown(ImGuiMouseButton_Left))
+			canvas->SetHoveredObject(nullptr);
+
+		if (p_selected)
+			ImGui::GetWindowDrawList()->AddRect(GetMin(), GetMax(), IM_COL32(255, 255, 0, 255));
+	}
 
 	if (p_sameLine)
 		ImGui::SameLine();
