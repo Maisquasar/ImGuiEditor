@@ -3,9 +3,10 @@
 #include "ImageLoader.h"
 #include "Editor.h"
 
-void Image::Initialize()
+void Image::PostInitialize()
 {
-	//LoadImageFromExplorer();
+	if (m_imagePath.empty())
+		LoadImageFromExplorer();
 }
 
 void Image::Draw()

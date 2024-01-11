@@ -207,8 +207,11 @@ public:
 	// Called on creation
 	virtual void Initialize() {}
 
+	// Called after Initialize, after parsing
+	virtual void PostInitialize() {}
+
 	// Called before draw all children
-	virtual void Begin() {}
+	virtual bool Begin() { return true; }
 
 	// Called after draw all children
 	virtual void End() {}
@@ -268,6 +271,7 @@ protected:
 	bool p_open = true;
 
 	size_t p_index = -1;
+	size_t p_id = -1;
 
 	Vec2f p_position;
 	Vec2f p_size;
@@ -298,11 +302,5 @@ public:
 
 	void Draw() override = 0;
 
-	virtual void Serialize(std::string& content) const override;
+	virtual void Serialize(std::string& content) const override {}
 };
-
-template <typename T>
-void IObject<T>::Serialize(std::string& content) const
-{
-
-}

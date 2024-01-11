@@ -10,7 +10,7 @@ public:
 	Image(Image&&) noexcept = default;
 	~Image() override = default;
 
-	void Initialize() override;
+	void PostInitialize() override;
 	void Draw() override;
 	void DisplayOnInspector() override;
 

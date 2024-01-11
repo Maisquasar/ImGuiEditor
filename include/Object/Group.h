@@ -12,7 +12,7 @@ public:
 
 	void Draw() override {}
 	void PostDraw() override;
-	void Begin() override;
+	bool Begin() override;
 	void End() override;
 
 	void DisplayOnInspector() override;

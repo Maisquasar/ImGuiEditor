@@ -15,25 +15,47 @@ void Canvas::Draw() const
 	static Hierarchy* hierarchy = Editor::Get()->GetHierarchy();
 	//ImGui::ShowStyleEditor();
 	//ImGui::ShowMetricsWindow();
-	if (ImGui::Begin("Canvas")) 
+	if (ImGui::Begin("Canvas"))
 	{
+		size_t index = 0;
 		for (const auto& weakObject : hierarchy->GetRoot()->p_children)
 		{
-			DisplayObject(weakObject.lock());
+			DisplayObject(weakObject.lock(), ++index);
 		}
 		/*
-		ImGui::BeginChild("a", {0, 0}, true);
-		ImGui::Text("Text");
-		ImGui::EndChild();
+		ImGui::PushID(1);
+		if (ImGui::BeginTabBar("TabBar"))
+		{
+			ImGui::PushID(2);
+			if (ImGui::BeginTabItem("TabItem"))
+			{
+				ImGui::PushID(3);
+				ImGui::TextUnformatted("Text");
+				ImGui::PopID();
+				ImGui::EndTabItem();
+			}
+			ImGui::PopID();
+			ImGui::PushID(4);
+
+			if (ImGui::BeginTabItem("TabItem"))
+			{
+				ImGui::EndTabItem();
+			}
+
+			ImGui::PopID();
+			ImGui::EndTabBar();
+		}
+		ImGui::PopID();
 		*/
 	}
 	ImGui::End();
 }
 
-void Canvas::DisplayObject(std::shared_ptr<Object> object) const
+void Canvas::DisplayObject(std::shared_ptr<Object> object, size_t& index) const
 {
+	object->p_id = index;
 	if (!m_isStatic) {
-		Vec2f value = object->GetPosition() + ImGui::GetWindowContentRegionMin();
+		const Vec2f value = object->GetPosition() + ImGui::GetWindowContentRegionMin();
 		object->p_realPos = value;
 	}
 	else
@@ -53,21 +75,26 @@ void Canvas::DisplayObject(std::shared_ptr<Object> object) const
 		object->p_styleVars[i]->ApplyStyle(styleVarCount);
 	}
 
+
+	ImGui::PushID(index);
 	object->Draw();
+	ImGui::PopID();
 	object->PostDraw();
 
-	object->Begin();
-	for (auto& child : object->p_children)
+	if (object->Begin())
 	{
-		DisplayObject(child.lock());
+		for (auto& child : object->p_children)
+		{
+			DisplayObject(child.lock(), ++index);
+		}
+		object->End();
 	}
-	object->End();
 
 	ImGui::PopStyleColor(styleColorCount);
 	ImGui::PopStyleVar(styleVarCount);
 }
 
-void Canvas::Update()
+void Canvas::Update() const
 {
 	if (m_hoveredObject && ImGui::IsMouseDown(ImGuiMouseButton_Left))
 	{

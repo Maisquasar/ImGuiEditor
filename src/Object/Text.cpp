@@ -9,7 +9,6 @@ void Text::Initialize()
 	AddStyleColor(textColor);
 }
 
-
 void Text::Draw()
 {
 	//auto textWidth = ImGui::CalcTextSize(m_text.c_str()).x;

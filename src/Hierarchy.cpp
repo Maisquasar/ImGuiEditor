@@ -102,7 +102,6 @@ void Hierarchy::DisplayOnHierarchy(std::shared_ptr<Object> object, size_t& index
 
 void Hierarchy::AddObject(std::shared_ptr<Object> object)
 {
-	object->Initialize();
 	m_objects.push_back(object);
 }
 
@@ -127,6 +126,7 @@ void Hierarchy::AddObjectToRoot(std::shared_ptr<Object> object, bool addToSelect
 	}
 	parent->AddChild(object);
 	object->Initialize();
+	object->PostInitialize();
 	m_objects.push_back(object);
 }
 
@@ -162,19 +162,15 @@ void Hierarchy::LoadScene(const std::string& path)
 			}
 		}
 		AddObject(object);
+
+		object->Initialize();
 		m_root->AddChild(object);
 		object->Deserialize(parser);
-		parser.NewDepth();
-		/*
-		object->SetParent(parent);
-
-		object->Deserialize(parser, false);
-
-		m_editorUI->GetInspector()->AddSelected(object);
+		object->PostInitialize();
 
 		parser.NewDepth();
-		*/
-	} while (parser.GetValueMap().size() != parser.GetCurrentDepth());
+	}
+	while (parser.GetValueMap().size() != parser.GetCurrentDepth());
 }
 
 std::shared_ptr<Object> Hierarchy::GetWithIndex(size_t index) const

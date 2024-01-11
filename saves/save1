@@ -1,15 +1,36 @@
- ------------- Button ------------- 
-[Type] : Button
-[Name] : Button
+ ------------- TabBar ------------- 
+[Type] : TabBar
+[Name] : TabBar
 [Position] : 0.000000, 0.000000
-[Size] : 53.000000, 39.000000
+[Size] : 0.000000, 0.000000
 [SameLine] : 0
-[Child Number] : 0
-[Frame Padding] : 36.000000, 70.000000
-[Frame Border Size] : 1.000000
-[Button Color] : 0.965686, 0.108876, 0.108876, 0.400000
-[Button Hovered Color] : 0.964706, 0.431280, 0.431280, 0.400000
-[Button Active Color] : 0.964706, 0.166459, 0.166459, 0.400000
-[Text Color] : 0.000000, 0.000000, 0.000000, 1.000000
-[Border Shadow] : 1.000000, 0.000000, 0.000000, 0.000000
- ============= Button ============= 
+[Child Number] : 2
+ ------------- TabItem ------------- 
+ [Type] : TabItem
+ [Name] : TabItem
+ [Position] : 0.000000, 0.000000
+ [Size] : 0.000000, 0.000000
+ [SameLine] : 0
+ [Child Number] : 1
+  ------------- Text ------------- 
+  [Type] : Text
+  [Name] : Text
+  [Position] : 0.000000, 0.000000
+  [Size] : 0.000000, 0.000000
+  [SameLine] : 0
+  [Child Number] : 0
+  [Text] : Text
+  [Wrap] : 0
+  [AutoWrap] : 1
+  [WrapWidth] : 200.000000
+  ============= Text ============= 
+ ============= TabItem ============= 
+ ------------- TabItem ------------- 
+ [Type] : TabItem
+ [Name] : TabItem
+ [Position] : 0.000000, 0.000000
+ [Size] : 0.000000, 0.000000
+ [SameLine] : 0
+ [Child Number] : 0
+ ============= TabItem ============= 
+ ============= TabBar ============= 

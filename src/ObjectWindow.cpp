@@ -9,15 +9,21 @@
 #include "Object/Rect.h"
 #include "Object/Group.h"
 #include "Object/Image.h"
+#include "Object/TabBar.h"
+#include "Object/TabItem.h"
 
 void ObjectWindow::Initialize()
 {
 	m_availableObjects.push_back(std::make_shared<Button>());
 	m_availableObjects.push_back(std::make_shared<Text>());
-	m_availableObjects.push_back(std::make_shared<ChildObject>());
-	m_availableObjects.push_back(std::make_shared<Rect>());
-	m_availableObjects.push_back(std::make_shared<Group>());
 	m_availableObjects.push_back(std::make_shared<Image>());
+
+	m_availableObjects.push_back(std::make_shared<TabBar>());
+	m_availableObjects.push_back(std::make_shared<TabItem>());
+	m_availableObjects.push_back(std::make_shared<ChildObject>());
+	m_availableObjects.push_back(std::make_shared<Group>());
+
+	m_availableObjects.push_back(std::make_shared<Rect>());
 }
 
 void ObjectWindow::Draw() const

@@ -67,13 +67,15 @@ void Inspector::PasteObject()
 		}
 	}
 	hierarchy->AddObject(object);
-	auto selected = m_selectedObject.lock();
+	object->Initialize();
+	const auto selected = m_selectedObject.lock();
 	if (selected)
 		selected->AddChild(object);
 	else
 		hierarchy->GetRoot()->AddChild(object);
 
 	object->Deserialize(parser);
+	object->PostInitialize();
 }
 
 void Inspector::SetSelected(Object* object)

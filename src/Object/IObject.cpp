@@ -9,7 +9,7 @@
 
 void Object::Destroy()
 {
-	auto editor = Editor::Get();
+	const auto editor = Editor::Get();
 	editor->GetHierarchy()->RemoveObject(this);
 
 	if (p_parent)
@@ -65,7 +65,9 @@ void Object::SerializeChildren(std::string& content) const
 		content += "ImGui::SameLine();\n";
 	for (auto& child : p_children)
 	{
+		content += "ImGui::PushID(" + std::to_string(child.lock()->p_id) + ");\n";
 		child.lock()->InternalSerialize(content);
+		content += "ImGui::PopID();\n";
 	}
 }
 
@@ -231,9 +233,11 @@ void Object::Deserialize(Parser& parser)
 			continue;
 
 		hierarchy->AddObject(object);
-		this->AddChild(object);
+
 		object->Initialize();
+		this->AddChild(object);
 		object->Deserialize(parser);
+		object->PostInitialize();
 	}
 
 	for (auto& style : p_styleVars)

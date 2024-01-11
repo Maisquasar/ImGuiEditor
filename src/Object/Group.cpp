@@ -15,12 +15,13 @@ void Group::PostDraw()
 		canvas->SetHoveredObject(this);
 	else if (canvas->GetHoveredObject() == this && !ImGui::IsMouseReleased(ImGuiMouseButton_Left))
 		canvas->SetHoveredObject(nullptr);
-
 }
 
-void Group::Begin()
+bool Group::Begin()
 {
 	ImGui::BeginGroup();
+
+	return true;
 }
 
 void Group::End()

@@ -9,8 +9,8 @@ public:
 	void Initialize();
 
 	void Draw() const;
-	void Update();
-	void DisplayObject(std::shared_ptr<Object> object) const;
+	void Update() const;
+	void DisplayObject(std::shared_ptr<Object> object, size_t& index) const;
 
 	bool IsStatic() const { return m_isStatic; }
 	void SetStatic(const bool val) { m_isStatic = val; }
