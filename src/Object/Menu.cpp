@@ -6,17 +6,6 @@
 
 void Menu::PostDraw()
 {
-	static Canvas* canvas = Editor::Get()->GetCanvas();
-	static Inspector* inspector = Editor::Get()->GetInspector();
-
-	if (!Editor::Get()->IsUserMode()) {
-		if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
-			inspector->SetSelected(this);
-		if (ImGui::IsItemHovered(ImGuiMouseButton_Left))
-			canvas->SetHoveredObject(this);
-		else if (canvas->GetHoveredObject() == this && !ImGui::IsMouseReleased(ImGuiMouseButton_Left))
-			canvas->SetHoveredObject(nullptr);
-	}
 }
 
 bool Menu::Begin()
@@ -28,6 +17,21 @@ bool Menu::Begin()
 void Menu::End()
 {
 	ImGui::EndMenu();
+}
+
+void Menu::PostEnd()
+{
+	static Canvas* canvas = Editor::Get()->GetCanvas();
+	static Inspector* inspector = Editor::Get()->GetInspector();
+
+	if (!Editor::Get()->IsUserMode()) {
+		if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+			inspector->SetSelected(this);
+		if (ImGui::IsItemHovered(ImGuiMouseButton_Left))
+			canvas->SetHoveredObject(this);
+		else if (canvas->GetHoveredObject() == this && !ImGui::IsMouseReleased(ImGuiMouseButton_Left))
+			canvas->SetHoveredObject(nullptr);
+	}
 
 	if (p_sameLine)
 		ImGui::SameLine();

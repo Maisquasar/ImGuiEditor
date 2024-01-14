@@ -216,6 +216,8 @@ public:
 	// Called after draw all children
 	virtual void End() {}
 
+	virtual void PostEnd() {}
+
 	virtual void Draw() = 0;
 	virtual std::shared_ptr<Object> Clone() = 0;
 	virtual std::string GetTypeName() const = 0;

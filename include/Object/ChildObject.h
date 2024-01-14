@@ -8,6 +8,7 @@ public:
 	void PostDraw() override {}
 	bool Begin() override;
 	void End() override;
+	void PostEnd() override;
 	void DisplayOnInspector() override;
 
 	void Draw() override {}

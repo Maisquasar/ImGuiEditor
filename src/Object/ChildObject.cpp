@@ -18,7 +18,8 @@ void ChildObject::Initialize()
 
 bool ChildObject::Begin()
 {
-	ImGui::BeginChild(p_name.c_str(), p_size, m_hasBorder);
+	const bool value = ImGui::BeginChild(p_name.c_str(), p_size, m_hasBorder);
+
 	static Canvas* canvas = Editor::Get()->GetCanvas();
 	static Inspector* inspector = Editor::Get()->GetInspector();
 
@@ -28,14 +29,18 @@ bool ChildObject::Begin()
 		canvas->SetHoveredObject(this);
 	else if (canvas->GetHoveredObject() == this && !ImGui::IsMouseReleased(ImGuiMouseButton_Left))
 		canvas->SetHoveredObject(nullptr);
-	return true;
+
+	return value;
 }
 
 
 void ChildObject::End()
 {
 	ImGui::EndChild();
+}
 
+void ChildObject::PostEnd()
+{
 	if (p_sameLine)
 		ImGui::SameLine();
 }

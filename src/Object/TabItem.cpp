@@ -44,7 +44,10 @@ bool TabItem::Begin()
 void TabItem::End()
 {
 	ImGui::EndTabItem();
+}
 
+void TabItem::PostEnd()
+{
 	if (p_sameLine)
 		ImGui::SameLine();
 }

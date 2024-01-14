@@ -15,6 +15,7 @@ public:
 	void PostDraw() override;
 	bool Begin() override;
 	void End() override;
+	void PostEnd() override;
 
 	void Serialize(std::string& content) const override;
 	void Serialize(Serializer& serializer) const override;

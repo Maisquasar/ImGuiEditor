@@ -6,35 +6,12 @@
 
 void Button::Initialize()
 {
-	StyleColor normalColor;
-	normalColor.enumValue = ImGuiCol_Button;
-	normalColor.name = "Button Color";
-	AddStyleColor(normalColor);
-
-	StyleColor hoveredColor;
-	hoveredColor.enumValue = ImGuiCol_ButtonHovered;
-	hoveredColor.name = "Button Hovered Color";
-	AddStyleColor(hoveredColor);
-
-	StyleColor activeColor;
-	activeColor.enumValue = ImGuiCol_ButtonActive;
-	activeColor.name = "Button Active Color";
-	AddStyleColor(activeColor);
-
-	StyleColor textColor;
-	textColor.enumValue = ImGuiCol_Text;
-	textColor.name = "Text Color";
-	AddStyleColor(textColor);
-
-	StyleColor borderColor;
-	borderColor.enumValue = ImGuiCol_Border;
-	borderColor.name = "Border Color";
-	AddStyleColor(borderColor);
-
-	StyleColor borderShadow;
-	borderShadow.enumValue = ImGuiCol_BorderShadow;
-	borderShadow.name = "Border Shadow";
-	AddStyleColor(borderShadow);
+	AddStyleColor("Button Color", ImGuiCol_Button);
+	AddStyleColor("Button Hovered Color", ImGuiCol_ButtonHovered);
+	AddStyleColor("Button Active Color", ImGuiCol_ButtonActive);
+	AddStyleColor("Text Color", ImGuiCol_Text);
+	AddStyleColor("Border Color", ImGuiCol_Border);
+	AddStyleColor("Border Shadow", ImGuiCol_BorderShadow);
 
 	AddStyleVar("Frame Rounding", ImGui::GetStyle().FrameRounding, ImGuiStyleVar_FrameRounding);
 	AddStyleVar("Frame Padding", ImGui::GetStyle().FramePadding, ImGuiStyleVar_FramePadding);

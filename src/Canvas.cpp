@@ -90,6 +90,7 @@ void Canvas::DisplayObject(std::shared_ptr<Object> object, size_t& index) const
 		}
 		object->End();
 	}
+	object->PostEnd();
 
 	ImGui::PopStyleColor(styleColorCount);
 	ImGui::PopStyleVar(styleVarCount);
