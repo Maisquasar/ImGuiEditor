@@ -139,7 +139,7 @@ void Input::Serialize(std::string& content) const
 
 	std::uniform_int_distribution<uint64_t> distrib;
 	uint64_t m_randomValue = distrib(gen);
-	std::string variableName = "value" + std::to_string(m_randomValue);
+	std::string variableName = "variable" + std::to_string(m_randomValue);
 
 	if (p_size.x != 0.f)
 		content += "ImGui::SetNextItemWidth(" + std::to_string(p_size.x) + ");\n";

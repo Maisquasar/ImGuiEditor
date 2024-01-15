@@ -23,12 +23,16 @@ void Button::Initialize()
 
 void Button::Draw()
 {
-	ImGui::Button(m_text.c_str(), p_size);
+	if (!m_small)
+		ImGui::Button(m_text.c_str(), p_size);
+	else
+		ImGui::SmallButton(m_text.c_str());
 }
 
 void Button::DisplayOnInspector()
 {
 	ImGui::InputText("Text", &m_text);
+	ImGui::Checkbox("Small", &m_small);
 	Object::DisplayOnInspector();
 }
 
@@ -42,10 +46,12 @@ void Button::Serialize(Serializer& serializer) const
 {
 	Object::Serialize(serializer);
 	serializer << Pair::KEY << "Text" << Pair::VALUE << m_text;
+	serializer << Pair::KEY << "Small" << Pair::VALUE << m_small;
 }
 
 void Button::Deserialize(Parser& parser)
 {
 	Object::Deserialize(parser);
 	m_text = parser["Text"].As<std::string>();
+	m_small = parser["Small"].As<bool>();
 }

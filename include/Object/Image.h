@@ -27,4 +27,6 @@ private:
 	uint32_t m_id = -1;
 	std::string m_imagePath;
 	Vec2i m_size;
+
+	bool m_isAButton = false;
 };

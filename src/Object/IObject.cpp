@@ -7,6 +7,16 @@
 #include "Hierarchy.h"
 #include "ObjectWindow.h"
 
+Object::~Object()
+{
+	for (auto& child : p_children)
+	{
+		if (child.lock())
+			RemoveChild(child.lock().get());
+		child.reset();
+	}
+}
+
 void Object::Destroy()
 {
 	const auto editor = Editor::Get();

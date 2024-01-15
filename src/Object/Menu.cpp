@@ -21,9 +21,6 @@ void Menu::End()
 
 void Menu::PostEnd()
 {
-	static Canvas* canvas = Editor::Get()->GetCanvas();
-	static Inspector* inspector = Editor::Get()->GetInspector();
-
 	if (!Editor::Get()->IsUserMode()) {
 		SelectUpdate(ImGui::IsItemClicked(), ImGui::IsItemHovered());
 	}

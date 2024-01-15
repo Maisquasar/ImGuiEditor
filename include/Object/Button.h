@@ -21,5 +21,6 @@ public:
 
 	std::string GetTypeName() const override { return "Button"; }
 private:
+	bool m_small = false;
 	std::string m_text;
 };

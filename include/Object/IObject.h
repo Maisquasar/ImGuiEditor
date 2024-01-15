@@ -202,7 +202,7 @@ class Object
 {
 public:
 	Object() = default;
-	virtual ~Object() = default;
+	virtual ~Object();
 
 	// Called on creation
 	virtual void Initialize() {}

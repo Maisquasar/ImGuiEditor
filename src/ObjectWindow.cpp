@@ -15,6 +15,8 @@
 #include "Object/TabBar.h"
 #include "Object/TabItem.h"
 #include "Object/Input.h"
+#include "Object/ComboBox.h"
+#include "Object/Selectable.h"
 
 void ObjectWindow::Initialize()
 {
@@ -22,6 +24,8 @@ void ObjectWindow::Initialize()
 	m_availableObjects.push_back(std::make_shared<Text>());
 	m_availableObjects.push_back(std::make_shared<Image>());
 	m_availableObjects.push_back(std::make_shared<Input>());
+	m_availableObjects.push_back(std::make_shared<ComboBox>());
+	m_availableObjects.push_back(std::make_shared<Selectable>());
 
 	m_availableObjects.push_back(std::make_shared<TabBar>());
 	m_availableObjects.push_back(std::make_shared<TabItem>());
@@ -39,7 +43,7 @@ void ObjectWindow::Draw() const
 	if (ImGui::Begin("Create"))
 	{
 		ImGui::TextUnformatted("Create");
-		const Vec2f buttonSize = { ImGui::GetContentRegionAvail().x, 0 };
+		const Vec2f buttonSize = { ImGui::GetContentRegionAvail().x, 50 };
 		for (auto& object : m_availableObjects)
 		{
 			if (ImGui::Button(object->GetTypeName().c_str(), buttonSize))
