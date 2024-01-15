@@ -8,13 +8,6 @@ void TabBar::PostDraw()
 {
 	static Canvas* canvas = Editor::Get()->GetCanvas();
 	static Inspector* inspector = Editor::Get()->GetInspector();
-
-	if (ImGui::IsWindowHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
-		inspector->SetSelected(this);
-	if (ImGui::IsWindowHovered(ImGuiMouseButton_Left))
-		canvas->SetHoveredObject(this);
-	else if (canvas->GetHoveredObject() == this && !ImGui::IsMouseReleased(ImGuiMouseButton_Left))
-		canvas->SetHoveredObject(nullptr);
 }
 
 bool TabBar::Begin()

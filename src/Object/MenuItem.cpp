@@ -7,6 +7,10 @@
 void MenuItem::Draw()
 {
 	ImGui::MenuItem(p_name.c_str(), m_shortcut.c_str());
+
+	if (!Editor::Get()->IsUserMode()) {
+		SelectUpdate(ImGui::IsItemClicked(), ImGui::IsItemHovered());
+	}
 }
 
 void MenuItem::Serialize(std::string& content) const

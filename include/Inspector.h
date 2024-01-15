@@ -22,4 +22,6 @@ private:
 
 	std::string m_clipBoard;
 
+	bool m_hasSelected = false;
+
 };

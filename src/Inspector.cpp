@@ -29,6 +29,7 @@ void Inspector::Draw()
 	{
 		PasteObject();
 	}
+	m_hasSelected = false;
 }
 
 void Inspector::CopyObject()
@@ -80,6 +81,10 @@ void Inspector::PasteObject() const
 
 void Inspector::SetSelected(Object* object)
 {
+	if (m_hasSelected)
+		return;
+	m_hasSelected = true;
+
 	const auto weakObject = Editor::Get()->GetHierarchy()->GetWithPtr(object);
 
 	if (m_selectedObject.lock())

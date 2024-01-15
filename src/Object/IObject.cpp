@@ -34,17 +34,10 @@ void Object::DisplayOnInspector()
 
 void Object::PostDraw()
 {
-	static Canvas* canvas = Editor::Get()->GetCanvas();
-	static Inspector* inspector = Editor::Get()->GetInspector();
-
 	if (!Editor::Get()->IsUserMode()) {
 		// MB TODO : add for all object a invisible button or selectable to check if the object is selected or hovered
-		if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
-			inspector->SetSelected(this);
-		if (ImGui::IsItemHovered(ImGuiMouseButton_Left))
-			canvas->SetHoveredObject(this);
-		else if (canvas->GetHoveredObject() == this && !ImGui::IsMouseDown(ImGuiMouseButton_Left))
-			canvas->SetHoveredObject(nullptr);
+		
+		SelectUpdate(ImGui::IsItemClicked(ImGuiMouseButton_Left), ImGui::IsItemHovered(ImGuiMouseButton_Left));
 
 		if (p_selected)
 			ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255));
@@ -174,6 +167,19 @@ void Object::RemoveChild(Object* child)
 			return;
 		}
 	}
+}
+
+void Object::SelectUpdate(bool clicked, bool hovered)
+{
+	static Canvas* canvas = Editor::Get()->GetCanvas();
+	static Inspector* inspector = Editor::Get()->GetInspector();
+
+	if (clicked && !p_selected)
+		inspector->SetSelected(this);
+	else if (hovered && p_selected)
+		canvas->SetHoveredObject(this);
+	else if (canvas->GetHoveredObject() == this && !ImGui::IsMouseDown(ImGuiMouseButton_Left))
+		canvas->SetHoveredObject(nullptr);
 }
 
 void Object::Serialize(Serializer& serializer) const

@@ -10,24 +10,14 @@ void MainMenuBar::PostDraw()
 
 bool MainMenuBar::Begin()
 {
-	return ImGui::BeginMainMenuBar();
+	bool begin = ImGui::BeginMainMenuBar();
+
+	return begin;
 }
 
 void MainMenuBar::End()
 {
 	ImGui::EndMainMenuBar();
-
-	if (!Editor::Get()->IsUserMode()) {
-		static Canvas* canvas = Editor::Get()->GetCanvas();
-		static Inspector* inspector = Editor::Get()->GetInspector();
-
-		if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
-			inspector->SetSelected(this);
-		if (ImGui::IsItemHovered(ImGuiMouseButton_Left))
-			canvas->SetHoveredObject(this);
-		else if (canvas->GetHoveredObject() == this && !ImGui::IsMouseReleased(ImGuiMouseButton_Left))
-			canvas->SetHoveredObject(nullptr);
-	}
 
 	if (p_sameLine)
 		ImGui::SameLine();

@@ -20,15 +20,8 @@ bool ChildObject::Begin()
 {
 	const bool value = ImGui::BeginChild(p_name.c_str(), p_size, m_hasBorder);
 
-	static Canvas* canvas = Editor::Get()->GetCanvas();
-	static Inspector* inspector = Editor::Get()->GetInspector();
-
-	if (ImGui::IsWindowHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
-		inspector->SetSelected(this);
-	if (ImGui::IsWindowHovered(ImGuiMouseButton_Left))
-		canvas->SetHoveredObject(this);
-	else if (canvas->GetHoveredObject() == this && !ImGui::IsMouseReleased(ImGuiMouseButton_Left))
-		canvas->SetHoveredObject(nullptr);
+	if (!Editor::IsUserMode())
+		SelectUpdate(ImGui::IsWindowHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left), ImGui::IsWindowHovered(ImGuiMouseButton_Left));
 
 	return value;
 }

@@ -25,12 +25,7 @@ void Menu::PostEnd()
 	static Inspector* inspector = Editor::Get()->GetInspector();
 
 	if (!Editor::Get()->IsUserMode()) {
-		if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
-			inspector->SetSelected(this);
-		if (ImGui::IsItemHovered(ImGuiMouseButton_Left))
-			canvas->SetHoveredObject(this);
-		else if (canvas->GetHoveredObject() == this && !ImGui::IsMouseReleased(ImGuiMouseButton_Left))
-			canvas->SetHoveredObject(nullptr);
+		SelectUpdate(ImGui::IsItemClicked(), ImGui::IsItemHovered());
 	}
 
 	if (p_sameLine)

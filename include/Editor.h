@@ -21,7 +21,7 @@ public:
 	class Inspector* GetInspector() const { return m_inspector; }
 	class Canvas* GetCanvas() const { return m_canvas; }
 	class ObjectWindow* GetObjectWindow() const { return m_objectWindow; }
-	bool IsUserMode() const { return m_userMode; }
+	static bool IsUserMode() { return m_instance->m_userMode; }
 private:
 	static Editor* m_instance;
 

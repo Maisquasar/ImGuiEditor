@@ -240,6 +240,10 @@ public:
 	void AddChild(std::shared_ptr<Object> child);
 	void RemoveChild(Object* child);
 
+	void SelectUpdate(bool clicked, bool hovered);
+
+
+
 	Vec2f GetPosition() const { return p_position; }
 	Vec2f GetSize() const { return p_size; }
 	std::string GetName() const { return p_name; }
