@@ -117,11 +117,11 @@ void Inspector::DrawSelected() const
 	{
 		Vec2f newSize = size;
 		if (KeepAspectRatio) {
-			if (size.x != static_cast<int>(selectedObject->p_size.x))
+			if (size.x != static_cast<int>(selectedObject->p_size.x) && selectedObject->p_size.x != 0.f)
 			{
 				newSize.y = newSize.x * selectedObject->p_size.y / selectedObject->p_size.x;
 			}
-			else if (size.y != static_cast<int>(selectedObject->p_size.y))
+			else if (size.y != static_cast<int>(selectedObject->p_size.y) && selectedObject->p_size.y != 0.f)
 			{
 				newSize.x = newSize.y * selectedObject->p_size.x / selectedObject->p_size.y;
 			}

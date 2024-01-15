@@ -14,12 +14,14 @@
 #include "Object/MenuItem.h"
 #include "Object/TabBar.h"
 #include "Object/TabItem.h"
+#include "Object/Input.h"
 
 void ObjectWindow::Initialize()
 {
 	m_availableObjects.push_back(std::make_shared<Button>());
 	m_availableObjects.push_back(std::make_shared<Text>());
 	m_availableObjects.push_back(std::make_shared<Image>());
+	m_availableObjects.push_back(std::make_shared<Input>());
 
 	m_availableObjects.push_back(std::make_shared<TabBar>());
 	m_availableObjects.push_back(std::make_shared<TabItem>());
