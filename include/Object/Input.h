@@ -44,6 +44,4 @@ private:
 	std::any m_value = std::string("");
 	ImGuiInputTextFlags m_flags;
 
-	bool m_textMultiline = false;
-
 };

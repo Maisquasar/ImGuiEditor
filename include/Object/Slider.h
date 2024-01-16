@@ -42,6 +42,6 @@ private:
 	std::any m_value = 0.f;
 	std::any m_min = 0.f;
 	std::any m_max = 100.f;
-	bool m_vertical = false;
+	ImGuiSliderFlags m_flags = 0;
 
 };

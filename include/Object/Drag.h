@@ -39,8 +39,10 @@ public:
 	std::string GetTypeName() const override { return "Drag"; }
 private:
 	DragType m_dragType = DragType::Float;
+	ImGuiSliderFlags m_flags = 0;
 	std::any m_value = 0.f;
 	float m_speed = 1.f;
 	std::any m_min = 0.f;
 	std::any m_max = 0.f;
+
 };

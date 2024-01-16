@@ -25,10 +25,7 @@ void Input::Draw()
 	{
 	case InputType::Text: {
 		auto valueString = std::any_cast<std::string>(m_value);
-		if (!m_textMultiline)
-			ImGui::InputText(p_name.c_str(), &valueString, m_flags);
-		else
-			ImGui::InputTextMultiline(p_name.c_str(), &valueString, p_size, m_flags);
+		ImGui::InputText(p_name.c_str(), &valueString, m_flags);
 		m_value = valueString;
 		break;
 	}
@@ -133,7 +130,7 @@ void Input::DisplayOnInspector()
 			break;
 		}
 	}
-	
+
 	ImGui::SeparatorText("Flags");
 	ImGui::CheckboxFlags("Allow tab input", &m_flags, ImGuiInputTextFlags_AllowTabInput);
 	ImGui::CheckboxFlags("ReadOnly", &m_flags, ImGuiInputTextFlags_ReadOnly);
@@ -167,68 +164,62 @@ void Input::Serialize(std::string& content) const
 	{
 	case InputType::Text:
 		content += "std::string " + variableName + " = \"" + std::any_cast<std::string>(m_value) + "\";\n";
-		if (m_textMultiline) {
-			content += "ImGui::InputTextMultiline(\"" + p_name + "\", &" + variableName +
-				", ImVec2(" + std::to_string(p_size.x) + ", " + std::to_string(p_size.y) + ");\n";
-		}
-		else {
-			content += "ImGui::InputText(\"" + p_name + "\", &" + variableName + ");\n";
-		}
+		content += "ImGui::InputText(\"" + p_name + "\", &" + variableName + ", " + std::to_string(m_flags) + "); \n";
 		break;
 	case InputType::Double:
 		content += "double " + variableName + " = " + std::to_string(std::any_cast<double>(m_value)) + ";\n";
-		content += "ImGui::InputDouble(\"" + p_name + "\", &" + variableName + ");\n";
+		content += "ImGui::InputDouble(\"" + p_name + "\", &" + variableName + ", 1, 0, \"%.6f\", "  + std::to_string(m_flags) + ");\n";
 		break;
 	case InputType::Int:
 		content += "int " + variableName + " = " + std::to_string(std::any_cast<int>(m_value)) + ";\n";
-		content += "ImGui::InputInt(\"" + p_name + "\", &" + variableName + ");\n";
+		content += "ImGui::InputInt(\"" + p_name + "\", &" + variableName + ", 1, 100, "+ std::to_string(m_flags) + ");\n";
 		break;
 	case InputType::Int2:
 	{
 		std::array<int, 2> valueArray = std::any_cast<std::array<int, 2>>(m_value);
-		content += "int " + variableName + "[2] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + "};\n";
+		content += "int " + variableName + "[2] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + std::to_string(m_flags) + "};\n";
 		content += "ImGui::InputInt2(\"" + p_name + "\", " + variableName + ");\n";
 	}
 	break;
 	case InputType::Int3:
 	{
 		std::array<int, 3> valueArray = std::any_cast<std::array<int, 3>>(m_value);
-		content += "int " + variableName + "[3] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + ", " + std::to_string(valueArray[2]) + "};\n";
+		content += "int " + variableName + "[3] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + ", " + std::to_string(valueArray[2]) + std::to_string(m_flags) + "};\n";
 		content += "ImGui::InputInt3(\"" + p_name + "\", " + variableName + ");\n";
 	}
 	break;
 	case InputType::Int4:
 	{
 		std::array<int, 4> valueArray = std::any_cast<std::array<int, 4>>(m_value);
-		content += "int " + variableName + "[4] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + ", " + std::to_string(valueArray[2]) + ", " + std::to_string(valueArray[3]) + "};\n";
+		content += "int " + variableName + "[4] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + ", " + std::to_string(valueArray[2]) + ", " + std::to_string(valueArray[3]) + std::to_string(m_flags) + "};\n";
 		content += "ImGui::InputInt4(\"" + p_name + "\", " + variableName + ");\n";
 	}
 	break;
 	case InputType::Float:
 	{
 		content += "float " + variableName + " = " + std::to_string(std::any_cast<float>(m_value)) + ";\n";
-		content += "ImGui::InputFloat(\"" + p_name + "\", &" + variableName + ");\n";
+		content += "ImGui::InputFloat(\"" + p_name + "\", &" + variableName + ", 0.0f, 0.0f, \"%.3f\", " + std::to_string(m_flags) + ");\n";
 	}
 	break;
 	case InputType::Float2:
 	{
 		std::array<float, 2> valueArray = std::any_cast<std::array<float, 2>>(m_value);
 		content += "float " + variableName + "[2] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + "};\n";
-		content += "ImGui::InputFloat2(\"" + p_name + "\", " + variableName + ");\n";
+		content += "ImGui::InputFloat2(\"" + p_name + "\", " + variableName + "\"%.3f\", " + std::to_string(m_flags) + ");\n";
 	}
 	break;
 	case InputType::Float3:
 	{
 		std::array<float, 3> valueArray = std::any_cast<std::array<float, 3>>(m_value);
 		content += "float " + variableName + "[3] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + ", " + std::to_string(valueArray[2]) + "};\n";
-		content += "ImGui::InputFloat3(\"" + p_name + "\", " + variableName + ");\n";
+		content += "ImGui::InputFloat3(\"" + p_name + "\", " + variableName + "\"%.3f\", " + std::to_string(m_flags) + ");\n";
 	}
 	break;
 	case InputType::Float4:
 	{
 		std::array<float, 4> valueArray = std::any_cast<std::array<float, 4>>(m_value);
 		content += "float " + variableName + "[4] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + ", " + std::to_string(valueArray[2]) + ", " + std::to_string(valueArray[3]) + "};\n";
-		content += "ImGui::InputFloat4(\"" + p_name + "\", " + variableName + ");\n";
+		content += "ImGui::InputFloat4(\"" + p_name + "\", " + variableName + "\"%.3f\", " + std::to_string(m_flags) + ");\n";
 	}
 	break;
 	default:
@@ -241,6 +232,7 @@ void Input::Serialize(Serializer& serializer) const
 {
 	Object::Serialize(serializer);
 	serializer << Pair::KEY << "InputType" << Pair::VALUE << (int)m_inputType;
+	serializer << Pair::KEY << "Flags" << Pair::VALUE << (int)m_flags;
 	switch (m_inputType)
 	{
 	case InputType::Text:
@@ -300,6 +292,7 @@ void Input::Deserialize(Parser& parser)
 {
 	Object::Deserialize(parser);
 	m_inputType = (InputType)parser["InputType"].As<int>();
+	m_flags = parser["Flags"].As<int>();
 
 	switch (m_inputType)
 	{

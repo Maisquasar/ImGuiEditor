@@ -24,55 +24,49 @@ void Slider::Draw()
 	{
 	case SliderType::Int: {
 		auto valueInt = std::any_cast<int>(m_value);
-		if (m_vertical)
-			ImGui::VSliderInt(p_name.c_str(), p_size, &valueInt, std::any_cast<int>(m_min), std::any_cast<int>(m_max));
-		else
-			ImGui::SliderInt(p_name.c_str(), &valueInt, std::any_cast<int>(m_min), std::any_cast<int>(m_max));
+		ImGui::SliderInt(p_name.c_str(), &valueInt, std::any_cast<int>(m_min), std::any_cast<int>(m_max), "%d", m_flags);
 		m_value = valueInt;
 		break;
 	}
 	case SliderType::Int2: {
 		auto valueInt = std::any_cast<std::array<int, 2>>(m_value);
-		ImGui::SliderInt2(p_name.c_str(), valueInt.data(), std::any_cast<int>(m_min), std::any_cast<int>(m_max));
+		ImGui::SliderInt2(p_name.c_str(), valueInt.data(), std::any_cast<int>(m_min), std::any_cast<int>(m_max), "%d", m_flags);
 		m_value = valueInt;
 		break;
 	}
 	case SliderType::Int3: {
 		auto valueInt = std::any_cast<std::array<int, 3>>(m_value);
-		ImGui::SliderInt3(p_name.c_str(), valueInt.data(), std::any_cast<int>(m_min), std::any_cast<int>(m_max));
+		ImGui::SliderInt3(p_name.c_str(), valueInt.data(), std::any_cast<int>(m_min), std::any_cast<int>(m_max), "%d", m_flags);
 		m_value = valueInt;
 		break;
 	}
 	case SliderType::Int4: {
 		auto valueInt = std::any_cast<std::array<int, 4>>(m_value);
-		ImGui::SliderInt4(p_name.c_str(), valueInt.data(), std::any_cast<int>(m_min), std::any_cast<int>(m_max));
+		ImGui::SliderInt4(p_name.c_str(), valueInt.data(), std::any_cast<int>(m_min), std::any_cast<int>(m_max), "%d", m_flags);
 		m_value = valueInt;
 		break;
 	}
 	case SliderType::Float: {
 		auto valueFloat = std::any_cast<float>(m_value);
-		if (m_vertical)
-			ImGui::VSliderFloat(p_name.c_str(), p_size, &valueFloat, std::any_cast<float>(m_min), std::any_cast<float>(m_max));
-		else
-			ImGui::SliderFloat(p_name.c_str(), &valueFloat, std::any_cast<float>(m_min), std::any_cast<float>(m_max));
+		ImGui::SliderFloat(p_name.c_str(), &valueFloat, std::any_cast<float>(m_min), std::any_cast<float>(m_max), "%.3f", m_flags);
 		m_value = valueFloat;
 		break;
 	}
 	case SliderType::Float2: {
 		auto valueFloat = std::any_cast<std::array<float, 2>>(m_value);
-		ImGui::SliderFloat2(p_name.c_str(), valueFloat.data(), std::any_cast<float>(m_min), std::any_cast<float>(m_max));
+		ImGui::SliderFloat2(p_name.c_str(), valueFloat.data(), std::any_cast<float>(m_min), std::any_cast<float>(m_max), "%.3f", m_flags);
 		m_value = valueFloat;
 		break;
 	}
 	case SliderType::Float3: {
 		auto valueFloat = std::any_cast<std::array<float, 3>>(m_value);
-		ImGui::SliderFloat3(p_name.c_str(), valueFloat.data(), std::any_cast<float>(m_min), std::any_cast<float>(m_max));
+		ImGui::SliderFloat3(p_name.c_str(), valueFloat.data(), std::any_cast<float>(m_min), std::any_cast<float>(m_max), "%.3f", m_flags);
 		m_value = valueFloat;
 		break;
 	}
 	case SliderType::Float4: {
 		auto valueFloat = std::any_cast<std::array<float, 4>>(m_value);
-		ImGui::SliderFloat4(p_name.c_str(), valueFloat.data(), std::any_cast<float>(m_min), std::any_cast<float>(m_max));
+		ImGui::SliderFloat4(p_name.c_str(), valueFloat.data(), std::any_cast<float>(m_min), std::any_cast<float>(m_max), "%.3f", m_flags);
 		m_value = valueFloat;
 		break;
 	}
@@ -84,7 +78,6 @@ void Slider::Draw()
 void Slider::DisplayOnInspector()
 {
 	ImGui::BeginDisabled(m_sliderType != SliderType::Float && m_sliderType != SliderType::Int);
-	ImGui::Checkbox("Vertical", &m_vertical);
 	ImGui::EndDisabled();
 	ImGui::SetItemTooltip("Only work with Int and Float type");
 	int inputType = (int)m_sliderType;
@@ -137,6 +130,7 @@ void Slider::DisplayOnInspector()
 			break;
 		}
 	}
+
 	switch (m_sliderType)
 	{
 	case SliderType::Int:
@@ -170,6 +164,15 @@ void Slider::DisplayOnInspector()
 	default:
 		break;
 	}
+
+	ImGui::SeparatorText("Flags");
+	ImGui::CheckboxFlags("Vertical", &m_flags, ImGuiSliderFlags_Vertical);
+	ImGui::CheckboxFlags("Read only", &m_flags, ImGuiSliderFlags_ReadOnly);
+	ImGui::CheckboxFlags("No Input", &m_flags, ImGuiSliderFlags_NoInput);
+	ImGui::CheckboxFlags("Always Clamp", &m_flags, ImGuiSliderFlags_AlwaysClamp);
+	ImGui::CheckboxFlags("Logarithmic", &m_flags, ImGuiSliderFlags_Logarithmic);
+	ImGui::CheckboxFlags("No Round To Format", &m_flags, ImGuiSliderFlags_NoRoundToFormat);
+
 	Object::DisplayOnInspector();
 }
 
@@ -182,27 +185,23 @@ void Slider::Serialize(std::string& content) const
 
 	switch (m_sliderType)
 	{
-	case SliderType::Int:
-		content += "int " + variableName + " = " + std::to_string(std::any_cast<int>(m_value)) + ";\n";
-		if (m_vertical)
-			content += "ImGui::SliderIntV(\"" + p_name + "\", ImVec2("
-			+ std::to_string(p_size.x) + ", " + std::to_string(p_size.y)
-			+ "), & " + variableName
-			+ ", " + std::to_string(std::any_cast<int>(m_min))
-			+ ", " + std::to_string(std::any_cast<int>(m_max)) + ");\n";
-		else
-			content += "ImGui::SliderInt(\"" + p_name + "\", &" + variableName
-			+ ", " + std::to_string(std::any_cast<int>(m_min))
-			+ ", " + std::to_string(std::any_cast<int>(m_max)) + ");\n";
+	case SliderType::Int: {
 
-		break;
+		content += "int " + variableName + " = " + std::to_string(std::any_cast<int>(m_value)) + ";\n";
+		content += "ImGui::SliderInt(\"" + p_name + "\", &" + variableName
+			+ ", " + std::to_string(std::any_cast<int>(m_min))
+			+ ", " + std::to_string(std::any_cast<int>(m_max))
+			+ ", \"%d\", " + std::to_string(m_flags) + ");\n";
+	}
+			break;
 	case SliderType::Int2:
 	{
 		std::array<int, 2> valueArray = std::any_cast<std::array<int, 2>>(m_value);
 		content += "int " + variableName + "[2] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + "};\n";
 		content += "ImGui::SliderInt2(\"" + p_name + "\", " + variableName
 			+ ", " + std::to_string(std::any_cast<int>(m_min))
-			+ ", " + std::to_string(std::any_cast<int>(m_max)) + ");\n";
+			+ ", " + std::to_string(std::any_cast<int>(m_max))
+			+ ", \"%d\", " + std::to_string(m_flags) + ");\n";
 	}
 	break;
 	case SliderType::Int3:
@@ -211,7 +210,8 @@ void Slider::Serialize(std::string& content) const
 		content += "int " + variableName + "[3] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + ", " + std::to_string(valueArray[2]) + "};\n";
 		content += "ImGui::SliderInt3(\"" + p_name + "\", " + variableName
 			+ ", " + std::to_string(std::any_cast<int>(m_min))
-			+ ", " + std::to_string(std::any_cast<int>(m_max)) + ");\n";
+			+ ", " + std::to_string(std::any_cast<int>(m_max))
+			+ ", \"%d\", " + std::to_string(m_flags) + ");\n";
 	}
 	break;
 	case SliderType::Int4:
@@ -220,22 +220,17 @@ void Slider::Serialize(std::string& content) const
 		content += "int " + variableName + "[4] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + ", " + std::to_string(valueArray[2]) + ", " + std::to_string(valueArray[3]) + "};\n";
 		content += "ImGui::SliderInt4(\"" + p_name + "\", " + variableName
 			+ ", " + std::to_string(std::any_cast<int>(m_min))
-			+ ", " + std::to_string(std::any_cast<int>(m_max)) + ");\n";
+			+ ", " + std::to_string(std::any_cast<int>(m_max))
+			+ ", \"%d\", " + std::to_string(m_flags) + ");\n";
 	}
 	break;
 	case SliderType::Float:
 	{
 		content += "float " + variableName + " = " + std::to_string(std::any_cast<float>(m_value)) + ";\n";
-		if (m_vertical)
-			content += "ImGui::SliderFloatV(\"" + p_name + "\", ImVec2("
-			+ std::to_string(p_size.x) + ", " + std::to_string(p_size.y)
-			+ "), & " + variableName
-			+ ", " + std::to_string(std::any_cast<int>(m_min))
-			+ ", " + std::to_string(std::any_cast<int>(m_max)) + ");\n";
-		else
-			content += "ImGui::SliderFloat(\"" + p_name + "\", &" + variableName
+		content += "ImGui::SliderFloat(\"" + p_name + "\", &" + variableName
 			+ ", " + std::to_string(std::any_cast<float>(m_min))
-			+ ", " + std::to_string(std::any_cast<float>(m_max)) + ");\n";
+			+ ", " + std::to_string(std::any_cast<float>(m_max))
+			+ ", \"%.3f\", " + std::to_string(m_flags) + ");\n";
 	}
 	break;
 	case SliderType::Float2:
@@ -244,7 +239,8 @@ void Slider::Serialize(std::string& content) const
 		content += "float " + variableName + "[2] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + "};\n";
 		content += "ImGui::SliderFloat2(\"" + p_name + "\", " + variableName
 			+ ", " + std::to_string(std::any_cast<float>(m_min))
-			+ ", " + std::to_string(std::any_cast<float>(m_max)) + ");\n";
+			+ ", " + std::to_string(std::any_cast<float>(m_max))
+			+ ", \"%.3f\", " + std::to_string(m_flags) + ");\n";
 	}
 	break;
 	case SliderType::Float3:
@@ -253,7 +249,8 @@ void Slider::Serialize(std::string& content) const
 		content += "float " + variableName + "[3] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + ", " + std::to_string(valueArray[2]) + "};\n";
 		content += "ImGui::SliderFloat3(\"" + p_name + "\", " + variableName
 			+ ", " + std::to_string(std::any_cast<float>(m_min))
-			+ ", " + std::to_string(std::any_cast<float>(m_max)) + ");\n";
+			+ ", " + std::to_string(std::any_cast<float>(m_max))
+			+ ", \"%.3f\", " + std::to_string(m_flags) + ");\n";
 	}
 	break;
 	case SliderType::Float4:
@@ -262,7 +259,8 @@ void Slider::Serialize(std::string& content) const
 		content += "float " + variableName + "[4] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + ", " + std::to_string(valueArray[2]) + ", " + std::to_string(valueArray[3]) + "};\n";
 		content += "ImGui::SliderFloat4(\"" + p_name + "\", " + variableName
 			+ ", " + std::to_string(std::any_cast<float>(m_min))
-			+ ", " + std::to_string(std::any_cast<float>(m_max)) + ");\n";
+			+ ", " + std::to_string(std::any_cast<float>(m_max))
+			+ ", \"%.3f\", " + std::to_string(m_flags) + ");\n";
 	}
 	break;
 	default:
@@ -276,7 +274,7 @@ void Slider::Serialize(Serializer& serializer) const
 	Object::Serialize(serializer);
 
 	serializer << Pair::KEY << "InputType" << Pair::VALUE << (int)m_sliderType;
-	serializer << Pair::KEY << "Vertical" << Pair::VALUE << m_vertical;
+	serializer << Pair::KEY << "Flags" << Pair::VALUE << (int)m_flags;
 	switch (m_sliderType)
 	{
 	case SliderType::Int:
@@ -350,7 +348,7 @@ void Slider::Deserialize(Parser& parser)
 	Object::Deserialize(parser);
 
 	m_sliderType = (SliderType)parser["SliderType"].As<int>();
-	m_vertical = parser["Vertical"].As<bool>();
+	m_flags = parser["Flags"].As<int>();
 	switch (m_sliderType)
 	{
 	case SliderType::Int:

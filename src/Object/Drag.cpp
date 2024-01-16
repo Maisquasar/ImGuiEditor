@@ -16,57 +16,56 @@ void Drag::Initialize()
 	AddStyleVar("Button Text Align", ImGui::GetStyle().ButtonTextAlign, ImGuiStyleVar_ButtonTextAlign);
 }
 
-void Drag::Draw()
-{
+void Drag::Draw() {
 	if (p_size.x != 0.f)
 		ImGui::SetNextItemWidth(p_size.x);
-	switch (m_dragType)
-	{
+
+	switch (m_dragType) {
 	case DragType::Int: {
 		auto valueInt = std::any_cast<int>(m_value);
-		ImGui::DragInt(p_name.c_str(), &valueInt, m_speed, std::any_cast<int>(m_min), std::any_cast<int>(m_max));
+		ImGui::DragInt(p_name.c_str(), &valueInt, m_speed, std::any_cast<int>(m_min), std::any_cast<int>(m_max), "%d", m_flags);
 		m_value = valueInt;
 		break;
 	}
 	case DragType::Int2: {
 		auto valueInt = std::any_cast<std::array<int, 2>>(m_value);
-		ImGui::DragInt2(p_name.c_str(), valueInt.data(), m_speed, std::any_cast<int>(m_min), std::any_cast<int>(m_max));
+		ImGui::DragInt2(p_name.c_str(), valueInt.data(), m_speed, std::any_cast<int>(m_min), std::any_cast<int>(m_max), "%d", m_flags);
 		m_value = valueInt;
 		break;
 	}
 	case DragType::Int3: {
 		auto valueInt = std::any_cast<std::array<int, 3>>(m_value);
-		ImGui::DragInt3(p_name.c_str(), valueInt.data(), m_speed, std::any_cast<int>(m_min), std::any_cast<int>(m_max));
+		ImGui::DragInt3(p_name.c_str(), valueInt.data(), m_speed, std::any_cast<int>(m_min), std::any_cast<int>(m_max), "%d", m_flags);
 		m_value = valueInt;
 		break;
 	}
 	case DragType::Int4: {
 		auto valueInt = std::any_cast<std::array<int, 4>>(m_value);
-		ImGui::DragInt4(p_name.c_str(), valueInt.data(), m_speed, std::any_cast<int>(m_min), std::any_cast<int>(m_max));
+		ImGui::DragInt4(p_name.c_str(), valueInt.data(), m_speed, std::any_cast<int>(m_min), std::any_cast<int>(m_max), "%d", m_flags);
 		m_value = valueInt;
 		break;
 	}
 	case DragType::Float: {
 		auto valueFloat = std::any_cast<float>(m_value);
-		ImGui::DragFloat(p_name.c_str(), &valueFloat, m_speed, std::any_cast<float>(m_min), std::any_cast<float>(m_max));
+		ImGui::DragFloat(p_name.c_str(), &valueFloat, m_speed, std::any_cast<float>(m_min), std::any_cast<float>(m_max), "%.3f", m_flags);
 		m_value = valueFloat;
 		break;
 	}
 	case DragType::Float2: {
 		auto valueFloat = std::any_cast<std::array<float, 2>>(m_value);
-		ImGui::DragFloat2(p_name.c_str(), valueFloat.data(), m_speed, std::any_cast<float>(m_min), std::any_cast<float>(m_max));
+		ImGui::DragFloat2(p_name.c_str(), valueFloat.data(), m_speed, std::any_cast<float>(m_min), std::any_cast<float>(m_max), "%.3f", m_flags);
 		m_value = valueFloat;
 		break;
 	}
 	case DragType::Float3: {
 		auto valueFloat = std::any_cast<std::array<float, 3>>(m_value);
-		ImGui::DragFloat3(p_name.c_str(), valueFloat.data(), m_speed, std::any_cast<float>(m_min), std::any_cast<float>(m_max));
+		ImGui::DragFloat3(p_name.c_str(), valueFloat.data(), m_speed, std::any_cast<float>(m_min), std::any_cast<float>(m_max), "%.3f", m_flags);
 		m_value = valueFloat;
 		break;
 	}
 	case DragType::Float4: {
 		auto valueFloat = std::any_cast<std::array<float, 4>>(m_value);
-		ImGui::DragFloat4(p_name.c_str(), valueFloat.data(), m_speed, std::any_cast<float>(m_min), std::any_cast<float>(m_max));
+		ImGui::DragFloat4(p_name.c_str(), valueFloat.data(), m_speed, std::any_cast<float>(m_min), std::any_cast<float>(m_max), "%.3f", m_flags);
 		m_value = valueFloat;
 		break;
 	}
@@ -74,6 +73,7 @@ void Drag::Draw()
 		break;
 	}
 }
+
 
 void Drag::DisplayOnInspector()
 {
@@ -160,6 +160,15 @@ void Drag::DisplayOnInspector()
 	default:
 		break;
 	}
+
+	ImGui::SeparatorText("Flags");
+	ImGui::CheckboxFlags("Vertical", &m_flags, ImGuiSliderFlags_Vertical);
+	ImGui::CheckboxFlags("Read only", &m_flags, ImGuiSliderFlags_ReadOnly);
+	ImGui::CheckboxFlags("No Input", &m_flags, ImGuiSliderFlags_NoInput);
+	ImGui::CheckboxFlags("Always Clamp", &m_flags, ImGuiSliderFlags_AlwaysClamp);
+	ImGui::CheckboxFlags("Logarithmic", &m_flags, ImGuiSliderFlags_Logarithmic);
+	ImGui::CheckboxFlags("No Round To Format", &m_flags, ImGuiSliderFlags_NoRoundToFormat);
+
 	Object::DisplayOnInspector();
 }
 
@@ -259,6 +268,7 @@ void Drag::Serialize(Serializer& serializer) const
 	Object::Serialize(serializer);
 
 	serializer << Pair::KEY << "InputType" << Pair::VALUE << (int)m_dragType;
+	serializer << Pair::KEY << "Flags" << Pair::VALUE << (int)m_flags;
 	serializer << Pair::KEY << "Speed" << Pair::VALUE << m_speed;
 	switch (m_dragType)
 	{
@@ -333,6 +343,7 @@ void Drag::Deserialize(Parser& parser)
 	Object::Deserialize(parser);
 
 	m_dragType = (DragType)parser["DragType"].As<int>();
+	m_flags = parser["Flags"].As<int>();
 	m_speed = parser["Speed"].As<float>();
 	switch (m_dragType)
 	{
