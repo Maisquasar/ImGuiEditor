@@ -19,6 +19,7 @@
 #include "Object/Slider.h"
 #include "Object/ComboBox.h"
 #include "Object/Selectable.h"
+#include "Object/Checkbox.h"
 
 void ObjectWindow::Initialize()
 {
@@ -30,6 +31,7 @@ void ObjectWindow::Initialize()
 	m_availableObjects.push_back(std::make_shared<Slider>());
 	m_availableObjects.push_back(std::make_shared<ComboBox>());
 	m_availableObjects.push_back(std::make_shared<Selectable>());
+	m_availableObjects.push_back(std::make_shared<Checkbox>());
 
 	m_availableObjects.push_back(std::make_shared<TabBar>());
 	m_availableObjects.push_back(std::make_shared<TabItem>());
