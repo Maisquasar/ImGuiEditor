@@ -44,7 +44,6 @@ void ComboBox::PostEnd()
 
 void ComboBox::DisplayOnInspector()
 {
-
 	ImGui::SeparatorText("Flags");
 	ImGui::CheckboxFlags("No Arrow Button", &m_flags, ImGuiComboFlags_NoArrowButton);
 	ImGui::CheckboxFlags("No Preview", &m_flags, ImGuiComboFlags_NoPreview);

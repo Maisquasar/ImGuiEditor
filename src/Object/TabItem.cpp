@@ -15,12 +15,13 @@ void TabItem::Initialize()
 	m_randomValue = distrib(gen);
 	auto style = ImGui::GetStyle();
 
-	AddStyleVar("Tab Rounding", style.TabRounding, ImGuiStyleVar_TabRounding);
-
 	AddStyleColor("Tab", ImGuiCol_Tab);
 	AddStyleColor("Tab Active", ImGuiCol_TabActive);
+	AddStyleColor("Tab Hovered", ImGuiCol_TabHovered);
 	AddStyleColor("Tab Unfocused", ImGuiCol_TabUnfocused);
 	AddStyleColor("Tab Unfocused Active", ImGuiCol_TabUnfocusedActive);
+
+	AddStyleVar("Tab Rounding", style.TabRounding, ImGuiStyleVar_TabRounding);
 }
 
 void TabItem::PostDraw()

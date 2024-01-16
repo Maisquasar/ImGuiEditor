@@ -4,7 +4,17 @@
 
 void Input::Initialize()
 {
+	AddStyleColor("Button Color", ImGuiCol_Button);
+	AddStyleColor("Button Hovered Color", ImGuiCol_ButtonHovered);
+	AddStyleColor("Button Active Color", ImGuiCol_ButtonActive);
+	AddStyleColor("Text Color", ImGuiCol_Text);
+	AddStyleColor("Border Color", ImGuiCol_Border);
+	AddStyleColor("Border Shadow", ImGuiCol_BorderShadow);
 
+	AddStyleVar("Frame Rounding", ImGui::GetStyle().FrameRounding, ImGuiStyleVar_FrameRounding);
+	AddStyleVar("Frame Padding", ImGui::GetStyle().FramePadding, ImGuiStyleVar_FramePadding);
+	AddStyleVar("Frame Border Size", ImGui::GetStyle().FrameBorderSize, ImGuiStyleVar_FrameBorderSize);
+	AddStyleVar("Button Text Align", ImGui::GetStyle().ButtonTextAlign, ImGuiStyleVar_ButtonTextAlign);
 }
 
 void Input::Draw()

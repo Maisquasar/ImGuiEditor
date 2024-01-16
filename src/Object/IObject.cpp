@@ -7,6 +7,17 @@
 #include "Hierarchy.h"
 #include "ObjectWindow.h"
 
+#include <random>
+
+Object::Object()
+{
+	std::random_device rd;
+	std::mt19937_64 gen(rd());
+
+	std::uniform_int_distribution<int> distrib;
+	p_uuid = distrib(gen);
+}
+
 Object::~Object()
 {
 	for (auto& child : p_children)
@@ -71,7 +82,7 @@ void Object::SerializeChildren(std::string& content) const
 	for (auto& child : p_children)
 	{
 		const auto object = child.lock();
-		content += "ImGui::PushID(" + std::to_string(object->p_id) + ");\n";
+		content += "ImGui::PushID(" + std::to_string(object->p_uuid) + ");\n";
 		if (object->p_disabled)
 			content += "ImGui::BeginDisabled(true);\n";
 		object->InternalSerialize(content);

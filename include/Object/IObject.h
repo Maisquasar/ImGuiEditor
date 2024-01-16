@@ -201,7 +201,7 @@ struct StyleColor
 class Object
 {
 public:
-	Object() = default;
+	Object();
 	virtual ~Object();
 
 	// Called on creation
@@ -278,6 +278,7 @@ protected:
 
 	size_t p_index = -1;
 	size_t p_id = -1;
+	int p_uuid = 0;
 
 	Vec2f p_position;
 	Vec2f p_size;

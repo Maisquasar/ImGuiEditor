@@ -2,7 +2,7 @@
 
 void Selectable::Initialize()
 {
-
+	AddStyleVar("Selectable Text Align", ImGui::GetStyle().SelectableTextAlign, ImGuiStyleVar_SelectableTextAlign);
 }
 
 void Selectable::Draw()

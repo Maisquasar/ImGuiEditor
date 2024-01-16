@@ -4,6 +4,17 @@
 #include "Editor.h"
 #include "Inspector.h"
 
+void TabBar::Initialize()
+{
+	AddStyleColor("Tab", ImGuiCol_Tab);
+	AddStyleColor("Tab Active", ImGuiCol_TabActive);
+	AddStyleColor("Tab Hovered", ImGuiCol_TabHovered);
+	AddStyleColor("Tab Unfocused", ImGuiCol_TabUnfocused);
+	AddStyleColor("Tab Unfocused Active", ImGuiCol_TabUnfocusedActive);
+
+	AddStyleVar("Tab Rounding", ImGui::GetStyle().TabRounding, ImGuiStyleVar_TabRounding);
+}
+
 void TabBar::PostDraw()
 {
 	static Canvas* canvas = Editor::Get()->GetCanvas();
@@ -21,6 +32,11 @@ void TabBar::End()
 
 	if (p_sameLine)
 		ImGui::SameLine();
+}
+
+void TabBar::DisplayOnInspector()
+{
+	Object::DisplayOnInspector();
 }
 
 void TabBar::Serialize(std::string& content) const

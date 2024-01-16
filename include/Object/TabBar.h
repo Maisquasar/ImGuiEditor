@@ -10,12 +10,13 @@ public:
 	TabBar(TabBar&&) noexcept = default;
 	~TabBar() override = default;
 
+	void Initialize() override;
 	void Draw() override {}
 	void PostDraw() override;
 	bool Begin() override;
 	void End() override;
 
-	void DisplayOnInspector() override {}
+	void DisplayOnInspector() override;
 
 	void Serialize(std::string& content) const override;
 	void Serialize(Serializer& serializer) const override;

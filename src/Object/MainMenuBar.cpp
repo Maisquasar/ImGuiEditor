@@ -4,6 +4,11 @@
 #include "Editor.h"
 #include "Inspector.h"
 
+void MainMenuBar::Initialize()
+{
+	AddStyleColor("Menu Bar Background", ImGuiCol_MenuBarBg);
+}
+
 void MainMenuBar::PostDraw()
 {
 }

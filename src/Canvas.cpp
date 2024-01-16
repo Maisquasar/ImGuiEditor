@@ -13,8 +13,8 @@ void Canvas::Initialize()
 void Canvas::Draw() const
 {
 	static Hierarchy* hierarchy = Editor::Get()->GetHierarchy();
-	//ImGui::ShowStyleEditor();
-	ImGui::ShowMetricsWindow();
+	ImGui::ShowStyleEditor();
+	//ImGui::ShowMetricsWindow();
 	if (ImGui::Begin("Canvas"))
 	{
 		size_t index = 0;
@@ -22,31 +22,6 @@ void Canvas::Draw() const
 		{
 			DisplayObject(weakObject.lock(), ++index);
 		}
-		/*
-		ImGui::PushID(1);
-		if (ImGui::BeginTabBar("TabBar"))
-		{
-			ImGui::PushID(2);
-			if (ImGui::BeginTabItem("TabItem"))
-			{
-				ImGui::PushID(3);
-				ImGui::TextUnformatted("Text");
-				ImGui::PopID();
-				ImGui::EndTabItem();
-			}
-			ImGui::PopID();
-			ImGui::PushID(4);
-
-			if (ImGui::BeginTabItem("TabItem"))
-			{
-				ImGui::EndTabItem();
-			}
-
-			ImGui::PopID();
-			ImGui::EndTabBar();
-		}
-		ImGui::PopID();
-		*/
 	}
 	ImGui::End();
 }
@@ -76,7 +51,7 @@ void Canvas::DisplayObject(std::shared_ptr<Object> object, size_t& index) const
 	}
 
 
-	ImGui::PushID(index);
+	ImGui::PushID(object->p_uuid);
 	ImGui::BeginDisabled(object->p_disabled);
 	object->Draw();
 	ImGui::PopID();

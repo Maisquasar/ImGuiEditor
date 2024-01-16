@@ -11,6 +11,7 @@ public:
 	MainMenuBar(MainMenuBar&&) noexcept = default;
 	~MainMenuBar() override = default;
 
+	void Initialize() override;
 	void Draw() override {}
 	void PostDraw() override;
 	bool Begin() override;

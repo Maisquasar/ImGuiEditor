@@ -23,6 +23,7 @@ public:
 private:
 	std::string m_text = "Text";
 	bool m_wrap = false;
+	Vec2f m_textAlign;
 	bool m_autoWrap = true;
 	float m_wrapWidth = 200;
 };
