@@ -15,6 +15,8 @@
 #include "Object/TabBar.h"
 #include "Object/TabItem.h"
 #include "Object/Input.h"
+#include "Object/Drag.h"
+#include "Object/Slider.h"
 #include "Object/ComboBox.h"
 #include "Object/Selectable.h"
 
@@ -24,6 +26,8 @@ void ObjectWindow::Initialize()
 	m_availableObjects.push_back(std::make_shared<Text>());
 	m_availableObjects.push_back(std::make_shared<Image>());
 	m_availableObjects.push_back(std::make_shared<Input>());
+	m_availableObjects.push_back(std::make_shared<Drag>());
+	m_availableObjects.push_back(std::make_shared<Slider>());
 	m_availableObjects.push_back(std::make_shared<ComboBox>());
 	m_availableObjects.push_back(std::make_shared<Selectable>());
 

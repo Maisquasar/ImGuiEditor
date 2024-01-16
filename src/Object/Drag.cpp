@@ -1,8 +1,7 @@
-#include "Object/Input.h"
+#include "Object/Drag.h"
 #include <array>
-#include <random>
 
-void Input::Initialize()
+void Drag::Initialize()
 {
 	AddStyleColor("Button Color", ImGuiCol_Button);
 	AddStyleColor("Button Hovered Color", ImGuiCol_ButtonHovered);
@@ -17,72 +16,57 @@ void Input::Initialize()
 	AddStyleVar("Button Text Align", ImGui::GetStyle().ButtonTextAlign, ImGuiStyleVar_ButtonTextAlign);
 }
 
-void Input::Draw()
+void Drag::Draw()
 {
 	if (p_size.x != 0.f)
 		ImGui::SetNextItemWidth(p_size.x);
-	switch (m_inputType)
+	switch (m_dragType)
 	{
-	case InputType::Text: {
-		auto valueString = std::any_cast<std::string>(m_value);
-		if (!m_textMultiline)
-			ImGui::InputText(p_name.c_str(), &valueString, m_flags);
-		else
-			ImGui::InputTextMultiline(p_name.c_str(), &valueString, p_size, m_flags);
-		m_value = valueString;
-		break;
-	}
-	case InputType::Double: {
-		auto valueDouble = std::any_cast<double>(m_value);
-		ImGui::InputDouble(p_name.c_str(), &valueDouble, 1, 0, "%.6f", m_flags);
-		m_value = valueDouble;
-		break;
-	}
-	case InputType::Int: {
+	case DragType::Int: {
 		auto valueInt = std::any_cast<int>(m_value);
-		ImGui::InputInt(p_name.c_str(), &valueInt, 1, 100, m_flags);
+		ImGui::DragInt(p_name.c_str(), &valueInt, m_speed, std::any_cast<int>(m_min), std::any_cast<int>(m_max));
 		m_value = valueInt;
 		break;
 	}
-	case InputType::Int2: {
+	case DragType::Int2: {
 		auto valueInt = std::any_cast<std::array<int, 2>>(m_value);
-		ImGui::InputInt2(p_name.c_str(), valueInt.data(), m_flags);
+		ImGui::DragInt2(p_name.c_str(), valueInt.data(), m_speed, std::any_cast<int>(m_min), std::any_cast<int>(m_max));
 		m_value = valueInt;
 		break;
 	}
-	case InputType::Int3: {
+	case DragType::Int3: {
 		auto valueInt = std::any_cast<std::array<int, 3>>(m_value);
-		ImGui::InputInt3(p_name.c_str(), valueInt.data(), m_flags);
+		ImGui::DragInt3(p_name.c_str(), valueInt.data(), m_speed, std::any_cast<int>(m_min), std::any_cast<int>(m_max));
 		m_value = valueInt;
 		break;
 	}
-	case InputType::Int4: {
+	case DragType::Int4: {
 		auto valueInt = std::any_cast<std::array<int, 4>>(m_value);
-		ImGui::InputInt4(p_name.c_str(), valueInt.data(), m_flags);
+		ImGui::DragInt4(p_name.c_str(), valueInt.data(), m_speed, std::any_cast<int>(m_min), std::any_cast<int>(m_max));
 		m_value = valueInt;
 		break;
 	}
-	case InputType::Float: {
+	case DragType::Float: {
 		auto valueFloat = std::any_cast<float>(m_value);
-		ImGui::InputFloat(p_name.c_str(), &valueFloat, 0.0f, 0.0f, "%.3f", m_flags);
+		ImGui::DragFloat(p_name.c_str(), &valueFloat, m_speed, std::any_cast<float>(m_min), std::any_cast<float>(m_max));
 		m_value = valueFloat;
 		break;
 	}
-	case InputType::Float2: {
+	case DragType::Float2: {
 		auto valueFloat = std::any_cast<std::array<float, 2>>(m_value);
-		ImGui::InputFloat2(p_name.c_str(), valueFloat.data(), "%.3f", m_flags);
+		ImGui::DragFloat2(p_name.c_str(), valueFloat.data(), m_speed, std::any_cast<float>(m_min), std::any_cast<float>(m_max));
 		m_value = valueFloat;
 		break;
 	}
-	case InputType::Float3: {
+	case DragType::Float3: {
 		auto valueFloat = std::any_cast<std::array<float, 3>>(m_value);
-		ImGui::InputFloat3(p_name.c_str(), valueFloat.data(), "%.3f", m_flags);
+		ImGui::DragFloat3(p_name.c_str(), valueFloat.data(), m_speed, std::any_cast<float>(m_min), std::any_cast<float>(m_max));
 		m_value = valueFloat;
 		break;
 	}
-	case InputType::Float4: {
+	case DragType::Float4: {
 		auto valueFloat = std::any_cast<std::array<float, 4>>(m_value);
-		ImGui::InputFloat4(p_name.c_str(), valueFloat.data(), "%.3f", m_flags);
+		ImGui::DragFloat4(p_name.c_str(), valueFloat.data(), m_speed, std::any_cast<float>(m_min), std::any_cast<float>(m_max));
 		m_value = valueFloat;
 		break;
 	}
@@ -91,144 +75,177 @@ void Input::Draw()
 	}
 }
 
-void Input::DisplayOnInspector()
+void Drag::DisplayOnInspector()
 {
-	int inputType = (int)m_inputType;
-	if (ImGui::Combo("Input Type", &inputType, InputTypeEnumToString()))
+	int inputType = (int)m_dragType;
+	if (ImGui::Combo("Drag Type", &inputType, DragTypeEnumToString()))
 	{
-		m_inputType = (InputType)inputType;
-		switch (m_inputType)
+		m_dragType = (DragType)inputType;
+		switch (m_dragType)
 		{
-		case InputType::Text:
-			m_value = std::string("");
-			break;
-		case InputType::Double:
-			m_value = 0.0;
-			break;
-		case InputType::Int:
+		case DragType::Int:
 			m_value = 0;
+			m_min = 0;
+			m_max = 0;
 			break;
-		case InputType::Int2:
+		case DragType::Int2:
 			m_value = std::array<int, 2>();
+			m_min = 0;
+			m_max = 0;
 			break;
-		case InputType::Int3:
+		case DragType::Int3:
 			m_value = std::array<int, 3>();
+			m_min = 0;
+			m_max = 0;
 			break;
-		case InputType::Int4:
+		case DragType::Int4:
 			m_value = std::array<int, 4>();
+			m_min = 0;
+			m_max = 0;
 			break;
-		case InputType::Float:
+		case DragType::Float:
 			m_value = 0.0f;
+			m_min = 0.f;
+			m_max = 0.f;
 			break;
-		case InputType::Float2:
+		case DragType::Float2:
 			m_value = std::array<float, 2>();
+			m_min = 0.f;
+			m_max = 0.f;
 			break;
-		case InputType::Float3:
+		case DragType::Float3:
 			m_value = std::array<float, 3>();
+			m_min = 0.f;
+			m_max = 0.f;
 			break;
-		case InputType::Float4:
+		case DragType::Float4:
 			m_value = std::array<float, 4>();
+			m_min = 0.f;
+			m_max = 0.f;
 			break;
 		default:
 			break;
 		}
 	}
-	
-	ImGui::SeparatorText("Flags");
-	ImGui::CheckboxFlags("Allow tab input", &m_flags, ImGuiInputTextFlags_AllowTabInput);
-	ImGui::CheckboxFlags("ReadOnly", &m_flags, ImGuiInputTextFlags_ReadOnly);
-	ImGui::CheckboxFlags("Password", &m_flags, ImGuiInputTextFlags_Password);
-	ImGui::CheckboxFlags("Multiline", &m_flags, ImGuiInputTextFlags_Multiline);
-	ImGui::CheckboxFlags("Always insert mode", &m_flags, ImGuiInputTextFlags_AutoSelectAll);
-	ImGui::CheckboxFlags("Always overwrite", &m_flags, ImGuiInputTextFlags_AlwaysOverwrite);
-	ImGui::CheckboxFlags("Enter return", &m_flags, ImGuiInputTextFlags_EnterReturnsTrue);
-	ImGui::CheckboxFlags("Ctrl enter for new line", &m_flags, ImGuiInputTextFlags_CtrlEnterForNewLine);
-	ImGui::CheckboxFlags("Escape clear all", &m_flags, ImGuiInputTextFlags_EscapeClearsAll);
-	ImGui::CheckboxFlags("Auto select all", &m_flags, ImGuiInputTextFlags_AutoSelectAll);
-	ImGui::CheckboxFlags("No markers", &m_flags, ImGuiInputTextFlags_NoMarkEdited);
-	ImGui::CheckboxFlags("No undo redo", &m_flags, ImGuiInputTextFlags_NoUndoRedo);
-	ImGui::CheckboxFlags("No horizontal scroll", &m_flags, ImGuiInputTextFlags_NoHorizontalScroll);
-	ImGui::CheckboxFlags("Chars decimal", &m_flags, ImGuiInputTextFlags_CharsDecimal);
-	ImGui::CheckboxFlags("Chars hex", &m_flags, ImGuiInputTextFlags_CharsHexadecimal);
-	ImGui::CheckboxFlags("Chars upper", &m_flags, ImGuiInputTextFlags_CharsUppercase);
-	ImGui::CheckboxFlags("Chars lowercase", &m_flags, ImGuiInputTextFlags_CharsUppercase);
+	switch (m_dragType)
+	{
+	case DragType::Int:
+	case DragType::Int2:
+	case DragType::Int3:
+	case DragType::Int4: 
+	{
+		int min = std::any_cast<int>(m_min);
+		ImGui::InputInt("Min", &min);
+		int max = std::any_cast<int>(m_max);
+		ImGui::InputInt("Max", &max);
 
+		m_min = min;
+		m_max = max;
+	}
+		break;
+	case DragType::Float:
+	case DragType::Float2:
+	case DragType::Float3:
+	case DragType::Float4: 
+	{
+		float min = std::any_cast<float>(m_min);
+		ImGui::InputFloat("Min", &min);
+		float max = std::any_cast<float>(m_max);
+		ImGui::InputFloat("Max", &max);
+
+		m_min = min;
+		m_max = max;
+	}
+		break;
+	default:
+		break;
+	}
 	Object::DisplayOnInspector();
 }
 
-void Input::Serialize(std::string& content) const
+void Drag::Serialize(std::string& content) const
 {
 	std::string variableName = "variable" + std::to_string(p_uuid);
 
 	if (p_size.x != 0.f)
 		content += "ImGui::SetNextItemWidth(" + std::to_string(p_size.x) + ");\n";
 
-	switch (m_inputType)
+	switch (m_dragType)
 	{
-	case InputType::Text:
-		content += "std::string " + variableName + " = \"" + std::any_cast<std::string>(m_value) + "\";\n";
-		if (m_textMultiline) {
-			content += "ImGui::InputTextMultiline(\"" + p_name + "\", &" + variableName +
-				", ImVec2(" + std::to_string(p_size.x) + ", " + std::to_string(p_size.y) + ");\n";
-		}
-		else {
-			content += "ImGui::InputText(\"" + p_name + "\", &" + variableName + ");\n";
-		}
-		break;
-	case InputType::Double:
-		content += "double " + variableName + " = " + std::to_string(std::any_cast<double>(m_value)) + ";\n";
-		content += "ImGui::InputDouble(\"" + p_name + "\", &" + variableName + ");\n";
-		break;
-	case InputType::Int:
+	case DragType::Int:
 		content += "int " + variableName + " = " + std::to_string(std::any_cast<int>(m_value)) + ";\n";
-		content += "ImGui::InputInt(\"" + p_name + "\", &" + variableName + ");\n";
+		content += "ImGui::DragInt(\"" + p_name + "\", &" + variableName 
+			+ ", " + std::to_string(m_speed) 
+			+ ", " + std::to_string(std::any_cast<int>(m_min)) 
+			+ ", " + std::to_string(std::any_cast<int>(m_max)) + ");\n";
 		break;
-	case InputType::Int2:
+	case DragType::Int2:
 	{
 		std::array<int, 2> valueArray = std::any_cast<std::array<int, 2>>(m_value);
 		content += "int " + variableName + "[2] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + "};\n";
-		content += "ImGui::InputInt2(\"" + p_name + "\", " + variableName + ");\n";
+		content += "ImGui::DragInt2(\"" + p_name + "\", " + variableName
+			+ ", " + std::to_string(m_speed)
+			+ ", " + std::to_string(std::any_cast<int>(m_min))
+			+ ", " + std::to_string(std::any_cast<int>(m_max)) + ");\n";
 	}
 	break;
-	case InputType::Int3:
+	case DragType::Int3:
 	{
 		std::array<int, 3> valueArray = std::any_cast<std::array<int, 3>>(m_value);
 		content += "int " + variableName + "[3] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + ", " + std::to_string(valueArray[2]) + "};\n";
-		content += "ImGui::InputInt3(\"" + p_name + "\", " + variableName + ");\n";
+		content += "ImGui::DragInt3(\"" + p_name + "\", " + variableName
+			+ ", " + std::to_string(m_speed)
+			+ ", " + std::to_string(std::any_cast<int>(m_min))
+			+ ", " + std::to_string(std::any_cast<int>(m_max)) + ");\n";
 	}
 	break;
-	case InputType::Int4:
+	case DragType::Int4:
 	{
 		std::array<int, 4> valueArray = std::any_cast<std::array<int, 4>>(m_value);
 		content += "int " + variableName + "[4] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + ", " + std::to_string(valueArray[2]) + ", " + std::to_string(valueArray[3]) + "};\n";
-		content += "ImGui::InputInt4(\"" + p_name + "\", " + variableName + ");\n";
+		content += "ImGui::DragInt4(\"" + p_name + "\", " + variableName
+			+ ", " + std::to_string(m_speed)
+			+ ", " + std::to_string(std::any_cast<int>(m_min))
+			+ ", " + std::to_string(std::any_cast<int>(m_max)) + ");\n";
 	}
 	break;
-	case InputType::Float:
+	case DragType::Float:
 	{
 		content += "float " + variableName + " = " + std::to_string(std::any_cast<float>(m_value)) + ";\n";
-		content += "ImGui::InputFloat(\"" + p_name + "\", &" + variableName + ");\n";
+		content += "ImGui::DragFloat(\"" + p_name + "\", &" + variableName
+			+ ", " + std::to_string(m_speed)
+			+ ", " + std::to_string(std::any_cast<float>(m_min))
+			+ ", " + std::to_string(std::any_cast<float>(m_max)) + ");\n";
 	}
 	break;
-	case InputType::Float2:
+	case DragType::Float2:
 	{
 		std::array<float, 2> valueArray = std::any_cast<std::array<float, 2>>(m_value);
 		content += "float " + variableName + "[2] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + "};\n";
-		content += "ImGui::InputFloat2(\"" + p_name + "\", " + variableName + ");\n";
+		content += "ImGui::DragFloat2(\"" + p_name + "\", " + variableName
+			+ ", " + std::to_string(m_speed)
+			+ ", " + std::to_string(std::any_cast<float>(m_min))
+			+ ", " + std::to_string(std::any_cast<float>(m_max)) + ");\n";
 	}
 	break;
-	case InputType::Float3:
+	case DragType::Float3:
 	{
 		std::array<float, 3> valueArray = std::any_cast<std::array<float, 3>>(m_value);
 		content += "float " + variableName + "[3] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + ", " + std::to_string(valueArray[2]) + "};\n";
-		content += "ImGui::InputFloat3(\"" + p_name + "\", " + variableName + ");\n";
+		content += "ImGui::DragFloat3(\"" + p_name + "\", " + variableName
+			+ ", " + std::to_string(m_speed)
+			+ ", " + std::to_string(std::any_cast<float>(m_min))
+			+ ", " + std::to_string(std::any_cast<float>(m_max)) + ");\n";
 	}
 	break;
-	case InputType::Float4:
+	case DragType::Float4:
 	{
 		std::array<float, 4> valueArray = std::any_cast<std::array<float, 4>>(m_value);
 		content += "float " + variableName + "[4] = { " + std::to_string(valueArray[0]) + ", " + std::to_string(valueArray[1]) + ", " + std::to_string(valueArray[2]) + ", " + std::to_string(valueArray[3]) + "};\n";
-		content += "ImGui::InputFloat4(\"" + p_name + "\", " + variableName + ");\n";
+		content += "ImGui::DragFloat4(\"" + p_name + "\", " + variableName
+			+ ", " + std::to_string(m_speed)
+			+ ", " + std::to_string(std::any_cast<float>(m_min))
+			+ ", " + std::to_string(std::any_cast<float>(m_max)) + ");\n";
 	}
 	break;
 	default:
@@ -237,55 +254,51 @@ void Input::Serialize(std::string& content) const
 	SerializeChildren(content);
 }
 
-void Input::Serialize(Serializer& serializer) const
+void Drag::Serialize(Serializer& serializer) const
 {
 	Object::Serialize(serializer);
-	serializer << Pair::KEY << "InputType" << Pair::VALUE << (int)m_inputType;
-	switch (m_inputType)
+
+	serializer << Pair::KEY << "InputType" << Pair::VALUE << (int)m_dragType;
+	serializer << Pair::KEY << "Speed" << Pair::VALUE << m_speed;
+	switch (m_dragType)
 	{
-	case InputType::Text:
-		serializer << Pair::KEY << "Value" << Pair::VALUE << std::any_cast<std::string>(m_value);
-		break;
-	case InputType::Double:
-		serializer << Pair::KEY << "Value" << Pair::VALUE << std::any_cast<double>(m_value);
-		break;
-	case InputType::Int:
+	case DragType::Int:
 		serializer << Pair::KEY << "Value" << Pair::VALUE << std::any_cast<int>(m_value);
 		break;
-	case InputType::Int2:
+	case DragType::Int2:
 	{
 		auto valueInt = std::any_cast<std::array<int, 2>>(m_value);
 		serializer << Pair::KEY << "Value" << Pair::VALUE << Vec2f(valueInt[0], valueInt[1]);
 	}
 	break;
-	case InputType::Int3:
+	case DragType::Int3:
 	{
 		auto valueInt = std::any_cast<std::array<int, 3>>(m_value);
 		serializer << Pair::KEY << "Value" << Pair::VALUE << Vec3f(valueInt[0], valueInt[1], valueInt[2]);
 	}
 	break;
-	case InputType::Int4:
+	case DragType::Int4:
 	{
 		auto valueInt = std::any_cast<std::array<int, 4>>(m_value);
 		serializer << Pair::KEY << "Value" << Pair::VALUE << Vec4f(valueInt[0], valueInt[1], valueInt[2], valueInt[3]);
 	}
 	break;
-	case InputType::Float:
+	case DragType::Float:
 		serializer << Pair::KEY << "Value" << Pair::VALUE << std::any_cast<float>(m_value);
 		break;
-	case InputType::Float2:
+	case DragType::Float2:
 	{
 		auto valueFloat = std::any_cast<std::array<float, 2>>(m_value);
 		serializer << Pair::KEY << "Value" << Pair::VALUE << Vec2f(valueFloat[0], valueFloat[1]);
 	}
 	break;
-	case InputType::Float3:
+	case DragType::Float3:
 	{
 		auto valueFloat = std::any_cast<std::array<float, 3>>(m_value);
 		serializer << Pair::KEY << "Value" << Pair::VALUE << Vec3f(valueFloat[0], valueFloat[1], valueFloat[2]);
 	}
 	break;
-	case InputType::Float4:
+	case DragType::Float4:
 	{
 		auto valueFloat = std::any_cast<std::array<float, 4>>(m_value);
 		serializer << Pair::KEY << "Value" << Pair::VALUE << Vec4f(valueFloat[0], valueFloat[1], valueFloat[2], valueFloat[3]);
@@ -294,63 +307,96 @@ void Input::Serialize(Serializer& serializer) const
 	default:
 		break;
 	}
+	switch (m_dragType)
+	{
+	case DragType::Int:
+	case DragType::Int2:
+	case DragType::Int3:
+	case DragType::Int4:
+		serializer << Pair::KEY << "Min" << Pair::VALUE << std::any_cast<int>(m_min);
+		serializer << Pair::KEY << "Max" << Pair::VALUE << std::any_cast<int>(m_max);
+		break;
+	case DragType::Float:
+	case DragType::Float2:
+	case DragType::Float3:
+	case DragType::Float4:
+		serializer << Pair::KEY << "Min" << Pair::VALUE << std::any_cast<float>(m_min);
+		serializer << Pair::KEY << "Max" << Pair::VALUE << std::any_cast<float>(m_max);
+		break;
+	default:
+		break;
+	}
 }
 
-void Input::Deserialize(Parser& parser)
+void Drag::Deserialize(Parser& parser)
 {
 	Object::Deserialize(parser);
-	m_inputType = (InputType)parser["InputType"].As<int>();
 
-	switch (m_inputType)
+	m_dragType = (DragType)parser["DragType"].As<int>();
+	m_speed = parser["Speed"].As<float>();
+	switch (m_dragType)
 	{
-	case InputType::Text:
-		m_value = parser["Value"].As<std::string>();
-		break;
-	case InputType::Double:
-		m_value = parser["Value"].As<double>();
-		break;
-	case InputType::Int:
+	case DragType::Int:
 		m_value = parser["Value"].As<int>();
 		break;
-	case InputType::Int2:
+	case DragType::Int2:
 	{
 		auto vecValue = parser["Value"].As<Vec2f>();
 		m_value = std::array<int, 2>({ (int)vecValue.x, (int)vecValue.y });
 	}
 	break;
-	case InputType::Int3:
+	case DragType::Int3:
 	{
 		auto vecValue = parser["Value"].As<Vec3f>();
 		m_value = std::array<int, 3>({ (int)vecValue.x, (int)vecValue.y, (int)vecValue.z });
 	}
 	break;
-	case InputType::Int4:
+	case DragType::Int4:
 	{
 		auto vecValue = parser["Value"].As<Vec4f>();
 		m_value = std::array<int, 4>({ (int)vecValue.x, (int)vecValue.y, (int)vecValue.z, (int)vecValue.w });
 	}
 	break;
-	case InputType::Float:
+	case DragType::Float:
 		m_value = parser["Value"].As<float>();
 		break;
-	case InputType::Float2:
+	case DragType::Float2:
 	{
 		auto vecValue = parser["Value"].As<Vec2f>();
 		m_value = std::array<float, 2>({ (float)vecValue.x, (float)vecValue.y });
 	}
 	break;
-	case InputType::Float3:
+	case DragType::Float3:
 	{
 		auto vecValue = parser["Value"].As<Vec3f>();
 		m_value = std::array<float, 3>({ (float)vecValue.x, (float)vecValue.y, (float)vecValue.z });
 	}
 	break;
-	case InputType::Float4:
+	case DragType::Float4:
 	{
 		auto vecValue = parser["Value"].As<Vec4f>();
 		m_value = std::array<float, 4>({ (float)vecValue.x, (float)vecValue.y, (float)vecValue.z, (float)vecValue.w });
 	}
 	break;
+	default:
+		break;
+	}
+	switch (m_dragType)
+	{
+	case DragType::Int:
+	case DragType::Int2:
+	case DragType::Int3:
+	case DragType::Int4:
+		m_min = parser["Min"].As<int>();
+		m_max = parser["Max"].As<int>();
+		break;
+	case DragType::Float:
+	case DragType::Float2:
+	case DragType::Float3:
+	case DragType::Float4:
+		m_min = parser["Min"].As<float>();
+		m_max = parser["Max"].As<float>();
+		break;
 	default:
 		break;
 	}

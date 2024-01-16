@@ -22,6 +22,7 @@ void Canvas::Draw() const
 		{
 			DisplayObject(weakObject.lock(), ++index);
 		}
+
 	}
 	ImGui::End();
 }
@@ -51,8 +52,8 @@ void Canvas::DisplayObject(std::shared_ptr<Object> object, size_t& index) const
 	}
 
 
-	ImGui::PushID(object->p_uuid);
 	ImGui::BeginDisabled(object->p_disabled);
+	ImGui::PushID(object->p_uuid);
 	object->Draw();
 	ImGui::PopID();
 	object->PostDraw();

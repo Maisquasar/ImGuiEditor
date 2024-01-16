@@ -303,6 +303,11 @@ public:
 	std::shared_ptr<Object> Clone() override {
 		auto object = std::make_shared<T>(*static_cast<T*>(this));
 		object->p_name = object->GetTypeName();
+		std::random_device rd;
+		std::mt19937_64 gen(rd());
+
+		std::uniform_int_distribution<int> distrib;
+		p_uuid = distrib(gen);
 		return object;
 	}
 

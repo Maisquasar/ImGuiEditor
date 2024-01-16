@@ -19,7 +19,7 @@ enum class InputType
 
 static const char* InputTypeEnumToString()
 {
-	return "Text\0Double\0Int\0Int2\0Int3\0Int4\0Float\0Float2\0Float3\0Float4\0Scalar";
+	return "Text\0Double\0Int\0Int2\0Int3\0Int4\0Float\0Float2\0Float3\0Float4\0";
 }
 
 class Input : public IObject<Input>
@@ -42,6 +42,7 @@ public:
 private:
 	InputType m_inputType = InputType::Text;
 	std::any m_value = std::string("");
+	ImGuiInputTextFlags m_flags;
 
 	bool m_textMultiline = false;
 
