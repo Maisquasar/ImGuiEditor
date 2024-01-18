@@ -21,6 +21,7 @@
 #include "Object/Selectable.h"
 #include "Object/Checkbox.h"
 #include "Object/Separator.h"
+#include "Object/Tree.h"
 
 void ObjectWindow::Initialize()
 {
@@ -34,6 +35,7 @@ void ObjectWindow::Initialize()
 	m_availableObjects.push_back(std::make_shared<Selectable>());
 	m_availableObjects.push_back(std::make_shared<Checkbox>());
 	m_availableObjects.push_back(std::make_shared<Separator>());
+	m_availableObjects.push_back(std::make_shared<Tree>());
 
 	m_availableObjects.push_back(std::make_shared<TabBar>());
 	m_availableObjects.push_back(std::make_shared<TabItem>());

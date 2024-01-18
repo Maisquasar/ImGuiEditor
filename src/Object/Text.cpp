@@ -55,13 +55,14 @@ void Text::DisplayOnInspector()
 
 void Text::Serialize(std::string& content) const
 {
-	// Set the cursor position based on the calculated position
-	content += "ImVec2 realPos = ImGui::GetCursorPos();\n";
-	content += "ImVec2 textSize = ImGui::CalcTextSize(\"" + m_text + "\");\n";
-	content += "ImVec2 windowSize = ImVec2(ImGui::GetWindowSize().x - realPos.x * 2, ImGui::GetWindowSize().y - realPos.y * 2);\n";
-	content += "ImVec2 pos = ImVec2((windowSize.x - textSize.x) * " + std::to_string(m_textAlign.x) + ", (windowSize.y - textSize.y) * " + std::to_string(m_textAlign.y) + ");\n";
-	content += "ImGui::SetCursorPos(ImVec2(realPos.x + pos.x, realPos.y + pos.y));\n";
-
+	if (m_textAlign.x != 0.f || m_textAlign.y != 0.f) {
+		// Set the cursor position based on the calculated position
+		content += "ImVec2 realPos = ImGui::GetCursorPos();\n";
+		content += "ImVec2 textSize = ImGui::CalcTextSize(\"" + m_text + "\");\n";
+		content += "ImVec2 windowSize = ImVec2(ImGui::GetWindowSize().x - realPos.x * 2, ImGui::GetWindowSize().y - realPos.y * 2);\n";
+		content += "ImVec2 pos = ImVec2((windowSize.x - textSize.x) * " + std::to_string(m_textAlign.x) + ", (windowSize.y - textSize.y) * " + std::to_string(m_textAlign.y) + ");\n";
+		content += "ImGui::SetCursorPos(ImVec2(realPos.x + pos.x, realPos.y + pos.y));\n";
+	}
 	// Output text with wrapping if necessary
 	if (m_wrap) {
 		if (m_autoWrap) {

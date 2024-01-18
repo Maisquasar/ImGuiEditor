@@ -286,6 +286,7 @@ protected:
 
 	bool p_sameLine = false;
 	bool p_disabled = false;
+	bool p_collapsed = false;
 
 	Object* p_parent;
 	std::vector<std::weak_ptr<Object>> p_children;
@@ -293,7 +294,6 @@ protected:
 	std::vector<StyleColor> p_styleColors;
 	std::vector<std::shared_ptr<BaseStyleVar>> p_styleVars;
 };
-
 
 template <typename T>
 class IObject : public Object {
@@ -307,7 +307,7 @@ public:
 		std::mt19937_64 gen(rd());
 
 		std::uniform_int_distribution<int> distrib;
-		p_uuid = distrib(gen);
+		object->p_uuid = distrib(gen);
 		return object;
 	}
 

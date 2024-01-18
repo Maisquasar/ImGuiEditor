@@ -22,9 +22,16 @@ void Canvas::Draw() const
 		{
 			DisplayObject(weakObject.lock(), ++index);
 		}
-
+		ImGui::PushID(529339547);
+		if (ImGui::TreeNodeEx("Tree", 0))
+		{
+			ImGui::PushID(311745755);
+			ImGui::TextUnformatted("Text");
+			ImGui::PopID();
+			ImGui::TreePop();
+		}
+		ImGui::PopID();
 	}
-	ImGui::End();
 }
 
 void Canvas::DisplayObject(std::shared_ptr<Object> object, size_t& index) const
