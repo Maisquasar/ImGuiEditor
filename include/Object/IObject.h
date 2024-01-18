@@ -212,8 +212,9 @@ public:
 
 	// Called before draw all children
 	virtual bool Begin() = 0;
-	// Called after draw all children
+	// Called after draw all children only if begin return true
 	virtual void End() = 0;
+	// Called after draw all children
 	virtual void PostEnd() = 0;
 
 	virtual void Draw() = 0;
@@ -223,13 +224,14 @@ public:
 	virtual void Serialize(Serializer& serializer) const;
 	virtual void Deserialize(Parser& parser);
 	virtual void DisplayOnInspector();
-	void PostDraw();
+
+	virtual void PostDraw(bool editorMode) {}
 
 	void Destroy();
 
-	void InternalSerialize(std::string& content) const;
+	virtual void InternalSerialize(std::string& content) const;
 
-	void SerializeChildren(std::string& content) const;
+	virtual void SerializeChildren(std::string& content) const;
 	void BeginSerializeStyle(std::string& content) const;
 	void EndSerializeStyle(std::string& content) const;
 
@@ -282,6 +284,7 @@ protected:
 
 	bool p_sameLine = false;
 	bool p_disabled = false;
+	bool p_scoped = false;
 
 	Object* p_parent;
 	std::vector<std::weak_ptr<Object>> p_children;
@@ -320,6 +323,26 @@ public:
 	bool Begin() final { return true; }
 	void End() final {}
 	void PostEnd() final {}
+
+	virtual void Draw() override = 0;
+	void PostDraw(bool editorMode) final
+	{
+		if (!editorMode) {
+			this->SelectUpdate(ImGui::IsItemClicked(ImGuiMouseButton_Left), ImGui::IsItemHovered(ImGuiMouseButton_Left));
+
+			if (this->p_selected)
+				ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255));
+		}
+
+		if (this->p_sameLine)
+			ImGui::SameLine();
+	}
+	void SerializeChildren(std::string& content) const final
+	{
+		if (this->p_sameLine)
+			content += "ImGui::SameLine();\n";
+		Object::SerializeChildren(content);
+	}
 private:
 
 };
@@ -327,7 +350,16 @@ private:
 template<typename T>
 class ScopeObject : public IObject<T>
 {
-	void Draw() final override {}
+	void Draw() final {}
+
+	void InternalSerialize(std::string& content) const override
+	{
+		this->BeginSerializeStyle(content);
+		this->Serialize(content);
+		if (this->p_sameLine)
+			content += "ImGui::SameLine();\n";
+		this->EndSerializeStyle(content);
+	}
 
 	virtual bool Begin() override = 0;
 	virtual void End() override = 0;

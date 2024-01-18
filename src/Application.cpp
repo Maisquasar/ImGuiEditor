@@ -51,6 +51,7 @@ void Application::Initialize()
 void Application::Update()
 {
 	auto editor = Editor::Get();
+	editor->m_app = this;
 	editor->Initialize();
 	while (!glfwWindowShouldClose(m_window)) {
 		// Poll and handle events (inputs, window resize, etc.)
@@ -96,5 +97,10 @@ void Application::Destroy()
 
 	glfwDestroyWindow(m_window);
 	glfwTerminate();
+}
+
+void Application::SetClipboardText(const char* text)
+{
+	glfwSetClipboardString(m_window, text);
 }
 

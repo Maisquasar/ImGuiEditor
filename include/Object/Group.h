@@ -1,7 +1,7 @@
 #pragma once
 #include "Object/IObject.h"
 
-class Group : public IObject<Group>
+class Group : public ScopeObject<Group>
 {
 public:
 	Group() = default;
@@ -10,7 +10,6 @@ public:
 	Group(Group&&) noexcept = default;
 	~Group() override = default;
 
-	void Draw() override {}
 	bool Begin() override;
 	void End() override;
 

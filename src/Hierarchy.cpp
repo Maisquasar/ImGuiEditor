@@ -1,5 +1,4 @@
 #include "Hierarchy.h"
-
 #include "Parser.h"
 
 #include "Editor.h"
@@ -8,6 +7,8 @@
 
 #include "Object/IObject.h"
 #include "Object/Button.h"
+
+#include "Application.h"
 
 void Hierarchy::Initialize()
 {
@@ -21,9 +22,6 @@ void Hierarchy::Draw()
 	{
 		size_t index = 0;
 		DisplayOnHierarchy(m_root, index);
-
-		if (ImGui::Button("Print"))
-			Serialize();
 	}
 	ImGui::End();
 }
@@ -32,7 +30,10 @@ void Hierarchy::Serialize() const
 {
 	std::string content;
 	m_root->SerializeChildren(content);
+
 	std::cout << content << std::endl;
+
+	Editor::Get()->GetApplication()->SetClipboardText(content.c_str());
 }
 
 void Hierarchy::DisplayOnHierarchy(std::shared_ptr<Object> object, size_t& index)
@@ -144,7 +145,8 @@ void Hierarchy::SaveScene(const std::string& path) const
 void Hierarchy::LoadScene(const std::string& path)
 {
 	for (auto child : m_root->p_children)
-		child.lock()->Destroy();
+		if (child.lock())
+			child.lock()->Destroy();
 
 	const auto filePath = std::filesystem::path(path);
 	Parser parser(filePath);
@@ -169,8 +171,7 @@ void Hierarchy::LoadScene(const std::string& path)
 		object->PostInitialize();
 
 		parser.NewDepth();
-	}
-	while (parser.GetValueMap().size() != parser.GetCurrentDepth());
+	} while (parser.GetValueMap().size() != parser.GetCurrentDepth());
 }
 
 std::shared_ptr<Object> Hierarchy::GetWithIndex(size_t index) const

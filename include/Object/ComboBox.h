@@ -1,7 +1,7 @@
 #pragma once
 #include "Object/IObject.h"
 
-class ComboBox : public IObject<ComboBox>
+class ComboBox : public ScopeObject<ComboBox>
 {
 public:
 	ComboBox() = default;
@@ -11,7 +11,6 @@ public:
 	~ComboBox() override = default;
 
 	void Initialize() override;
-	void Draw() override;
 	bool Begin() override;
 	void End() override;
 	void PostEnd() override;

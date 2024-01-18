@@ -1,7 +1,7 @@
 #pragma once
 #include "IObject.h"
 
-class Image : public IObject<Image>
+class Image : public ItemObject<Image>
 {
 public:
 	Image() = default;

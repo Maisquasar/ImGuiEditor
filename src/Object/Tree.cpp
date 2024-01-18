@@ -10,7 +10,10 @@ bool Tree::Begin()
 {
 	bool value = ImGui::TreeNodeEx(p_name.c_str(), m_flags);
 
-	if (!Editor::Get()->IsUserMode()) {
+	if (p_sameLine)
+		ImGui::SameLine();
+
+	if (!Editor::IsUserMode()) {
 		SelectUpdate(ImGui::IsItemClicked(ImGuiMouseButton_Left), ImGui::IsItemHovered(ImGuiMouseButton_Left));
 
 		if (p_selected)
@@ -22,12 +25,6 @@ bool Tree::Begin()
 void Tree::End()
 {
 	ImGui::TreePop();
-}
-
-void Tree::PostEnd()
-{
-	if (p_sameLine)
-		ImGui::SameLine();
 }
 
 void Tree::DisplayOnInspector()
@@ -53,6 +50,8 @@ void Tree::DisplayOnInspector()
 void Tree::Serialize(std::string& content) const
 {
 	content += "if (ImGui::TreeNodeEx(\"" + p_name + "\", " + std::to_string(m_flags) + "))\n{\n";
+	if (p_sameLine)
+		content += "ImGui::SameLine();\n";
 	SerializeChildren(content);
 	content += "ImGui::TreePop();\n}\n";
 }
@@ -60,9 +59,17 @@ void Tree::Serialize(std::string& content) const
 void Tree::Serialize(Serializer& serializer) const
 {
 	Object::Serialize(serializer);
+	serializer << Pair::KEY << "Flags" << Pair::VALUE << (int)m_flags;
 }
 
 void Tree::Deserialize(Parser& parser)
 {
 	Object::Deserialize(parser);
+	m_flags = parser["Flags"].As<int>();
+}
+
+void Tree::InternalSerialize(std::string& content) const
+{
+	// Use Object base internal Serialize for sameline;
+	Object::InternalSerialize(content);
 }

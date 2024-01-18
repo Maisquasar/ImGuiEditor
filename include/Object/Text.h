@@ -3,7 +3,7 @@
 #include "IObject.h"
 
 
-class Text : public IObject<Text>
+class Text : public ItemObject<Text>
 {
 public:
 	Text() = default;

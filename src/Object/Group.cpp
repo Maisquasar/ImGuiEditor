@@ -51,21 +51,15 @@ void Group::DisplayOnInspector()
 void Group::Serialize(std::string& content) const
 {
 	const auto size = p_size.ToVec2i();
-	content += "ImGui::BeginGroup();\n";
-	for (auto& child : p_children)
-	{
-		child.lock()->InternalSerialize(content);
-	}
-	content += "ImGui::EndGroup();\n";
+	content += "ImGui::BeginGroup();\n{\n";
+	SerializeChildren(content);
+	content += "}\nImGui::EndGroup();\n";
 	if (m_hasBorder)
 	{
 		content += "ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()\n";
 		content += "\t, " + std::to_string(ImGui::ColorConvertFloat4ToU32(m_borderColor)) + ", " + std::to_string(m_borderRounding) + "\n";
 		content += "\t, ImDrawFlags_None, " + std::to_string(m_borderWidth) + ");\n";
 	}
-	if (p_sameLine)
-		content += "ImGui::SameLine();\n";
-
 }
 
 void Group::Serialize(Serializer& serializer) const

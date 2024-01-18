@@ -1,7 +1,8 @@
 #pragma once
 #include "IObject.h"
 
-class Rect : public IObject<Rect>
+//TODO : Add shapeObject class
+class Rect : public ItemObject<Rect>
 {
 public:
 	Rect() = default;

@@ -3,7 +3,7 @@
 #include "IObject.h"
 
 
-class Button : public IObject<Button>
+class Button : public ItemObject<Button>
 {
 public:
 	Button() = default;

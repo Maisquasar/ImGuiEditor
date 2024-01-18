@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "IObject.h"
 
-class Checkbox : public IObject<Checkbox>
+class Checkbox : public ItemObject<Checkbox>
 {
 public:
 	Checkbox() = default;

@@ -1,15 +1,9 @@
 #include "Object/ComboBox.h"
 #include "Editor.h"
 
-
-
 void ComboBox::Initialize()
 {
 
-}
-
-void ComboBox::Draw()
-{
 }
 
 bool ComboBox::Begin()

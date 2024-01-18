@@ -1,7 +1,7 @@
 #pragma once
 #include "Object/IObject.h"
 
-class TabBar : public IObject<TabBar>
+class TabBar : public ScopeObject<TabBar>
 {
 public:
 	TabBar() = default;
@@ -11,7 +11,6 @@ public:
 	~TabBar() override = default;
 
 	void Initialize() override;
-	void Draw() override {}
 	bool Begin() override;
 	void End() override;
 

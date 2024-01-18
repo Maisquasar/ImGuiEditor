@@ -1,7 +1,7 @@
 #pragma once
 #include "Object/IObject.h"
 
-class Selectable : public IObject<Selectable>
+class Selectable : public ItemObject<Selectable>
 {
 public:
 	Selectable() = default;

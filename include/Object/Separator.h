@@ -1,7 +1,7 @@
 #pragma once
 #include "Object/IObject.h"
 
-class Separator : public IObject<Separator>
+class Separator : public ItemObject<Separator>
 {
 public:
 	Separator() = default;

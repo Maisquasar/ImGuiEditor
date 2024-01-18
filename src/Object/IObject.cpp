@@ -48,21 +48,6 @@ void Object::DisplayOnInspector()
 	}
 }
 
-void Object::PostDraw()
-{
-	if (!Editor::Get()->IsUserMode()) {
-		// MB TODO : add for all object a invisible button or selectable to check if the object is selected or hovered
-		
-		SelectUpdate(ImGui::IsItemClicked(ImGuiMouseButton_Left), ImGui::IsItemHovered(ImGuiMouseButton_Left));
-
-		if (p_selected)
-			ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 0, 255));
-	}
-
-	if (p_sameLine)
-		ImGui::SameLine();
-}
-
 void Object::InternalSerialize(std::string& content) const
 {
 	BeginSerializeStyle(content);
@@ -72,18 +57,20 @@ void Object::InternalSerialize(std::string& content) const
 
 void Object::SerializeChildren(std::string& content) const
 {
-	if (p_sameLine)
-		content += "ImGui::SameLine();\n";
 	for (auto& child : p_children)
 	{
 		const auto object = child.lock();
 		content += "ImGui::PushID(" + std::to_string(object->p_uuid) + ");\n";
+
 		if (object->p_disabled)
 			content += "ImGui::BeginDisabled(true);\n";
+
 		object->InternalSerialize(content);
-		content += "ImGui::PopID();\n";
+
 		if (object->p_disabled)
 			content += "ImGui::EndDisabled();\n";
+
+		content += "ImGui::PopID();\n";
 	}
 }
 
@@ -104,12 +91,12 @@ void Object::BeginSerializeStyle(std::string& content) const
 		const auto value = p_position.ToVec2i();
 		if (value != Vec2f{ 0, 0 }) {
 			content += "ImGui::SetCursorPos(";
-			content += "ImVec2(ImGui::GetWindowContentRegionMin().x +" + std::to_string(value.x) + ", ImGui::GetWindowContentRegionMin().y +" + std::to_string(value.y) + ")\n";
+			content += "ImVec2(ImGui::GetWindowContentRegionMin().x +" + std::to_string(value.x) + ", ImGui::GetWindowContentRegionMin().y +" + std::to_string(value.y) + "));\n";
 		}
 		else
 		{
 			content += "ImGui::SetCursorPos(";
-			content += "ImVec2(ImGui::GetWindowContentRegionMin())\n";
+			content += "ImVec2(ImGui::GetWindowContentRegionMin()));\n";
 		}
 	}
 	else
@@ -117,8 +104,7 @@ void Object::BeginSerializeStyle(std::string& content) const
 		const auto value = p_position.ToVec2i();
 		if (value != Vec2f{ 0, 0 }) {
 			content += "ImGui::SetCursorPos(";
-			content += "ImVec2(" + std::to_string(value.x) + ", " + std::to_string(value.y) + ")";
-			content += '\n';
+			content += "ImVec2(ImGui::GetCursorPosX() + " + std::to_string(value.x) + ", ImGui::GetCursorPosY() + " + std::to_string(value.y) + "));\n";
 		}
 	}
 }
@@ -387,7 +373,7 @@ void StyleColor::Serialize(std::string& content) const
 		return;
 	//ImGui::PushStyleColor(enumValue, color);
 	const std::string enumValueStr = ImGuiColToString(enumValue);
-	content += "ImGui::PushStyleColor(" + enumValueStr + "," + "ImVec4(" + color.ToString() + ");\n";
+	content += "ImGui::PushStyleColor(" + enumValueStr + "," + "ImVec4(" + color.ToString() + "));\n";
 }
 
 void BaseStyleVar::Serialize(std::string& content) const

@@ -1,7 +1,7 @@
 #pragma once
 #include "Object/IObject.h"
 
-class ChildObject : public IObject<ChildObject>
+class ChildObject : public ScopeObject<ChildObject>
 {
 public:
 	void Initialize() override;
@@ -10,7 +10,6 @@ public:
 	void PostEnd() override;
 	void DisplayOnInspector() override;
 
-	void Draw() override {}
 	std::string GetTypeName() const override;
 
 	void Serialize(std::string& content) const override;

@@ -2,7 +2,7 @@
 #include "Object/IObject.h"
 
 
-class MenuItem : public IObject<MenuItem>
+class MenuItem : public ItemObject<MenuItem>
 {
 public:
 	MenuItem() = default;

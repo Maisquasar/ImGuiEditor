@@ -22,15 +22,28 @@ void Canvas::Draw() const
 		{
 			DisplayObject(weakObject.lock(), ++index);
 		}
-		ImGui::PushID(529339547);
-		if (ImGui::TreeNodeEx("Tree", 0))
+		/*
+		ImGui::PushID(1737609848);
+		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX() + 100, ImGui::GetCursorPosY() + 0));
+		ImGui::BeginGroup();
 		{
-			ImGui::PushID(311745755);
-			ImGui::TextUnformatted("Text");
+			ImGui::PushID(1113074549);
+			ImGui::Button("Button");
 			ImGui::PopID();
-			ImGui::TreePop();
+			ImGui::PushID(5725688);
+			ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.000000, 1.000000, 1.000000, 1.000000));
+			ImGui::Button("Button");
+			ImGui::PopStyleColor(1);
+			ImGui::PopID();
 		}
+		ImGui::EndGroup();
+		ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()
+			, 4294967295, 0.000000
+			, ImDrawFlags_None, 0.000000);
+		ImGui::SameLine();
+		ImGui::SameLine();
 		ImGui::PopID();
+		*/
 	}
 }
 
@@ -58,12 +71,11 @@ void Canvas::DisplayObject(std::shared_ptr<Object> object, size_t& index) const
 		p_styleVar->ApplyStyle(styleVarCount);
 	}
 
-
 	ImGui::BeginDisabled(object->p_disabled);
 	ImGui::PushID(object->p_uuid);
 	object->Draw();
 	ImGui::PopID();
-	object->PostDraw();
+	object->PostDraw(Editor::IsUserMode());
 
 	if (object->Begin())
 	{

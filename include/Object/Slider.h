@@ -20,7 +20,7 @@ static const char* SliderTypeEnumToString()
 	return "Int\0Int2\0Int3\0Int4\0Float\0Float2\0Float3\0Float4\0";
 }
 
-class Slider : public IObject<Slider>
+class Slider : public ItemObject<Slider>
 {
 public:
 	Slider() = default;

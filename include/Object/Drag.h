@@ -20,7 +20,7 @@ static const char* DragTypeEnumToString()
 	return "Int\0Int2\0Int3\0Int4\0Float\0Float2\0Float3\0Float4\0";
 }
 
-class Drag : public IObject<Drag>
+class Drag : public ItemObject<Drag>
 {
 public:
 	Drag() = default;

@@ -1,30 +1,52 @@
  ------------- Group ------------- 
 [Type] : Group
 [Name] : Group
-[Position] : 0.000000, 0.000000
-[Size] : 128.000000, 151.000000
-[SameLine] : 0
+[Position] : 100.000000, 0.000000
+[Size] : 50.000000, 42.000000
+[SameLine] : 1
+[Disabled] : 0
 [Child Number] : 2
- ------------- Image ------------- 
- [Type] : Image
- [Name] : Image
- [Position] : 0.000000, 0.000000
- [Size] : 128.000000, 128.000000
- [SameLine] : 0
- [Child Number] : 0
- [Image Path] : D:\Code\Moteurs\GalaxyEngine\GalaxyCore\CoreResources\textures\debug_texture.png
- ============= Image ============= 
  ------------- Button ------------- 
  [Type] : Button
  [Name] : Button
  [Position] : 0.000000, 0.000000
- [Size] : 128.000000, 0.000000
+ [Size] : 0.000000, 0.000000
  [SameLine] : 0
+ [Disabled] : 0
  [Child Number] : 0
  [Text] : Button
+ [Small] : 0
+ [Arrow Button] : 0
+ [Arrow Direction] : 3
+ ============= Button ============= 
+ ------------- Button ------------- 
+ [Type] : Button
+ [Name] : Button
+ [Position] : 0.000000, 0.000000
+ [Size] : 0.000000, 0.000000
+ [SameLine] : 0
+ [Disabled] : 0
+ [Child Number] : 0
+ [Text] : Button
+ [Small] : 0
+ [Arrow Button] : 0
+ [Arrow Direction] : 3
  ============= Button ============= 
 [Has Border] : 1
 [Border Color] : 1.000000, 1.000000, 1.000000, 1.000000
 [Border Rounding] : 0.000000
 [Border Width] : 0.000000
  ============= Group ============= 
+ ------------- Button ------------- 
+[Type] : Button
+[Name] : Button
+[Position] : 0.000000, 0.000000
+[Size] : 0.000000, 0.000000
+[SameLine] : 0
+[Disabled] : 0
+[Child Number] : 0
+[Text] : Button
+[Small] : 0
+[Arrow Button] : 0
+[Arrow Direction] : 3
+ ============= Button ============= 

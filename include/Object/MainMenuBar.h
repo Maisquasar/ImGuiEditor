@@ -2,7 +2,7 @@
 #include "Object/IObject.h"
 
 
-class MainMenuBar : public IObject<MainMenuBar>
+class MainMenuBar : public ScopeObject<MainMenuBar>
 {
 public:
 	MainMenuBar() = default;
@@ -12,7 +12,6 @@ public:
 	~MainMenuBar() override = default;
 
 	void Initialize() override;
-	void Draw() override {}
 	bool Begin() override;
 	void End() override;
 

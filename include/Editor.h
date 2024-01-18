@@ -17,12 +17,15 @@ public:
 		return m_instance;
 	}
 
+	class Application* GetApplication() const { return m_app; }
 	class Hierarchy* GetHierarchy() const { return m_hierarchy; }
 	class Inspector* GetInspector() const { return m_inspector; }
 	class Canvas* GetCanvas() const { return m_canvas; }
 	class ObjectWindow* GetObjectWindow() const { return m_objectWindow; }
 	static bool IsUserMode() { return m_instance->m_userMode; }
 private:
+	friend class Application;
+	class Application* m_app;
 	static Editor* m_instance;
 
 	class Hierarchy* m_hierarchy;

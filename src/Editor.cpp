@@ -24,15 +24,16 @@ void Editor::Initialize()
 void Editor::Draw()
 {
 	DrawMainDock();
+	const Vec2f buttonSize = Vec2f(ImGui::GetContentRegionAvail().x, 0);
 	if (ImGui::Begin("Editor")) {
-		if (ImGui::Button("Save"))
+		if (ImGui::Button("Save", buttonSize))
 		{
 			if (const std::string path = SaveFileExplorer({}); !path.empty())
 			{
 				m_hierarchy->SaveScene(path);
 			}
 		}
-		if (ImGui::Button("Load"))
+		if (ImGui::Button("Load", buttonSize))
 		{
 			if (const std::string path = OpenFileExplorer({}); !path.empty())
 			{
@@ -43,6 +44,11 @@ void Editor::Draw()
 		ImGui::Checkbox("Is Static", &isStatic);
 		m_canvas->SetStatic(isStatic);
 		ImGui::Checkbox("User Mode", &m_userMode);
+
+		if (ImGui::Button("Copy Code", buttonSize))
+		{
+			m_hierarchy->Serialize();
+		}
 	}
 	ImGui::End();
 

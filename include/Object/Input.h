@@ -22,7 +22,7 @@ static const char* InputTypeEnumToString()
 	return "Text\0Double\0Int\0Int2\0Int3\0Int4\0Float\0Float2\0Float3\0Float4\0";
 }
 
-class Input : public IObject<Input>
+class Input : public ItemObject<Input>
 {
 public:
 	Input() = default;

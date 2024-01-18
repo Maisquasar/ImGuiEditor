@@ -12,11 +12,11 @@ public:
 	void Initialize() override;
 	bool Begin() override;
 	void End() override;
-	void PostEnd() override;
 	void DisplayOnInspector() override;
 	void Serialize(std::string& content) const override;
 	void Serialize(Serializer& serializer) const override;
 	void Deserialize(Parser& parser) override;
+	void InternalSerialize(std::string& content) const override;
 
 	std::string GetTypeName() const override { return "Tree"; }
 private:

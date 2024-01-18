@@ -2,7 +2,7 @@
 #include "Object/IObject.h"
 
 
-class Menu : public IObject<Menu>
+class Menu : public ScopeObject<Menu>
 {
 public:
 	Menu() = default;
@@ -11,7 +11,6 @@ public:
 	Menu(Menu&&) noexcept = default;
 	~Menu() override = default;
 
-	void Draw() override {}
 	bool Begin() override;
 	void End() override;
 	void PostEnd() override;

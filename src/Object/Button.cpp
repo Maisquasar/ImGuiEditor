@@ -70,10 +70,13 @@ void Button::Serialize(std::string& content) const
 			content += "ImGui::ArrowButton(\"" + p_name + "\", " + std::to_string((int)m_arrowDir) + ");\n";
 	}
 	else {
-		if (!m_small)
-			content += "ImGui::Button(\"" + m_text + "\", ImVec2(" + std::to_string(p_size.x) + ", " + std::to_string(p_size.y) + "));\n";
+		if (!m_small) {
+			if (p_size.x == 0.f && p_size.y == 0.f)
+				content += "ImGui::Button(\"" + m_text + "\");\n";
+			else
+				content += "ImGui::Button(\"" + m_text + "\", ImVec2(" + std::to_string(p_size.x) + ", " + std::to_string(p_size.y) + "));\n";
+		}
 		else
-			ImGui::SmallButton(m_text.c_str());
 			content += "ImGui::SmallButton(\"" + m_text + "\");\n";
 	}
 	SerializeChildren(content);
