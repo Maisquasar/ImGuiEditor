@@ -3,11 +3,6 @@
 #include "Editor.h"
 #include "Canvas.h"
 #include "Inspector.h"
-
-void Group::PostDraw()
-{
-}
-
 bool Group::Begin()
 {
 	ImGui::BeginGroup();

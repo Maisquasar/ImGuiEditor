@@ -15,12 +15,6 @@ void TabBar::Initialize()
 	AddStyleVar("Tab Rounding", ImGui::GetStyle().TabRounding, ImGuiStyleVar_TabRounding);
 }
 
-void TabBar::PostDraw()
-{
-	static Canvas* canvas = Editor::Get()->GetCanvas();
-	static Inspector* inspector = Editor::Get()->GetInspector();
-}
-
 bool TabBar::Begin()
 {
 	return ImGui::BeginTabBar(p_name.c_str());

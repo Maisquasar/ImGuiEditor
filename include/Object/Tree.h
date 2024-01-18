@@ -1,6 +1,6 @@
 #include "Object/IObject.h"
 
-class Tree : public IObject<Tree>
+class Tree : public ScopeObject<Tree>
 {
 public:
 	Tree() = default;
@@ -13,8 +13,6 @@ public:
 	bool Begin() override;
 	void End() override;
 	void PostEnd() override;
-	void PostDraw() override;
-	void Draw() override;
 	void DisplayOnInspector() override;
 	void Serialize(std::string& content) const override;
 	void Serialize(Serializer& serializer) const override;

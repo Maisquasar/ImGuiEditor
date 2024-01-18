@@ -11,7 +11,6 @@ public:
 	~Group() override = default;
 
 	void Draw() override {}
-	void PostDraw() override;
 	bool Begin() override;
 	void End() override;
 

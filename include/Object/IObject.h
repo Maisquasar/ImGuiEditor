@@ -211,12 +211,10 @@ public:
 	virtual void PostInitialize() {}
 
 	// Called before draw all children
-	virtual bool Begin() { return true; }
-
+	virtual bool Begin() = 0;
 	// Called after draw all children
-	virtual void End() {}
-
-	virtual void PostEnd() {}
+	virtual void End() = 0;
+	virtual void PostEnd() = 0;
 
 	virtual void Draw() = 0;
 	virtual std::shared_ptr<Object> Clone() = 0;
@@ -225,7 +223,7 @@ public:
 	virtual void Serialize(Serializer& serializer) const;
 	virtual void Deserialize(Parser& parser);
 	virtual void DisplayOnInspector();
-	virtual void PostDraw();
+	void PostDraw();
 
 	void Destroy();
 
@@ -241,8 +239,6 @@ public:
 	void RemoveChild(Object* child);
 
 	void SelectUpdate(bool clicked, bool hovered);
-
-
 
 	Vec2f GetPosition() const { return p_position; }
 	Vec2f GetSize() const { return p_size; }
@@ -286,7 +282,6 @@ protected:
 
 	bool p_sameLine = false;
 	bool p_disabled = false;
-	bool p_collapsed = false;
 
 	Object* p_parent;
 	std::vector<std::weak_ptr<Object>> p_children;
@@ -316,4 +311,25 @@ public:
 	void Draw() override = 0;
 
 	virtual void Serialize(std::string& content) const override {}
+};
+
+template <typename T>
+class ItemObject : public IObject<T>
+{
+public:
+	bool Begin() final { return true; }
+	void End() final {}
+	void PostEnd() final {}
+private:
+
+};
+
+template<typename T>
+class ScopeObject : public IObject<T>
+{
+	void Draw() final override {}
+
+	virtual bool Begin() override = 0;
+	virtual void End() override = 0;
+	virtual void PostEnd() override {}
 };

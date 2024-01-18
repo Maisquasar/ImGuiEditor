@@ -12,7 +12,6 @@ public:
 	~Menu() override = default;
 
 	void Draw() override {}
-	void PostDraw() override;
 	bool Begin() override;
 	void End() override;
 	void PostEnd() override;

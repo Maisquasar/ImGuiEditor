@@ -24,10 +24,6 @@ void TabItem::Initialize()
 	AddStyleVar("Tab Rounding", style.TabRounding, ImGuiStyleVar_TabRounding);
 }
 
-void TabItem::PostDraw()
-{
-}
-
 bool TabItem::Begin()
 {
 	bool begin = ImGui::BeginTabItem((p_name + "##" + std::to_string(m_randomValue)).c_str());

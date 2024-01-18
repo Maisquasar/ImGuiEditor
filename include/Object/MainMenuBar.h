@@ -13,7 +13,6 @@ public:
 
 	void Initialize() override;
 	void Draw() override {}
-	void PostDraw() override;
 	bool Begin() override;
 	void End() override;
 

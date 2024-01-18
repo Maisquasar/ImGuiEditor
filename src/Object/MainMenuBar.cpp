@@ -9,10 +9,6 @@ void MainMenuBar::Initialize()
 	AddStyleColor("Menu Bar Background", ImGuiCol_MenuBarBg);
 }
 
-void MainMenuBar::PostDraw()
-{
-}
-
 bool MainMenuBar::Begin()
 {
 	bool begin = ImGui::BeginMainMenuBar();

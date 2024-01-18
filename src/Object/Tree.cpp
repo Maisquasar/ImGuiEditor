@@ -30,13 +30,6 @@ void Tree::PostEnd()
 		ImGui::SameLine();
 }
 
-void Tree::Draw() {}
-void Tree::PostDraw()
-{
-
-}
-
-
 void Tree::DisplayOnInspector()
 {
 	ImGui::SeparatorText("Flags");

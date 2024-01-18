@@ -4,10 +4,6 @@
 #include "Editor.h"
 #include "Inspector.h"
 
-void Menu::PostDraw()
-{
-}
-
 bool Menu::Begin()
 {
 	ImGui::SetNextWindowSize(p_size);

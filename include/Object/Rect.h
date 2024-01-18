@@ -12,7 +12,7 @@ public:
 
 	void Initialize() override;
 	void Draw() override;
-	void PostDraw() override;
+	//void PostDraw() override;
 
 	void DisplayOnInspector() override;
 

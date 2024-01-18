@@ -14,7 +14,7 @@ void Rect::Draw()
 {
 	ImGui::GetWindowDrawList()->AddRectFilled(GetMin(), GetMax(), ImGui::ColorConvertFloat4ToU32(m_color));
 }
-
+/*
 void Rect::PostDraw()
 {
 	static Canvas* canvas = Editor::Get()->GetCanvas();
@@ -32,6 +32,7 @@ void Rect::PostDraw()
 	if (p_sameLine)
 		ImGui::SameLine();
 }
+*/
 
 void Rect::DisplayOnInspector()
 {

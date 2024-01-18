@@ -12,11 +12,6 @@ void ComboBox::Draw()
 {
 }
 
-void ComboBox::PostDraw()
-{
-
-}
-
 bool ComboBox::Begin()
 {
 	if (p_size.x != 0.f)
