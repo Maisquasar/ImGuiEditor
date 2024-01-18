@@ -67,10 +67,10 @@ void Image::LoadTexture(const std::string filePath, bool setSizeToImageSize /*= 
 
 void Image::Serialize(std::string& content) const
 {
-	if (m_isAButton)
-		content += "ImGui::Image(\"" + m_imagePath + "\", ImVec2(" + std::to_string(m_size.x) + ", " + std::to_string(m_size.y) + "));\n";
+	if (!m_isAButton)
+		content += "ImGui::Image(0, ImVec2(" + std::to_string(p_size.x) + ", " + std::to_string(p_size.y) + ")); // Image path : " + m_imagePath + "\n";
 	else
-		content += "ImGui::ImageButton(\"" + m_imagePath + "\", ImVec2(" + std::to_string(m_size.x) + ", " + std::to_string(m_size.y) + "));\n";
+		content += "ImGui::ImageButton(0, ImVec2(" + std::to_string(p_size.x) + ", " + std::to_string(p_size.y) + ")); // Image path : " + m_imagePath + "\n";
 	SerializeChildren(content);
 }
 

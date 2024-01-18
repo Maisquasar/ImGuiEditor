@@ -135,7 +135,7 @@ public:
 		if (inherit)
 			return;
 		BaseStyleVar::Serialize(content);
-		content += "ImVec2(" + std::to_string(value) + "));\n";
+		content += std::to_string(value)+ ");\n";
 	}
 
 	void Serialize(Serializer& serializer) const override

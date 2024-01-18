@@ -26,7 +26,9 @@ void Selectable::DisplayOnInspector()
 
 void Selectable::Serialize(std::string& content) const
 {
-	content += "ImGui::Selectable(\"" + p_name + "\", " + std::to_string(m_selected) + ", " + std::to_string(m_flags) + ", ImVec2(" + std::to_string(p_size.x) + ", " + std::to_string(p_size.y) + "));\n";
+	const std::string variableName = "variable" + std::to_string(p_uuid);
+	content += "bool " + variableName + " = " + std::to_string(m_selected) + ";\n";
+	content += "ImGui::Selectable(\"" + p_name + "\", &" + variableName + ", " + std::to_string(m_flags) + ", ImVec2(" + std::to_string(p_size.x) + ", " + std::to_string(p_size.y) + "));\n";
 	SerializeChildren(content);
 }
 

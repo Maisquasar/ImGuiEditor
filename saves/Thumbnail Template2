@@ -1,22 +1,11 @@
- ------------- Selectable ------------- 
-[Type] : Selectable
-[Name] : ##Selectable
-[Position] : 3.000000, 0.000000
-[Size] : 136.000000, 155.000000
-[SameLine] : 0
-[Disabled] : 0
-[Child Number] : 0
-[Selected] : 0
-[Flags] : 0
- ============= Selectable ============= 
  ------------- ChildObject ------------- 
 [Type] : ChildObject
 [Name] : ChildObject
-[Position] : 0.000000, -161.000000
-[Size] : 142.000000, 160.000000
-[SameLine] : 0
+[Position] : 0.000000, 0.000000
+[Size] : 142.000000, 200.000000
+[SameLine] : 1
 [Disabled] : 0
-[Child Number] : 2
+[Child Number] : 4
  ------------- Image ------------- 
  [Type] : Image
  [Name] : Image
@@ -28,14 +17,40 @@
  [Image Path] : D:\Code\Moteurs\GalaxyEngine\GalaxyCore\CoreResources\textures\debug_texture.png
  [IsAButton] : 0
  ============= Image ============= 
+ ------------- Selectable ------------- 
+ [Type] : Selectable
+ [Name] : ##Selectable
+ [Position] : 0.000000, -150.000000
+ [Size] : 0.000000, 147.000000
+ [SameLine] : 0
+ [Disabled] : 0
+ [Child Number] : 0
+ [Selected] : 0
+ [Flags] : 0
+ ============= Selectable ============= 
  ------------- Text ------------- 
  [Type] : Text
- [Name] : Text
- [Position] : 48.000000, 0.000000
+ [Name] : Title
+ [Position] : 0.000000, 0.000000
  [Size] : 0.000000, 0.000000
  [SameLine] : 0
  [Disabled] : 0
  [Child Number] : 0
+ [Text] : Resource name
+ [Text Align] : 0.500000, 0.000000
+ [Wrap] : 1
+ [AutoWrap] : 1
+ [WrapWidth] : 200.000000
+ ============= Text ============= 
+ ------------- Text ------------- 
+ [Type] : Text
+ [Name] : Resource Type
+ [Position] : 0.000000, 20.000000
+ [Size] : 0.000000, 0.000000
+ [SameLine] : 0
+ [Disabled] : 0
+ [Child Number] : 0
+ [Text Color] : 0.696078, 0.696078, 0.696078, 1.000000
  [Text] : Text
  [Text Align] : 0.000000, 0.000000
  [Wrap] : 0

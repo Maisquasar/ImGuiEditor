@@ -16,5 +16,6 @@ public:
 	void Serialize(Serializer& serializer) const override;
 	void Deserialize(Parser& parser) override;
 private:
+	bool m_frame = false;
 	bool m_hasBorder = true;
 };

@@ -1,36 +1,53 @@
- ------------- TabBar ------------- 
-[Type] : TabBar
-[Name] : TabBar
+ ------------- ChildObject ------------- 
+[Type] : ChildObject
+[Name] : ChildObject
 [Position] : 0.000000, 0.000000
-[Size] : 0.000000, 0.000000
+[Size] : 142.000000, 160.000000
 [SameLine] : 0
-[Child Number] : 2
- ------------- TabItem ------------- 
- [Type] : TabItem
- [Name] : TabItem
+[Disabled] : 0
+[Child Number] : 3
+ ------------- Image ------------- 
+ [Type] : Image
+ [Name] : Image
  [Position] : 0.000000, 0.000000
- [Size] : 0.000000, 0.000000
+ [Size] : 128.000000, 128.000000
  [SameLine] : 0
- [Child Number] : 1
-  ------------- Text ------------- 
-  [Type] : Text
-  [Name] : Text
-  [Position] : 0.000000, 0.000000
-  [Size] : 0.000000, 0.000000
-  [SameLine] : 0
-  [Child Number] : 0
-  [Text] : Text
-  [Wrap] : 0
-  [AutoWrap] : 1
-  [WrapWidth] : 200.000000
-  ============= Text ============= 
- ============= TabItem ============= 
- ------------- TabItem ------------- 
- [Type] : TabItem
- [Name] : TabItem
- [Position] : 0.000000, 0.000000
- [Size] : 0.000000, 0.000000
- [SameLine] : 0
+ [Disabled] : 0
  [Child Number] : 0
- ============= TabItem ============= 
- ============= TabBar ============= 
+ [Image Path] : D:\Code\Moteurs\GalaxyEngine\GalaxyCore\CoreResources\textures\debug_texture.png
+ [IsAButton] : 0
+ ============= Image ============= 
+ ------------- Text ------------- 
+ [Type] : Text
+ [Name] : Text
+ [Position] : 48.000000, 0.000000
+ [Size] : 0.000000, 0.000000
+ [SameLine] : 0
+ [Disabled] : 0
+ [Child Number] : 0
+ [Text] : Text
+ [Text Align] : 0.000000, 0.000000
+ [Wrap] : 0
+ [AutoWrap] : 1
+ [WrapWidth] : 200.000000
+ ============= Text ============= 
+ ------------- Selectable ------------- 
+ [Type] : Selectable
+ [Name] : ##Selectable
+ [Position] : 0.000000, -150.000000
+ [Size] : 0.000000, 147.000000
+ [SameLine] : 0
+ [Disabled] : 0
+ [Child Number] : 0
+ [Selected] : 0
+ [Flags] : 0
+ ============= Selectable ============= 
+[Frame padding] : 7.000000, 7.000000
+[Frame rounding] : 6.000000
+[Frame border size] : 2.000000
+[Border] : 0.000000, 0.000000, 0.000000, 0.500000
+[Border Shadow] : 0.000000, 0.000000, 0.000000, 0.000000
+[Frame Background] : 0.160784, 0.156863, 0.164706, 1.000000
+[HasBorder] : 0
+[Frame] : 1
+ ============= ChildObject ============= 
