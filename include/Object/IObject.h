@@ -135,7 +135,7 @@ public:
 		if (inherit)
 			return;
 		BaseStyleVar::Serialize(content);
-		content += std::to_string(value)+ ");\n";
+		content += std::to_string(value) + ");\n";
 	}
 
 	void Serialize(Serializer& serializer) const override
@@ -198,6 +198,15 @@ struct StyleColor
 	}
 };
 
+
+enum class ObjectType
+{
+	None,
+	Item,
+	Scope,
+	Shape
+};
+
 class Object
 {
 public:
@@ -245,6 +254,9 @@ public:
 	Vec2f GetPosition() const { return p_position; }
 	Vec2f GetSize() const { return p_size; }
 	std::string GetName() const { return p_name; }
+
+	virtual ObjectType GetObjectType() const = 0;
+	virtual std::string GetObjectTypeName() const = 0;
 protected:
 	void AddStyleColor(const std::string& name, const ImGuiCol_ enumValue)
 	{
@@ -270,6 +282,7 @@ protected:
 	//TODO : ADD UUID
 	std::string p_name;
 
+	bool p_enable = true;
 	bool p_selected = false;
 
 	bool p_open = true;
@@ -314,6 +327,9 @@ public:
 	void Draw() override = 0;
 
 	virtual void Serialize(std::string& content) const override {}
+
+	virtual ObjectType GetObjectType() const override = 0;
+	virtual std::string GetObjectTypeName() const override = 0;
 };
 
 template <typename T>
@@ -343,6 +359,9 @@ public:
 			content += "ImGui::SameLine();\n";
 		Object::SerializeChildren(content);
 	}
+
+	ObjectType GetObjectType() const override { return ObjectType::Item; }
+	std::string GetObjectTypeName() const override { return "Item"; }
 private:
 
 };
@@ -350,6 +369,7 @@ private:
 template<typename T>
 class ScopeObject : public IObject<T>
 {
+public:
 	void Draw() final {}
 
 	void InternalSerialize(std::string& content) const override
@@ -364,4 +384,75 @@ class ScopeObject : public IObject<T>
 	virtual bool Begin() override = 0;
 	virtual void End() override = 0;
 	virtual void PostEnd() override {}
+	ObjectType GetObjectType() const override { return ObjectType::Scope; }
+	std::string GetObjectTypeName() const override { return "Scope"; }
+};
+
+template <typename T>
+class ShapeObject : public IObject<T>
+{
+public:
+	bool Begin() final { return true; }
+	void End() final {}
+	void PostEnd() final {}
+
+	virtual void Draw() override = 0;
+	void PostDraw(bool editorMode) final
+	{
+		if (!editorMode) {
+
+			const bool hovered = ImGui::IsMouseHoveringRect(GetMin(), GetMax());
+			this->SelectUpdate(hovered && ImGui::IsMouseClicked(ImGuiMouseButton_Left), hovered);
+
+			if (this->p_selected)
+				ImGui::GetWindowDrawList()->AddRect(GetMin(), GetMax(), IM_COL32(255, 255, 0, 255));
+		}
+	}
+
+	virtual void DisplayOnInspector() override
+	{
+		ImGui::SeparatorText("Flags");
+		ImGui::CheckboxFlags("Closed", &this->p_flags, ImDrawFlags_Closed);
+		ImGui::CheckboxFlags("Round corners all", &this->p_flags, ImDrawFlags_RoundCornersAll);
+		ImGui::CheckboxFlags("Round corners top-left", &this->p_flags, ImDrawFlags_RoundCornersTopLeft);
+		ImGui::CheckboxFlags("Round corners top-right", &this->p_flags, ImDrawFlags_RoundCornersTopRight);
+		ImGui::CheckboxFlags("Round corners bottom-left", &this->p_flags, ImDrawFlags_RoundCornersBottomLeft);
+		ImGui::CheckboxFlags("Round corners bottom-right", &this->p_flags, ImDrawFlags_RoundCornersBottomRight);
+		ImGui::CheckboxFlags("Round corners top", &this->p_flags, ImDrawFlags_RoundCornersTop);
+		ImGui::CheckboxFlags("Round corners bottom", &this->p_flags, ImDrawFlags_RoundCornersBottom);
+		ImGui::CheckboxFlags("Round corners left", &this->p_flags, ImDrawFlags_RoundCornersLeft);
+		ImGui::CheckboxFlags("Round corners right", &this->p_flags, ImDrawFlags_RoundCornersRight);
+		ImGui::CheckboxFlags("Round corners none", &this->p_flags, ImDrawFlags_RoundCornersNone);
+
+		Object::DisplayOnInspector();
+
+	}
+
+	Vec2f GetMin() const
+	{
+		const Vec2f min = ImGui::GetWindowPos() + ImGui::GetWindowContentRegionMin() + this->p_position - this->p_size / 2;
+		return min;
+	}
+
+	Vec2f GetMax() const
+	{
+		const Vec2f max = ImGui::GetWindowPos() + ImGui::GetWindowContentRegionMin() + this->p_position + this->p_size / 2;
+		return max;
+	}
+	virtual void Serialize(Serializer& serializer) const
+	{
+		Object::Serialize(serializer);
+		serializer << Pair::KEY << "Flags" << Pair::VALUE << this->p_flags;
+
+	}
+	virtual void Deserialize(Parser& parser)
+	{
+		Object::Deserialize(parser);
+		this->p_flags = parser["Flags"].As<int>();
+	}
+
+	ObjectType GetObjectType() const override { return ObjectType::Shape; }
+	std::string GetObjectTypeName() const override { return "Shape"; }
+protected:
+	ImDrawFlags p_flags = 0;
 };

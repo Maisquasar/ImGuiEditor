@@ -106,6 +106,8 @@ void Inspector::DrawSelected() const
 	if (!selectedObject)
 		return;
 	ImGui::InputText("Name", &selectedObject->p_name);
+	ImGui::SameLine();
+	ImGui::Checkbox("Enable", &selectedObject->p_enable);
 
 	const auto pos = selectedObject->p_position.ToVec2i();
 	if (ImGui::DragInt2("Position", pos.Data()))
@@ -132,6 +134,7 @@ void Inspector::DrawSelected() const
 	ImGui::NewLine();
 	ImGui::Checkbox("Same line", &selectedObject->p_sameLine);
 	ImGui::Checkbox("Disabled", &selectedObject->p_disabled);
+
 	ImGui::SeparatorText("Parameters");
 	selectedObject->DisplayOnInspector();
 }

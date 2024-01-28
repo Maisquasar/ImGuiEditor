@@ -2,7 +2,7 @@
 [Type] : ChildObject
 [Name] : ChildObject
 [Position] : 0.000000, 0.000000
-[Size] : 142.000000, 200.000000
+[Size] : 142.000000, 210.000000
 [SameLine] : 1
 [Disabled] : 0
 [Child Number] : 5
@@ -11,7 +11,7 @@
  ------------- Image ------------- 
  [Type] : Image
  [Name] : Image
- [Position] : 3.000000, 0.000000
+ [Position] : 3.000000, 4.000000
  [Size] : 128.000000, 128.000000
  [SameLine] : 0
  [Disabled] : 0
@@ -22,8 +22,8 @@
  ------------- Selectable ------------- 
  [Type] : Selectable
  [Name] : ##Selectable
- [Position] : 0.000000, -150.000000
- [Size] : 0.000000, 147.000000
+ [Position] : 0.000000, -140.000000
+ [Size] : 0.000000, 205.000000
  [SameLine] : 0
  [Disabled] : 0
  [Child Number] : 0
@@ -33,12 +33,12 @@
  ------------- Text ------------- 
  [Type] : Text
  [Name] : Title
- [Position] : 0.000000, 0.000000
+ [Position] : 0.000000, -60.000000
  [Size] : 0.000000, 0.000000
  [SameLine] : 0
  [Disabled] : 0
  [Child Number] : 0
- [Text] : Resource name
+ [Text] : Name
  [Text Align] : 0.500000, 0.000000
  [Wrap] : 1
  [AutoWrap] : 1
@@ -53,7 +53,7 @@
  [Disabled] : 0
  [Child Number] : 0
  [Text Color] : 0.696078, 0.696078, 0.696078, 1.000000
- [Text] : Text
+ [Text] : Type
  [Text Align] : 0.000000, 0.000000
  [Wrap] : 0
  [AutoWrap] : 1

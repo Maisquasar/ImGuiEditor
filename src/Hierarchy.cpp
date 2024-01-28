@@ -1,12 +1,12 @@
 #include "Hierarchy.h"
+
+#include "Object/Item/Button.h"
+
 #include "Parser.h"
 
 #include "Editor.h"
 #include "Inspector.h"
 #include "ObjectWindow.h"
-
-#include "Object/IObject.h"
-#include "Object/Button.h"
 
 #include "Application.h"
 
@@ -56,7 +56,7 @@ void Hierarchy::DisplayOnHierarchy(std::shared_ptr<Object> object, size_t& index
 
 	if (ImGui::BeginDragDropSource())
 	{
-		ImGui::SetDragDropPayload("OBJECT_CELL", &object->p_index, sizeof(size_t));
+		ImGui::SetDragDropPayload("OBJECT_CELL", &object->p_uuid, sizeof(int));
 
 		ImGui::Text("Moving %s", object->GetName().c_str());
 
@@ -68,8 +68,8 @@ void Hierarchy::DisplayOnHierarchy(std::shared_ptr<Object> object, size_t& index
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("OBJECT_CELL");
 			payload /*&& std::dynamic_pointer_cast<ChildObject>(object)*/)
 		{
-			IM_ASSERT(payload->DataSize == sizeof(size_t));
-			size_t draggedIndex = *(const size_t*)payload->Data;
+			IM_ASSERT(payload->DataSize == sizeof(int));
+			int draggedIndex = *(const int*)payload->Data;
 
 			auto childObject = GetWithIndex(draggedIndex);
 			if (childObject)
@@ -178,7 +178,7 @@ std::shared_ptr<Object> Hierarchy::GetWithIndex(size_t index) const
 {
 	for (auto object : m_objects)
 	{
-		if (object->p_index == index)
+		if (object->p_uuid == index)
 			return object;
 	}
 	return nullptr;

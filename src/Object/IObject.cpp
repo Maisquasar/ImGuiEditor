@@ -57,9 +57,12 @@ void Object::InternalSerialize(std::string& content) const
 
 void Object::SerializeChildren(std::string& content) const
 {
+	if (!p_enable)
+		return;
 	for (auto& child : p_children)
 	{
 		const auto object = child.lock();
+		content += "//" + object->p_name + "\n";
 		content += "ImGui::PushID(" + std::to_string(object->p_uuid) + ");\n";
 
 		if (object->p_disabled)
@@ -194,18 +197,6 @@ void Object::Serialize(Serializer& serializer) const
 	serializer << Pair::KEY << "Disabled" << Pair::VALUE << p_disabled;
 	serializer << Pair::KEY << "Child Number" << Pair::VALUE << p_children.size();
 
-	for (auto& child : p_children)
-	{
-		const auto object = child.lock();
-		if (!object)
-			continue;
-		serializer << Pair::BEGIN_MAP << object->GetTypeName();
-		serializer << Pair::BEGIN_TAB;
-		object->Serialize(serializer);
-		serializer << Pair::END_TAB;
-		serializer << Pair::END_MAP << object->GetTypeName();
-	}
-
 	for (auto& style : p_styleVars)
 	{
 		if (style->inherit)
@@ -218,6 +209,18 @@ void Object::Serialize(Serializer& serializer) const
 		if (style.inherit)
 			continue;
 		serializer << Pair::KEY << style.name << Pair::VALUE << style.color;
+	}
+
+	for (auto& child : p_children)
+	{
+		const auto object = child.lock();
+		if (!object)
+			continue;
+		serializer << Pair::BEGIN_MAP << object->GetTypeName();
+		serializer << Pair::BEGIN_TAB;
+		object->Serialize(serializer);
+		serializer << Pair::END_TAB;
+		serializer << Pair::END_MAP << object->GetTypeName();
 	}
 }
 
@@ -232,6 +235,21 @@ void Object::Deserialize(Parser& parser)
 	p_sameLine = parser["SameLine"].As<bool>();
 	p_disabled = parser["Disabled"].As<bool>();
 	const size_t childNumber = parser["Child Number"].As<size_t>();
+
+	for (auto& style : p_styleVars)
+	{
+		style->Deserialize(parser);
+	}
+
+	for (auto& style : p_styleColors)
+	{
+		const std::unordered_map<std::string, StringSerializer> valueMap = parser.GetValueMap()[parser.GetCurrentDepth()];
+		if (valueMap.contains(style.name))
+		{
+			style.color = parser[style.name].As<Vec4f>();
+			style.inherit = false;
+		}
+	}
 
 	for (size_t i = 0; i < childNumber; i++)
 	{
@@ -255,21 +273,6 @@ void Object::Deserialize(Parser& parser)
 		this->AddChild(object);
 		object->Deserialize(parser);
 		object->PostInitialize();
-	}
-
-	for (auto& style : p_styleVars)
-	{
-		style->Deserialize(parser);
-	}
-
-	for (auto& style : p_styleColors)
-	{
-		const std::unordered_map<std::string, StringSerializer> valueMap = parser.GetValueMap()[parser.GetCurrentDepth()];
-		if (valueMap.contains(style.name))
-		{
-			style.color = parser[style.name].As<Vec4f>();
-			style.inherit = false;
-		}
 	}
 }
 
