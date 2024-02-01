@@ -143,8 +143,9 @@ void Canvas::Draw() const
 	ImGui::End();
 	ImGui::Begin("Debug");
 	ImGui::DragFloat("pos", &pos);
-	ImGui::End();
 #endif
+	}
+	ImGui::End();
 }
 
 void Canvas::DisplayObject(std::shared_ptr<Object> object, size_t& index) const
