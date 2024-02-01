@@ -10,6 +10,7 @@ public:
 	Empty(Empty&&) noexcept = default;
 	~Empty() override = default;
 
+	void Initialize() override;
 	void Draw() override { }
 	void Serialize(std::string& content) const override;
 

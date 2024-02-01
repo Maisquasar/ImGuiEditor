@@ -4,6 +4,7 @@
 
 void Rect::Initialize()
 {
+	ShapeObject::Initialize();
 	p_size = Vec2f(100, 100);
 	p_position = Vec2f(50, 50);
 }

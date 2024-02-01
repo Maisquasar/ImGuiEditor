@@ -15,12 +15,6 @@ Object::Object()
 
 Object::~Object()
 {
-	for (auto& child : p_children)
-	{
-		if (child.lock())
-			RemoveChild(child.lock().get());
-		child.reset();
-	}
 }
 
 void Object::Destroy()
@@ -63,7 +57,8 @@ void Object::SerializeChildren(std::string& content) const
 	{
 		const auto object = child.lock();
 		content += "//" + object->p_name + "\n";
-		content += "ImGui::PushID(" + std::to_string(object->p_uuid) + ");\n";
+		if (child.lock()->p_shouldPushID)
+			content += "ImGui::PushID(" + std::to_string(object->p_uuid) + ");\n";
 
 		if (object->p_disabled)
 			content += "ImGui::BeginDisabled(true);\n";
@@ -73,7 +68,8 @@ void Object::SerializeChildren(std::string& content) const
 		if (object->p_disabled)
 			content += "ImGui::EndDisabled();\n";
 
-		content += "ImGui::PopID();\n";
+		if (child.lock()->p_shouldPushID)
+			content += "ImGui::PopID();\n";
 	}
 }
 
@@ -143,7 +139,7 @@ bool Object::IsAParentOfThis(Object* object) const
 		return p_parent->IsAParentOfThis(object);
 }
 
-void Object::AddChild(std::shared_ptr<Object> child)
+void Object::AddChild(const std::shared_ptr<Object>& child)
 {
 	if (!child)
 	{
@@ -156,7 +152,6 @@ void Object::AddChild(std::shared_ptr<Object> child)
 	// Remove the child from its previous parent's children list, if it has one
 	if (child->p_parent)
 		child->p_parent->RemoveChild(child.get());
-
 	p_children.push_back(child);
 	child->p_parent = this;
 }

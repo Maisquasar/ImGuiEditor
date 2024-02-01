@@ -8,9 +8,9 @@ public:
 
 	void Initialize();
 	void Update();
-	void Destroy();
+	void Destroy() const;
 
-	void SetClipboardText(const char* text);
+	void SetClipboardText(const char* text) const;
 private:
 	GLFWwindow* m_window = nullptr;
 };

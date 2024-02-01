@@ -18,7 +18,6 @@ public:
 	Object* GetHoveredObject() const { return m_hoveredObject; }
 	void SetHoveredObject(Object* val) { m_hoveredObject = val; }
 private:
-	std::vector<std::shared_ptr<Object>>* m_objects;
 
 	Object* m_hoveredObject = nullptr;
 

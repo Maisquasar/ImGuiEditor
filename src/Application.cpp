@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Application.h"
 
+#include <filesystem>
+
 #include "Editor.h"
 
 void Application::Initialize()
@@ -20,6 +22,9 @@ void Application::Initialize()
 		glfwTerminate();
 		return;
 	}
+
+	if (!std::filesystem::exists("Saves"))
+		std::filesystem::create_directory("Saves");
 
 	// Make the window's context current
 	glfwMakeContextCurrent(m_window);
@@ -50,7 +55,7 @@ void Application::Initialize()
 
 void Application::Update()
 {
-	auto editor = Editor::Get();
+	Editor* editor = Editor::Get();
 	editor->m_app = this;
 	editor->Initialize();
 	while (!glfwWindowShouldClose(m_window)) {
@@ -88,8 +93,10 @@ void Application::Update()
 	}
 }
 
-void Application::Destroy()
+void Application::Destroy() const
 {
+	Editor::Get()->Destroy();
+	Editor::DestroyInstance();
 	// Cleanup
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
@@ -99,7 +106,7 @@ void Application::Destroy()
 	glfwTerminate();
 }
 
-void Application::SetClipboardText(const char* text)
+void Application::SetClipboardText(const char* text) const
 {
 	glfwSetClipboardString(m_window, text);
 }

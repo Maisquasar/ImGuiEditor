@@ -81,7 +81,6 @@ void Hierarchy::DisplayOnHierarchy(std::shared_ptr<Object> object, size_t& index
 	}
 	ImGui::PopID();
 
-	//TODO : only children item can have children
 	if (object->p_open)
 	{
 		size_t indexChild = 0;
@@ -89,7 +88,6 @@ void Hierarchy::DisplayOnHierarchy(std::shared_ptr<Object> object, size_t& index
 		{
 			if (!child.lock()) {
 				std::cout << "Error with child, delete it" << std::endl;
-				object->p_children.erase(std::next(object->p_children.begin(), index));
 				continue;
 			}
 			ImGui::TreePush(child.lock()->p_name.c_str());
@@ -108,7 +106,7 @@ void Hierarchy::AddObject(std::shared_ptr<Object> object)
 
 void Hierarchy::RemoveObject(const Object* object)
 {
-	for (auto it = m_objects.begin(); it != m_objects.end(); it++)
+	for (auto it = m_objects.begin(); it != m_objects.end(); ++it)
 	{
 		if (it->get() == object)
 		{
@@ -118,7 +116,7 @@ void Hierarchy::RemoveObject(const Object* object)
 	}
 }
 
-void Hierarchy::AddObjectToRoot(std::shared_ptr<Object> object, bool addToSelected /*= true*/)
+void Hierarchy::AddObjectToRoot(const std::shared_ptr<Object>& object, bool addToSelected /*= true*/)
 {
 	auto parent = m_root.get();
 	if (addToSelected) {

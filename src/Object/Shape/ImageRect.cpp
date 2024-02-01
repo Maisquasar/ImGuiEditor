@@ -5,6 +5,7 @@
 
 void ImageRect::Initialize()
 {
+	ShapeObject::Initialize();
 }
 
 void ImageRect::PostInitialize()

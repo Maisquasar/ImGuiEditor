@@ -17,7 +17,7 @@ public:
 
 	void RemoveObject(const Object* object);
 
-	void AddObjectToRoot(std::shared_ptr<Object> object, bool addToSelected = true);
+	void AddObjectToRoot(const std::shared_ptr<Object>& object, bool addToSelected = true);
 
 	void SaveScene(const std::string& path) const;
 

@@ -8,7 +8,7 @@ public:
 	Image& operator=(const Image& other) = default;
 	Image(const Image&) = default;
 	Image(Image&&) noexcept = default;
-	~Image() override = default;
+	~Image() override;
 
 	void PostInitialize() override;
 	void Draw() override;

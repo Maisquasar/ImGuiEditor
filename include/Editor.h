@@ -17,6 +17,12 @@ public:
 		return m_instance;
 	}
 
+	static void DestroyInstance() {
+		if (m_instance)
+			delete m_instance;
+		m_instance = nullptr;
+	}
+
 	class Application* GetApplication() const { return m_app; }
 	class Hierarchy* GetHierarchy() const { return m_hierarchy; }
 	class Inspector* GetInspector() const { return m_inspector; }

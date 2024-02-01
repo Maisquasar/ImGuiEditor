@@ -43,7 +43,11 @@ class StyleVar : public BaseStyleVar
 {
 public:
 	StyleVar(const std::string& name, T value, ImGuiStyleVar_ enumValue)
-		: name(name), value(value), enumValue(enumValue) {}
+	{
+		this->name = name;
+		this->value = value;
+		this->enumValue = enumValue;
+	}
 
 	void ApplyStyle(int& count) const override {}
 
@@ -246,7 +250,7 @@ public:
 
 	bool IsAParentOfThis(Object* object) const;
 	bool IsAParent() const { return !p_children.empty(); }
-	void AddChild(std::shared_ptr<Object> child);
+	void AddChild(const std::shared_ptr<Object>& child);
 	void RemoveChild(Object* child);
 
 	void SelectUpdate(bool clicked, bool hovered);
@@ -298,8 +302,9 @@ protected:
 	bool p_sameLine = false;
 	bool p_disabled = false;
 	bool p_scoped = false;
+	bool p_shouldPushID = true;
 
-	Object* p_parent;
+	Object* p_parent = nullptr;
 	std::vector<std::weak_ptr<Object>> p_children;
 
 	std::vector<StyleColor> p_styleColors;
@@ -392,6 +397,10 @@ template <typename T>
 class ShapeObject : public IObject<T>
 {
 public:
+	virtual void Initialize() override
+	{
+		this->p_shouldPushID = false;
+	}
 	bool Begin() final { return true; }
 	void End() final {}
 	void PostEnd() final {}

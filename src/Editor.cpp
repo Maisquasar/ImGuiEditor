@@ -24,8 +24,8 @@ void Editor::Initialize()
 void Editor::Draw()
 {
 	DrawMainDock();
-	const Vec2f buttonSize = Vec2f(ImGui::GetContentRegionAvail().x, 0);
 	if (ImGui::Begin("Editor")) {
+		const Vec2f buttonSize = Vec2f(ImGui::GetContentRegionAvail().x, 0);
 		if (ImGui::Button("Save", buttonSize))
 		{
 			if (const std::string path = SaveFileExplorer({}); !path.empty())

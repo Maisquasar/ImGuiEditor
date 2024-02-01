@@ -23,7 +23,7 @@ void Button::Initialize()
 
 void Button::Draw()
 {
-	if (m_arrowButton) 
+	if (m_arrowButton)
 	{
 		if (p_size.x != 0.f || p_size.y != 0.f)
 			ImGui::ArrowButtonEx(p_name.c_str(), m_arrowDir, p_size);
@@ -46,7 +46,7 @@ static const char* ImGuiDirEnumToString()
 void Button::DisplayOnInspector()
 {
 	ImGui::Checkbox("Arrow Button", &m_arrowButton);
-	if (m_arrowButton) 
+	if (m_arrowButton)
 	{
 		int arrowDir = (int)m_arrowDir;
 		ImGui::Combo("Arrow Direction", &arrowDir, ImGuiDirEnumToString());

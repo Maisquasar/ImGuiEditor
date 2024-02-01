@@ -3,6 +3,12 @@
 #include "ImageLoader.h"
 #include "Editor.h"
 
+Image::~Image()
+{
+	if (m_id != 0)
+		glDeleteTextures(1, &m_id);
+}
+
 void Image::PostInitialize()
 {
 	if (m_imagePath.empty())
