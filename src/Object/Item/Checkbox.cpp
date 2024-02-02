@@ -36,7 +36,7 @@ void Checkbox::Serialize(Serializer& serializer) const
 {
 	Object::Serialize(serializer);
 
-	serializer << Pair::KEY << "Value" << Pair::VALUE << m_value;
+	serializer << Pair::Key << "Value" << Pair::Value << m_value;
 }
 
 void Checkbox::Deserialize(Parser& parser)

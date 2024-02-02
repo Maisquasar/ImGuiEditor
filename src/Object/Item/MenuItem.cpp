@@ -23,7 +23,7 @@ void MenuItem::Serialize(std::string& content) const
 void MenuItem::Serialize(Serializer& serializer) const
 {
 	Object::Serialize(serializer);
-	serializer << Pair::KEY << "Shortcut" << Pair::VALUE << m_shortcut;
+	serializer << Pair::Key << "Shortcut" << Pair::Value << m_shortcut;
 }
 
 void MenuItem::Deserialize(Parser& parser)

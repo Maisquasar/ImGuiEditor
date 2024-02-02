@@ -136,9 +136,9 @@ void ChildObject::Serialize(Serializer& serializer) const
 {
 	Object::Serialize(serializer);
 
-	serializer << Pair::KEY << "HasBorder" << Pair::VALUE << m_hasBorder;
-	serializer << Pair::KEY << "Frame" << Pair::VALUE << m_frame;
-	serializer << Pair::KEY << "Flags" << Pair::VALUE << (int)m_flags;
+	serializer << Pair::Key << "HasBorder" << Pair::Value << m_hasBorder;
+	serializer << Pair::Key << "Frame" << Pair::Value << m_frame;
+	serializer << Pair::Key << "Flags" << Pair::Value << (int)m_flags;
 }
 
 void ChildObject::Deserialize(Parser& parser)

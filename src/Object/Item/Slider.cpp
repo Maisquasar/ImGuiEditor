@@ -273,50 +273,50 @@ void Slider::Serialize(Serializer& serializer) const
 {
 	Object::Serialize(serializer);
 
-	serializer << Pair::KEY << "InputType" << Pair::VALUE << (int)m_sliderType;
-	serializer << Pair::KEY << "Flags" << Pair::VALUE << (int)m_flags;
+	serializer << Pair::Key << "InputType" << Pair::Value << (int)m_sliderType;
+	serializer << Pair::Key << "Flags" << Pair::Value << (int)m_flags;
 	switch (m_sliderType)
 	{
 	case SliderType::Int:
-		serializer << Pair::KEY << "Value" << Pair::VALUE << std::any_cast<int>(m_value);
+		serializer << Pair::Key << "Value" << Pair::Value << std::any_cast<int>(m_value);
 		break;
 	case SliderType::Int2:
 	{
 		auto valueInt = std::any_cast<std::array<int, 2>>(m_value);
-		serializer << Pair::KEY << "Value" << Pair::VALUE << Vec2f(valueInt[0], valueInt[1]);
+		serializer << Pair::Key << "Value" << Pair::Value << Vec2f(valueInt[0], valueInt[1]);
 	}
 	break;
 	case SliderType::Int3:
 	{
 		auto valueInt = std::any_cast<std::array<int, 3>>(m_value);
-		serializer << Pair::KEY << "Value" << Pair::VALUE << Vec3f(valueInt[0], valueInt[1], valueInt[2]);
+		serializer << Pair::Key << "Value" << Pair::Value << Vec3f(valueInt[0], valueInt[1], valueInt[2]);
 	}
 	break;
 	case SliderType::Int4:
 	{
 		auto valueInt = std::any_cast<std::array<int, 4>>(m_value);
-		serializer << Pair::KEY << "Value" << Pair::VALUE << Vec4f(valueInt[0], valueInt[1], valueInt[2], valueInt[3]);
+		serializer << Pair::Key << "Value" << Pair::Value << Vec4f(valueInt[0], valueInt[1], valueInt[2], valueInt[3]);
 	}
 	break;
 	case SliderType::Float:
-		serializer << Pair::KEY << "Value" << Pair::VALUE << std::any_cast<float>(m_value);
+		serializer << Pair::Key << "Value" << Pair::Value << std::any_cast<float>(m_value);
 		break;
 	case SliderType::Float2:
 	{
 		auto valueFloat = std::any_cast<std::array<float, 2>>(m_value);
-		serializer << Pair::KEY << "Value" << Pair::VALUE << Vec2f(valueFloat[0], valueFloat[1]);
+		serializer << Pair::Key << "Value" << Pair::Value << Vec2f(valueFloat[0], valueFloat[1]);
 	}
 	break;
 	case SliderType::Float3:
 	{
 		auto valueFloat = std::any_cast<std::array<float, 3>>(m_value);
-		serializer << Pair::KEY << "Value" << Pair::VALUE << Vec3f(valueFloat[0], valueFloat[1], valueFloat[2]);
+		serializer << Pair::Key << "Value" << Pair::Value << Vec3f(valueFloat[0], valueFloat[1], valueFloat[2]);
 	}
 	break;
 	case SliderType::Float4:
 	{
 		auto valueFloat = std::any_cast<std::array<float, 4>>(m_value);
-		serializer << Pair::KEY << "Value" << Pair::VALUE << Vec4f(valueFloat[0], valueFloat[1], valueFloat[2], valueFloat[3]);
+		serializer << Pair::Key << "Value" << Pair::Value << Vec4f(valueFloat[0], valueFloat[1], valueFloat[2], valueFloat[3]);
 	}
 	break;
 	default:
@@ -328,15 +328,15 @@ void Slider::Serialize(Serializer& serializer) const
 	case SliderType::Int2:
 	case SliderType::Int3:
 	case SliderType::Int4:
-		serializer << Pair::KEY << "Min" << Pair::VALUE << std::any_cast<int>(m_min);
-		serializer << Pair::KEY << "Max" << Pair::VALUE << std::any_cast<int>(m_max);
+		serializer << Pair::Key << "Min" << Pair::Value << std::any_cast<int>(m_min);
+		serializer << Pair::Key << "Max" << Pair::Value << std::any_cast<int>(m_max);
 		break;
 	case SliderType::Float:
 	case SliderType::Float2:
 	case SliderType::Float3:
 	case SliderType::Float4:
-		serializer << Pair::KEY << "Min" << Pair::VALUE << std::any_cast<float>(m_min);
-		serializer << Pair::KEY << "Max" << Pair::VALUE << std::any_cast<float>(m_max);
+		serializer << Pair::Key << "Min" << Pair::Value << std::any_cast<float>(m_min);
+		serializer << Pair::Key << "Max" << Pair::Value << std::any_cast<float>(m_max);
 		break;
 	default:
 		break;

@@ -89,9 +89,9 @@ void Rect::Serialize(Serializer& serializer) const
 {
 	ShapeObject::Serialize(serializer);
 
-	serializer << Pair::KEY << "Color" << Pair::VALUE << m_color;
-	serializer << Pair::KEY << "Filled" << Pair::VALUE << m_filled;
-	serializer << Pair::KEY << "Rounding" << Pair::VALUE << m_rounding;
+	serializer << Pair::Key << "Color" << Pair::Value << m_color;
+	serializer << Pair::Key << "Filled" << Pair::Value << m_filled;
+	serializer << Pair::Key << "Rounding" << Pair::Value << m_rounding;
 }
 
 void Rect::Deserialize(Parser& parser)

@@ -65,10 +65,10 @@ void Group::Serialize(Serializer& serializer) const
 {
 	Object::Serialize(serializer);
 
-	serializer << Pair::KEY << "Has Border" << Pair::VALUE << m_hasBorder;
-	serializer << Pair::KEY << "Border Color" << Pair::VALUE << m_borderColor;
-	serializer << Pair::KEY << "Border Rounding" << Pair::VALUE << m_borderRounding;
-	serializer << Pair::KEY << "Border Width" << Pair::VALUE << m_borderWidth;
+	serializer << Pair::Key << "Has Border" << Pair::Value << m_hasBorder;
+	serializer << Pair::Key << "Border Color" << Pair::Value << m_borderColor;
+	serializer << Pair::Key << "Border Rounding" << Pair::Value << m_borderRounding;
+	serializer << Pair::Key << "Border Width" << Pair::Value << m_borderWidth;
 }
 
 void Group::Deserialize(Parser& parser)

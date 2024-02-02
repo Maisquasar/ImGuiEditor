@@ -15,7 +15,7 @@ add_repositories("galaxy-repo https://github.com/GalaxyEngine/xmake-repo")
 
 -- Packages
 add_requires("galaxymath ~1.2")
---add_requires("cpp_serializer")
+add_requires("cpp_serializer")
 add_requires("imgui v1.89.9-docking", { configs = { glfw_opengl3 = true } })
 add_requires("glad")
 add_requires("stb")
@@ -34,7 +34,7 @@ target("ImGuiEditor")
     set_pcxxheader("include/pch.h")
 
     add_packages("galaxymath")
-    --add_packages("cpp_serializer")
+    add_packages("cpp_serializer")
     add_packages("glfw")
     add_packages("imgui")
     add_packages("glad")

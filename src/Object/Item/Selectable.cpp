@@ -35,8 +35,8 @@ void Selectable::Serialize(std::string& content) const
 void Selectable::Serialize(Serializer& serializer) const
 {
 	Object::Serialize(serializer);
-	serializer << Pair::KEY << "Selected" << Pair::VALUE << m_selected;
-	serializer << Pair::KEY << "Flags" << Pair::VALUE << (int)m_flags;
+	serializer << Pair::Key << "Selected" << Pair::Value << m_selected;
+	serializer << Pair::Key << "Flags" << Pair::Value << (int)m_flags;
 }
 
 void Selectable::Deserialize(Parser& parser)

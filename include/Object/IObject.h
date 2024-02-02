@@ -1,7 +1,9 @@
 #pragma once
 #include "pch.h"
 
-#include "Parser.h"
+#include <cpp_serializer/CppSerializer.h>
+
+using namespace CppSer;
 
 class BaseStyleVar
 {
@@ -93,7 +95,7 @@ public:
 	{
 		if (inherit)
 			return;
-		serializer << Pair::KEY << name << Pair::VALUE << static_cast<Vec2f>(value);
+		serializer << Pair::Key << name << Pair::Value << static_cast<Vec2f>(value);
 	}
 
 	void Deserialize(Parser& parser) override
@@ -146,7 +148,7 @@ public:
 	{
 		if (inherit)
 			return;
-		serializer << Pair::KEY << name << Pair::VALUE << value;
+		serializer << Pair::Key << name << Pair::Value << value;
 	}
 
 	void Deserialize(Parser& parser) override
@@ -451,7 +453,7 @@ public:
 	virtual void Serialize(Serializer& serializer) const
 	{
 		Object::Serialize(serializer);
-		serializer << Pair::KEY << "Flags" << Pair::VALUE << this->p_flags;
+		serializer << Pair::Key << "Flags" << Pair::Value << this->p_flags;
 
 	}
 	virtual void Deserialize(Parser& parser)

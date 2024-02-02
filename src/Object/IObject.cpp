@@ -184,13 +184,13 @@ void Object::SelectUpdate(bool clicked, bool hovered)
 
 void Object::Serialize(Serializer& serializer) const
 {
-	serializer << Pair::KEY << "Type" << Pair::VALUE << GetTypeName();
-	serializer << Pair::KEY << "Name" << Pair::VALUE << p_name;
-	serializer << Pair::KEY << "Position" << Pair::VALUE << p_position;
-	serializer << Pair::KEY << "Size" << Pair::VALUE << p_size;
-	serializer << Pair::KEY << "SameLine" << Pair::VALUE << p_sameLine;
-	serializer << Pair::KEY << "Disabled" << Pair::VALUE << p_disabled;
-	serializer << Pair::KEY << "Child Number" << Pair::VALUE << p_children.size();
+	serializer << Pair::Key << "Type" << Pair::Value << GetTypeName();
+	serializer << Pair::Key << "Name" << Pair::Value << p_name;
+	serializer << Pair::Key << "Position" << Pair::Value << p_position;
+	serializer << Pair::Key << "Size" << Pair::Value << p_size;
+	serializer << Pair::Key << "SameLine" << Pair::Value << p_sameLine;
+	serializer << Pair::Key << "Disabled" << Pair::Value << p_disabled;
+	serializer << Pair::Key << "Child Number" << Pair::Value << p_children.size();
 
 	for (auto& style : p_styleVars)
 	{
@@ -203,7 +203,7 @@ void Object::Serialize(Serializer& serializer) const
 	{
 		if (style.inherit)
 			continue;
-		serializer << Pair::KEY << style.name << Pair::VALUE << style.color;
+		serializer << Pair::Key << style.name << Pair::Value << style.color;
 	}
 
 	for (auto& child : p_children)
@@ -211,11 +211,11 @@ void Object::Serialize(Serializer& serializer) const
 		const auto object = child.lock();
 		if (!object)
 			continue;
-		serializer << Pair::BEGIN_MAP << object->GetTypeName();
-		serializer << Pair::BEGIN_TAB;
+		serializer << Pair::BeginMap << object->GetTypeName();
+		serializer << Pair::BeginTab;
 		object->Serialize(serializer);
-		serializer << Pair::END_TAB;
-		serializer << Pair::END_MAP << object->GetTypeName();
+		serializer << Pair::EndTab;
+		serializer << Pair::EndMap << object->GetTypeName();
 	}
 }
 
@@ -249,7 +249,7 @@ void Object::Deserialize(Parser& parser)
 	for (size_t i = 0; i < childNumber; i++)
 	{
 		std::shared_ptr<Object> object;
-		parser.NewDepth();
+		parser.PushDepth();
 		auto typeName = parser["Type"].As<std::string>();
 		for (auto& _object : objectList)
 		{

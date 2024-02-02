@@ -7,8 +7,6 @@
 
 #include "Object/IObject.h"
 
-#include "Parser.h"
-
 void Inspector::Draw()
 {
 	if (ImGui::IsKeyPressed(ImGuiKey_Delete) && m_selectedObject.lock())
@@ -40,9 +38,9 @@ void Inspector::CopyObject()
 
 	Serializer serializer;
 
-	serializer << Pair::BEGIN_MAP << selected->GetTypeName();
+	serializer << Pair::BeginMap << selected->GetTypeName();
 	selected->Serialize(serializer);
-	serializer << Pair::END_MAP << selected->GetTypeName();
+	serializer << Pair::EndMap << selected->GetTypeName();
 
 	m_clipBoard = serializer.GetContent();
 }

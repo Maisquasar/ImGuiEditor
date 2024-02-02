@@ -85,10 +85,10 @@ void Button::Serialize(std::string& content) const
 void Button::Serialize(Serializer& serializer) const
 {
 	Object::Serialize(serializer);
-	serializer << Pair::KEY << "Text" << Pair::VALUE << m_text;
-	serializer << Pair::KEY << "Small" << Pair::VALUE << m_small;
-	serializer << Pair::KEY << "Arrow Button" << Pair::VALUE << m_arrowButton;
-	serializer << Pair::KEY << "Arrow Direction" << Pair::VALUE << (int)m_arrowDir;
+	serializer << Pair::Key << "Text" << Pair::Value << m_text;
+	serializer << Pair::Key << "Small" << Pair::Value << m_small;
+	serializer << Pair::Key << "Arrow Button" << Pair::Value << m_arrowButton;
+	serializer << Pair::Key << "Arrow Direction" << Pair::Value << (int)m_arrowDir;
 }
 
 void Button::Deserialize(Parser& parser)

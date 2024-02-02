@@ -267,51 +267,51 @@ void Drag::Serialize(Serializer& serializer) const
 {
 	Object::Serialize(serializer);
 
-	serializer << Pair::KEY << "InputType" << Pair::VALUE << (int)m_dragType;
-	serializer << Pair::KEY << "Flags" << Pair::VALUE << (int)m_flags;
-	serializer << Pair::KEY << "Speed" << Pair::VALUE << m_speed;
+	serializer << Pair::Key << "InputType" << Pair::Value << (int)m_dragType;
+	serializer << Pair::Key << "Flags" << Pair::Value << (int)m_flags;
+	serializer << Pair::Key << "Speed" << Pair::Value << m_speed;
 	switch (m_dragType)
 	{
 	case DragType::Int:
-		serializer << Pair::KEY << "Value" << Pair::VALUE << std::any_cast<int>(m_value);
+		serializer << Pair::Key << "Value" << Pair::Value << std::any_cast<int>(m_value);
 		break;
 	case DragType::Int2:
 	{
 		auto valueInt = std::any_cast<std::array<int, 2>>(m_value);
-		serializer << Pair::KEY << "Value" << Pair::VALUE << Vec2f(valueInt[0], valueInt[1]);
+		serializer << Pair::Key << "Value" << Pair::Value << Vec2f(valueInt[0], valueInt[1]);
 	}
 	break;
 	case DragType::Int3:
 	{
 		auto valueInt = std::any_cast<std::array<int, 3>>(m_value);
-		serializer << Pair::KEY << "Value" << Pair::VALUE << Vec3f(valueInt[0], valueInt[1], valueInt[2]);
+		serializer << Pair::Key << "Value" << Pair::Value << Vec3f(valueInt[0], valueInt[1], valueInt[2]);
 	}
 	break;
 	case DragType::Int4:
 	{
 		auto valueInt = std::any_cast<std::array<int, 4>>(m_value);
-		serializer << Pair::KEY << "Value" << Pair::VALUE << Vec4f(valueInt[0], valueInt[1], valueInt[2], valueInt[3]);
+		serializer << Pair::Key << "Value" << Pair::Value << Vec4f(valueInt[0], valueInt[1], valueInt[2], valueInt[3]);
 	}
 	break;
 	case DragType::Float:
-		serializer << Pair::KEY << "Value" << Pair::VALUE << std::any_cast<float>(m_value);
+		serializer << Pair::Key << "Value" << Pair::Value << std::any_cast<float>(m_value);
 		break;
 	case DragType::Float2:
 	{
 		auto valueFloat = std::any_cast<std::array<float, 2>>(m_value);
-		serializer << Pair::KEY << "Value" << Pair::VALUE << Vec2f(valueFloat[0], valueFloat[1]);
+		serializer << Pair::Key << "Value" << Pair::Value << Vec2f(valueFloat[0], valueFloat[1]);
 	}
 	break;
 	case DragType::Float3:
 	{
 		auto valueFloat = std::any_cast<std::array<float, 3>>(m_value);
-		serializer << Pair::KEY << "Value" << Pair::VALUE << Vec3f(valueFloat[0], valueFloat[1], valueFloat[2]);
+		serializer << Pair::Key << "Value" << Pair::Value << Vec3f(valueFloat[0], valueFloat[1], valueFloat[2]);
 	}
 	break;
 	case DragType::Float4:
 	{
 		auto valueFloat = std::any_cast<std::array<float, 4>>(m_value);
-		serializer << Pair::KEY << "Value" << Pair::VALUE << Vec4f(valueFloat[0], valueFloat[1], valueFloat[2], valueFloat[3]);
+		serializer << Pair::Key << "Value" << Pair::Value << Vec4f(valueFloat[0], valueFloat[1], valueFloat[2], valueFloat[3]);
 	}
 	break;
 	default:
@@ -323,15 +323,15 @@ void Drag::Serialize(Serializer& serializer) const
 	case DragType::Int2:
 	case DragType::Int3:
 	case DragType::Int4:
-		serializer << Pair::KEY << "Min" << Pair::VALUE << std::any_cast<int>(m_min);
-		serializer << Pair::KEY << "Max" << Pair::VALUE << std::any_cast<int>(m_max);
+		serializer << Pair::Key << "Min" << Pair::Value << std::any_cast<int>(m_min);
+		serializer << Pair::Key << "Max" << Pair::Value << std::any_cast<int>(m_max);
 		break;
 	case DragType::Float:
 	case DragType::Float2:
 	case DragType::Float3:
 	case DragType::Float4:
-		serializer << Pair::KEY << "Min" << Pair::VALUE << std::any_cast<float>(m_min);
-		serializer << Pair::KEY << "Max" << Pair::VALUE << std::any_cast<float>(m_max);
+		serializer << Pair::Key << "Min" << Pair::Value << std::any_cast<float>(m_min);
+		serializer << Pair::Key << "Max" << Pair::Value << std::any_cast<float>(m_max);
 		break;
 	default:
 		break;

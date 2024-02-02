@@ -84,11 +84,11 @@ void Text::Serialize(Serializer& serializer) const
 {
 	Object::Serialize(serializer);
 
-	serializer << Pair::KEY << "Text" << Pair::VALUE << m_text;
-	serializer << Pair::KEY << "Text Align" << Pair::VALUE << m_textAlign;
-	serializer << Pair::KEY << "Wrap" << Pair::VALUE << m_wrap;
-	serializer << Pair::KEY << "AutoWrap" << Pair::VALUE << m_autoWrap;
-	serializer << Pair::KEY << "WrapWidth" << Pair::VALUE << m_wrapWidth;
+	serializer << Pair::Key << "Text" << Pair::Value << m_text;
+	serializer << Pair::Key << "Text Align" << Pair::Value << m_textAlign;
+	serializer << Pair::Key << "Wrap" << Pair::Value << m_wrap;
+	serializer << Pair::Key << "AutoWrap" << Pair::Value << m_autoWrap;
+	serializer << Pair::Key << "WrapWidth" << Pair::Value << m_wrapWidth;
 }
 
 void Text::Deserialize(Parser& parser)

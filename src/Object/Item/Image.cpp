@@ -84,8 +84,8 @@ void Image::Serialize(Serializer& serializer) const
 {
 	Object::Serialize(serializer);
 
-	serializer << Pair::KEY << "Image Path" << Pair::VALUE << m_imagePath;
-	serializer << Pair::KEY << "IsAButton" << Pair::VALUE << m_isAButton;
+	serializer << Pair::Key << "Image Path" << Pair::Value << m_imagePath;
+	serializer << Pair::Key << "IsAButton" << Pair::Value << m_isAButton;
 }
 
 void Image::Deserialize(Parser& parser)

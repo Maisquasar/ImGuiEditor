@@ -27,3 +27,47 @@ using namespace GALAXY;
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #include <misc/cpp/imgui_stdlib.h>
+
+#define EXTRA_CPPSERIALIZER_SERIALIZER \
+template<typename T>\
+Serializer& operator<<(const Vec2<T>& value)\
+{\
+	const std::string stringValue = value.ToString();\
+	*this << stringValue.c_str();\
+	return *this;\
+}\
+\
+template<typename T>\
+Serializer& operator<<(const Vec3<T>& value)\
+{\
+	const std::string stringValue = value.ToString();\
+	*this << stringValue.c_str();\
+	return *this;\
+}\
+\
+template<typename T>\
+Serializer& operator<<(const Vec4<T>& value)\
+{\
+	const std::string stringValue = value.ToString();\
+	*this << stringValue.c_str();\
+	return *this;\
+}\
+
+#define EXTRA_CPPSERIALIZER_PARSER \
+template<>\
+Vec2f As() const\
+{\
+	return {m_content}; \
+}\
+\
+template<>\
+Vec3f As() const\
+{\
+	return {m_content}; \
+}\
+\
+template<>\
+Vec4f As() const\
+{\
+	return {m_content}; \
+}

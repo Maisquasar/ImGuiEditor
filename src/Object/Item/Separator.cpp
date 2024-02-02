@@ -37,7 +37,7 @@ void Separator::Serialize(Serializer& serializer) const
 {
 	Object::Serialize(serializer);
 
-	serializer << Pair::KEY << "Text" << Pair::VALUE << m_text;
+	serializer << Pair::Key << "Text" << Pair::Value << m_text;
 }
 
 void Separator::Deserialize(Parser& parser)

@@ -2,8 +2,6 @@
 
 #include "Object/Item/Button.h"
 
-#include "Parser.h"
-
 #include "Editor.h"
 #include "Inspector.h"
 #include "ObjectWindow.h"
@@ -134,9 +132,9 @@ void Hierarchy::SaveScene(const std::string& path) const
 	Serializer serializer(path);
 	for (auto& child : m_root->p_children)
 	{
-		serializer << Pair::BEGIN_MAP << child.lock()->GetTypeName();
+		serializer << Pair::BeginMap << child.lock()->GetTypeName();
 		child.lock()->Serialize(serializer);
-		serializer << Pair::END_MAP << child.lock()->GetTypeName();
+		serializer << Pair::EndMap << child.lock()->GetTypeName();
 	}
 }
 
@@ -168,7 +166,7 @@ void Hierarchy::LoadScene(const std::string& path)
 		object->Deserialize(parser);
 		object->PostInitialize();
 
-		parser.NewDepth();
+		parser.PushDepth();
 	} while (parser.GetValueMap().size() != parser.GetCurrentDepth());
 }
 

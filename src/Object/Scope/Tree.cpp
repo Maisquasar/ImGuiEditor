@@ -59,7 +59,7 @@ void Tree::Serialize(std::string& content) const
 void Tree::Serialize(Serializer& serializer) const
 {
 	Object::Serialize(serializer);
-	serializer << Pair::KEY << "Flags" << Pair::VALUE << (int)m_flags;
+	serializer << Pair::Key << "Flags" << Pair::Value << (int)m_flags;
 }
 
 void Tree::Deserialize(Parser& parser)

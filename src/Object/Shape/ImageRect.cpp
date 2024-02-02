@@ -80,9 +80,9 @@ void ImageRect::Serialize(std::string& content) const
 void ImageRect::Serialize(Serializer& serializer) const
 {
 	ShapeObject::Serialize(serializer);
-	serializer << Pair::KEY << "ImagePath" << Pair::VALUE << m_imagePath;
-	serializer << Pair::KEY << "Color" << Pair::VALUE << m_color;
-	serializer << Pair::KEY << "Rounding" << Pair::VALUE << m_rounding;
+	serializer << Pair::Key << "ImagePath" << Pair::Value << m_imagePath;
+	serializer << Pair::Key << "Color" << Pair::Value << m_color;
+	serializer << Pair::Key << "Rounding" << Pair::Value << m_rounding;
 }
 
 void ImageRect::Deserialize(Parser& parser)
