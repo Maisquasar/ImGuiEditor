@@ -85,25 +85,46 @@ void Object::BeginSerializeStyle(std::string& content) const
 	}
 	auto canvas = Editor::Get()->GetCanvas();
 
-
 	if (!canvas->IsStatic()) {
-		const auto value = p_position.ToVec2i();
-		if (value != Vec2f{ 0, 0 }) {
-			content += "ImGui::SetCursorPos(";
-			content += "ImVec2(ImGui::GetWindowContentRegionMin().x +" + std::to_string(value.x) + ", ImGui::GetWindowContentRegionMin().y +" + std::to_string(value.y) + "));\n";
-		}
-		else
+
+		content += "ImGui::SetCursorPos(ImVec2(";
+		content += "ImGui::GetWindowContentRegionMin().x";
+		if (p_anchorPosition.x != 0.f)
 		{
-			content += "ImGui::SetCursorPos(";
-			content += "ImVec2(ImGui::GetWindowContentRegionMin()));\n";
+			content += SerializeFloat(p_anchorPosition.x, "+") + R"( *
+    (ImGui::GetWindowContentRegionMax().x)" + SerializeFloat(p_position.x, "+") + SerializeFloat(p_realSize.x, "-") + R"( - ImGui::GetWindowContentRegionMin().x))";
 		}
+		content += SerializeFloat(p_position.x, "+");
+		content += "\n, ImGui::GetWindowContentRegionMin().y";
+		if (p_anchorPosition.y != 0.0f)
+		{
+			content += SerializeFloat(p_anchorPosition.y, "+") + R"( *
+    (ImGui::GetWindowContentRegionMax().y)" + SerializeFloat(p_position.y, "+") + SerializeFloat(p_realSize.y, "-") + R"( - ImGui::GetWindowContentRegionMin().y))";
+
+		}
+		content += SerializeFloat(p_position.y, "+");
+		content += "));\n";
 	}
 	else
 	{
-		const auto value = p_position.ToVec2i();
-		if (value != Vec2f{ 0, 0 }) {
-			content += "ImGui::SetCursorPos(";
-			content += "ImVec2(ImGui::GetCursorPosX() + " + std::to_string(value.x) + ", ImGui::GetCursorPosY() + " + std::to_string(value.y) + "));\n";
+		if (p_position.x != 0.f || p_position.y != 0.f || p_anchorPosition.x != 0.f || p_anchorPosition.y != 0.f) {
+			content += "ImGui::SetCursorPos(ImVec2(";
+			content += "ImGui::GetCursorPos().x";
+			if (p_anchorPosition.x != 0.f)
+			{
+				content += SerializeFloat(p_anchorPosition.x, "+") + R"( *
+    (ImGui::GetWindowContentRegionMax().x)" + SerializeFloat(p_position.x, "+") + SerializeFloat(p_realSize.x, "-") + R"( - ImGui::GetCursorPos().x))";
+			}
+			content += SerializeFloat(p_position.x, "+");
+			content += "\n, ImGui::GetCursorPos().y";
+			if (p_anchorPosition.y != 0.0f)
+			{
+				content += SerializeFloat(p_anchorPosition.y, "+") + R"( *
+    (ImGui::GetWindowContentRegionMax().y)" + SerializeFloat(p_position.y, "+") + SerializeFloat(p_realSize.y, "-") + R"( - ImGui::GetCursorPos().y))";
+
+			}
+			content += SerializeFloat(p_position.y, "+");
+			content += "));\n";
 		}
 	}
 }
@@ -180,6 +201,13 @@ void Object::SelectUpdate(bool clicked, bool hovered)
 		canvas->SetHoveredObject(this);
 	else if (canvas->GetHoveredObject() == this && !ImGui::IsMouseDown(ImGuiMouseButton_Left))
 		canvas->SetHoveredObject(nullptr);
+}
+
+std::string Object::SerializeFloat(float value, const std::string& operatorSTR)
+{
+	if (value == 0.0f && operatorSTR != "*")
+		return "";
+	return " " + operatorSTR + " " + std::to_string(value);
 }
 
 void Object::Serialize(Serializer& serializer) const

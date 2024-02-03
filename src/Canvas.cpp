@@ -15,7 +15,7 @@ void Canvas::Draw() const
 	static Hierarchy* hierarchy = Editor::Get()->GetHierarchy();
 	//ImGui::ShowStyleEditor();
 	//ImGui::ShowMetricsWindow();
-	if (ImGui::Begin("Canvas", nullptr, ImGuiWindowFlags_AlwaysVerticalScrollbar))
+	if (ImGui::Begin("Canvas", nullptr))
 	{
 		size_t index = 0;
 		for (const auto& weakObject : hierarchy->GetRoot()->p_children)
@@ -32,12 +32,16 @@ void Canvas::DisplayObject(std::shared_ptr<Object> object, size_t& index) const
 		return;
 	object->p_id = index;
 	if (!m_isStatic) {
-		const Vec2f value = object->GetPosition() + ImGui::GetWindowContentRegionMin();
+		const Vec2f anchorPosition = (Vec2f)ImGui::GetWindowContentRegionMin() + object->p_anchorPosition *
+			((Vec2f)ImGui::GetWindowContentRegionMax() + object->GetPosition() - object->p_realSize - (Vec2f)ImGui::GetWindowContentRegionMin());
+		const Vec2f value = object->GetPosition() + anchorPosition;
 		object->p_realPos = value;
 	}
 	else
 	{
-		object->p_realPos = ImGui::GetCursorPos() + object->GetPosition();
+		const Vec2f anchorPosition = (Vec2f)ImGui::GetCursorPos() + object->p_anchorPosition *
+			((Vec2f)ImGui::GetWindowContentRegionMax() + object->GetPosition() - object->p_realSize - (Vec2f)ImGui::GetCursorPos());
+		object->p_realPos = object->GetPosition() + anchorPosition;
 	}
 	ImGui::SetCursorPos(object->p_realPos);
 
@@ -55,6 +59,7 @@ void Canvas::DisplayObject(std::shared_ptr<Object> object, size_t& index) const
 	ImGui::BeginDisabled(object->p_disabled);
 	ImGui::PushID(object->p_uuid);
 	object->Draw();
+	object->p_realSize = ImGui::GetItemRectSize();
 	ImGui::PopID();
 	object->PostDraw(Editor::IsUserMode());
 

@@ -129,6 +129,7 @@ void Inspector::DrawSelected() const
 		selectedObject->p_size = newSize;
 	}
 	ImGui::Checkbox("Keep aspect ratio", &KeepAspectRatio);
+	ImGui::SliderFloat2("Anchor Position", &selectedObject->p_anchorPosition.x, 0.0f, 1);
 	ImGui::NewLine();
 	ImGui::Checkbox("Same line", &selectedObject->p_sameLine);
 	ImGui::Checkbox("Disabled", &selectedObject->p_disabled);
