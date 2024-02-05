@@ -59,7 +59,6 @@ void Canvas::DisplayObject(std::shared_ptr<Object> object, size_t& index) const
 	ImGui::BeginDisabled(object->p_disabled);
 	ImGui::PushID(object->p_uuid);
 	object->Draw();
-	object->p_realSize = ImGui::GetItemRectSize();
 	ImGui::PopID();
 	object->PostDraw(Editor::IsUserMode());
 

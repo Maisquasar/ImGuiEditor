@@ -166,6 +166,7 @@ public:
 	virtual void Draw() override = 0;
 	void PostDraw(bool editorMode) final
 	{
+		this->p_realSize = ImGui::GetItemRectSize();
 		if (!editorMode) {
 			this->SelectUpdate(ImGui::IsItemClicked(ImGuiMouseButton_Left), ImGui::IsItemHovered(ImGuiMouseButton_Left));
 
@@ -226,6 +227,7 @@ public:
 	virtual void Draw() override = 0;
 	void PostDraw(bool editorMode) final
 	{
+		this->p_realSize = this->p_size;
 		if (!editorMode) {
 
 			const bool hovered = ImGui::IsMouseHoveringRect(GetMin(), GetMax());

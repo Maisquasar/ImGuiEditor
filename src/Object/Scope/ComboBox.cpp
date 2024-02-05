@@ -20,6 +20,7 @@ void ComboBox::End()
 
 void ComboBox::PostEnd()
 {
+	p_realSize = ImGui::GetItemRectSize();
 	if (!Editor::Get()->IsUserMode()) {
 		SelectUpdate(ImGui::IsItemClicked(), ImGui::IsItemHovered());
 

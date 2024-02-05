@@ -12,6 +12,7 @@ bool Group::Begin()
 void Group::End()
 {
 	ImGui::EndGroup();
+	p_realSize = ImGui::GetItemRectSize();
 
 	if (m_hasBorder)
 		ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()

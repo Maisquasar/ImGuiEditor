@@ -80,6 +80,7 @@ bool ChildObject::Begin()
 
 void ChildObject::End()
 {
+	p_realSize = ImGui::GetWindowSize();
 	if (m_frame)
 		ImGui::EndChildFrame();
 	else

@@ -12,6 +12,7 @@ public:
 	void Initialize() override;
 	bool Begin() override;
 	void End() override;
+	void PostEnd() override;
 	void DisplayOnInspector() override;
 	void Serialize(std::string& content) const override;
 	void Serialize(Serializer& serializer) const override;

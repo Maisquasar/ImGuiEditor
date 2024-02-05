@@ -27,6 +27,11 @@ void Tree::End()
 	ImGui::TreePop();
 }
 
+void Tree::PostEnd()
+{
+	p_realSize = ImGui::GetItemRectSize();
+}
+
 void Tree::DisplayOnInspector()
 {
 	ImGui::SeparatorText("Flags");
