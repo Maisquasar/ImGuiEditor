@@ -1,7 +1,7 @@
 # ImGuiEditor
 
 ## Overview
-**ImGuiEditor** is a simple tool designed to ease the process of copying ImGui layout code by providing a user-friendly interface.
+**ImGuiEditor** is a simple tool designed to facilitate the creation process with ImGui by providing a user-friendly interface.
 
 ## Features
 - **Real-Time Preview**: See your UI changes in real-time as you build and edit your layout, ensuring that your ImGui code matches your vision immediately.
