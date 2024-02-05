@@ -27,7 +27,7 @@ void Checkbox::DisplayOnInspector()
 void Checkbox::Serialize(std::string& content) const
 {
 	std::string variableName = "variable" + std::to_string(p_uuid);
-	content += "bool " + variableName + " = " + std::to_string(m_value) + "\n";
+	content += "bool " + variableName + " = " + std::to_string(m_value) + ";\n";
 	content += "ImGui::Checkbox(\"" + p_name + "\", &" + variableName + ");\n";
 	SerializeChildren(content);
 }

@@ -50,7 +50,7 @@ void ComboBox::Serialize(std::string& content) const
 {
 	content += "if (ImGui::BeginCombo(\"" + p_name + "\", \"" + p_children[0].lock()->GetName() + "\"))\n{\n";
 	SerializeChildren(content);
-	content += "}\nImGui::EndCombo();\n";
+	content += "ImGui::EndCombo();\n}\n";
 }
 
 void ComboBox::Serialize(Serializer& serializer) const
