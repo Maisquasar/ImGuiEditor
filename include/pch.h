@@ -30,7 +30,7 @@ using namespace GALAXY;
 
 #define EXTRA_CPPSERIALIZER_SERIALIZER \
 template<typename T>\
-Serializer& operator<<(const Vec2<T>& value)\
+CppSer::Serializer& operator<<(const Vec2<T>& value)\
 {\
 	const std::string stringValue = value.ToString();\
 	*this << stringValue.c_str();\
@@ -38,7 +38,7 @@ Serializer& operator<<(const Vec2<T>& value)\
 }\
 \
 template<typename T>\
-Serializer& operator<<(const Vec3<T>& value)\
+CppSer::Serializer& operator<<(const Vec3<T>& value)\
 {\
 	const std::string stringValue = value.ToString();\
 	*this << stringValue.c_str();\
@@ -46,7 +46,7 @@ Serializer& operator<<(const Vec3<T>& value)\
 }\
 \
 template<typename T>\
-Serializer& operator<<(const Vec4<T>& value)\
+CppSer::Serializer& operator<<(const Vec4<T>& value)\
 {\
 	const std::string stringValue = value.ToString();\
 	*this << stringValue.c_str();\
@@ -54,20 +54,9 @@ Serializer& operator<<(const Vec4<T>& value)\
 }\
 
 #define EXTRA_CPPSERIALIZER_PARSER \
-template<>\
-Vec2f As() const\
+inline Math::Vec2f As() const\
 {\
-	return {m_content}; \
+	return Math::Vec2f(m_content); \
 }\
-\
-template<>\
-Vec3f As() const\
-{\
-	return {m_content}; \
-}\
-\
-template<>\
-Vec4f As() const\
-{\
-	return {m_content}; \
-}
+
+#include <cpp_serializer/CppSerializer.h>

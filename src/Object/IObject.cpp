@@ -85,7 +85,7 @@ void Object::BeginSerializeStyle(std::string& content) const
 	}
 	auto canvas = Editor::Get()->GetCanvas();
 
-	if (!canvas->IsStatic()) {
+	if (!canvas->IsDynamic()) {
 
 		content += "ImGui::SetCursorPos(ImVec2(";
 		content += "ImGui::GetWindowContentRegionMin().x";

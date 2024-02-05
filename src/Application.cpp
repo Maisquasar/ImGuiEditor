@@ -4,6 +4,7 @@
 #include <filesystem>
 
 #include "Editor.h"
+#include "ImageLoader.h"
 
 void Application::Initialize()
 {
@@ -22,6 +23,11 @@ void Application::Initialize()
 		glfwTerminate();
 		return;
 	}
+
+	GLFWimage images[1];
+	images[0].pixels = ImageLoader::Load("icons/ImGuiEditorLogo.png", &images[0].width, &images[0].height, nullptr, 4);
+	glfwSetWindowIcon(m_window, 1, images);
+	ImageLoader::ImageFree(images[0].pixels);
 
 	if (!std::filesystem::exists("Saves"))
 		std::filesystem::create_directory("Saves");

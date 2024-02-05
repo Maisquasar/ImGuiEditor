@@ -31,7 +31,7 @@ void Canvas::DisplayObject(std::shared_ptr<Object> object, size_t& index) const
 	if (!object->p_enable)
 		return;
 	object->p_id = index;
-	if (!m_isStatic) {
+	if (!m_isDynamic) {
 		const Vec2f anchorPosition = (Vec2f)ImGui::GetWindowContentRegionMin() + object->p_anchorPosition *
 			((Vec2f)ImGui::GetWindowContentRegionMax() + object->GetPosition() - object->p_realSize - (Vec2f)ImGui::GetWindowContentRegionMin());
 		const Vec2f value = object->GetPosition() + anchorPosition;

@@ -40,9 +40,9 @@ void Editor::Draw()
 				m_hierarchy->LoadScene(path);
 			}
 		}
-		bool isStatic = m_canvas->IsStatic();
-		ImGui::Checkbox("Is Static", &isStatic);
-		m_canvas->SetStatic(isStatic);
+		bool isDynamic = m_canvas->IsDynamic();
+		ImGui::Checkbox("Is Dynamic", &isDynamic);
+		m_canvas->SetDynamic(isDynamic);
 		ImGui::Checkbox("User Mode", &m_userMode);
 
 		if (ImGui::Button("Copy Code", buttonSize))

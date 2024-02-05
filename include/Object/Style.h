@@ -1,5 +1,6 @@
 #pragma once
-#include <cpp_serializer/CppSerializer.h>
+#include "pch.h"
+
 using namespace CppSer;
 
 class BaseStyleVar

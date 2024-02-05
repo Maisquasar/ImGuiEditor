@@ -10,6 +10,11 @@ if is_plat("windows") then
         end
     end
 end
+
+if is_mode("release") then
+    add_ldflags("-mwindows", {force = true}) -- This flag is for MinGW/GCC
+    add_cxflags("-DWINDOW_APP", {force = true}) -- Define a preprocessor macro if needed
+end
 -- Custom repo
 add_repositories("galaxy-repo https://github.com/GalaxyEngine/xmake-repo")
 
@@ -31,6 +36,7 @@ target("ImGuiEditor")
     add_includedirs("include")
     add_headerfiles("include/**.h")
     add_files("src/**.cpp")
+    add_files("icons/ImGuiEditor.rc") -- Add this line to include the resource file
     set_pcxxheader("include/pch.h")
 
     add_packages("galaxymath")
