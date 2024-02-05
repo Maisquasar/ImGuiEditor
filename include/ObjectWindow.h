@@ -1,7 +1,8 @@
 #pragma once
-#include "pch.h"
-#include "Object/IObject.h"
+#include <vector>
+#include <memory>
 
+class Object;
 class ObjectWindow
 {
 public:

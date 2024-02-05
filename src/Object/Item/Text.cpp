@@ -96,7 +96,7 @@ void Text::Deserialize(Parser& parser)
 	Object::Deserialize(parser);
 
 	m_text = parser["Text"];
-	m_textAlign = parser["Text Align"].As<Vec2f>();
+	m_textAlign = Vec2f(parser["Text Align"]);
 	m_wrap = parser["Wrap"].As<bool>();
 	m_autoWrap = parser["AutoWrap"].As<bool>();
 	m_wrapWidth = parser["WrapWidth"].As<float>();

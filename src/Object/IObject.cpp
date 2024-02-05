@@ -253,8 +253,8 @@ void Object::Deserialize(Parser& parser)
 	const auto hierarchy = Editor::Get()->GetHierarchy();
 
 	p_name = parser["Name"].As<std::string>();
-	p_position = parser["Position"].As<Vec2f>();
-	p_size = parser["Size"].As<Vec2f>();
+	p_position = Vec2f(parser["Position"]);
+	p_size = Vec2f(parser["Size"]);
 	p_sameLine = parser["SameLine"].As<bool>();
 	p_disabled = parser["Disabled"].As<bool>();
 	const size_t childNumber = parser["Child Number"].As<size_t>();
@@ -269,7 +269,7 @@ void Object::Deserialize(Parser& parser)
 		const std::unordered_map<std::string, StringSerializer> valueMap = parser.GetValueMap()[parser.GetCurrentDepth()];
 		if (valueMap.contains(style.name))
 		{
-			style.color = parser[style.name].As<Vec4f>();
+			style.color = Vec4f(parser[style.name]);
 			style.inherit = false;
 		}
 	}

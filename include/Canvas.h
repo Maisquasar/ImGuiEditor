@@ -1,4 +1,5 @@
-#include "pch.h"
+#pragma once
+#include <memory>
 
 class Object;
 class Canvas

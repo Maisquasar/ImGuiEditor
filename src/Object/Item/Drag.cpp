@@ -352,19 +352,19 @@ void Drag::Deserialize(Parser& parser)
 		break;
 	case DragType::Int2:
 	{
-		auto vecValue = parser["Value"].As<Vec2f>();
+		auto vecValue = Vec2f(parser["Value"]);
 		m_value = std::array<int, 2>({ (int)vecValue.x, (int)vecValue.y });
 	}
 	break;
 	case DragType::Int3:
 	{
-		auto vecValue = parser["Value"].As<Vec3f>();
+		auto vecValue = Vec3f(parser["Value"]);
 		m_value = std::array<int, 3>({ (int)vecValue.x, (int)vecValue.y, (int)vecValue.z });
 	}
 	break;
 	case DragType::Int4:
 	{
-		auto vecValue = parser["Value"].As<Vec4f>();
+		auto vecValue = Vec4f(parser["Value"]);
 		m_value = std::array<int, 4>({ (int)vecValue.x, (int)vecValue.y, (int)vecValue.z, (int)vecValue.w });
 	}
 	break;
@@ -373,19 +373,19 @@ void Drag::Deserialize(Parser& parser)
 		break;
 	case DragType::Float2:
 	{
-		auto vecValue = parser["Value"].As<Vec2f>();
+		auto vecValue = Vec2f(parser["Value"]);
 		m_value = std::array<float, 2>({ (float)vecValue.x, (float)vecValue.y });
 	}
 	break;
 	case DragType::Float3:
 	{
-		auto vecValue = parser["Value"].As<Vec3f>();
+		auto vecValue = Vec3f(parser["Value"]);
 		m_value = std::array<float, 3>({ (float)vecValue.x, (float)vecValue.y, (float)vecValue.z });
 	}
 	break;
 	case DragType::Float4:
 	{
-		auto vecValue = parser["Value"].As<Vec4f>();
+		auto vecValue = Vec4f(parser["Value"]);
 		m_value = std::array<float, 4>({ (float)vecValue.x, (float)vecValue.y, (float)vecValue.z, (float)vecValue.w });
 	}
 	break;

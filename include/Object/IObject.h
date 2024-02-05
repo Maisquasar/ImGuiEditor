@@ -1,5 +1,4 @@
 #pragma once
-#include "pch.h"
 #include "Style.h"
 
 enum class ObjectType

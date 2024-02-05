@@ -77,7 +77,7 @@ void Group::Deserialize(Parser& parser)
 	Object::Deserialize(parser);
 
 	m_hasBorder = parser["Has Border"].As<bool>();
-	m_borderColor = parser["Border Color"].As<Vec4f>();
+	m_borderColor = Vec4f(parser["Border Color"]);
 	m_borderRounding = parser["Border Rounding"].As<float>();
 	m_borderWidth = parser["Border Width"].As<float>();
 }

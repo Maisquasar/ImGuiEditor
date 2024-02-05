@@ -90,7 +90,7 @@ void ImageRect::Deserialize(Parser& parser)
 	ShapeObject::Deserialize(parser);
 	m_imagePath = parser["ImagePath"].As<std::string>();
 	LoadTexture(m_imagePath, false);
-	m_color = parser["Color"].As<Vec4f>();
+	m_color = Vec4f(parser["Color"]);
 	m_rounding = parser["Rounding"].As<float>();
 }
 

@@ -98,7 +98,7 @@ void Rect::Deserialize(Parser& parser)
 {
 	ShapeObject::Deserialize(parser);
 
-	m_color = parser["Color"].As<Vec4f>();
+	m_color = Vec4f(parser["Color"]);
 	m_filled = parser["Filled"].As<bool>();
 	m_rounding = parser["Rounding"].As<float>();
 }

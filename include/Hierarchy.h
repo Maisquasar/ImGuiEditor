@@ -1,6 +1,5 @@
 #pragma once
-#include "pch.h"
-
+#include <memory>
 class Object;
 class Hierarchy
 {

@@ -356,19 +356,19 @@ void Slider::Deserialize(Parser& parser)
 		break;
 	case SliderType::Int2:
 	{
-		auto vecValue = parser["Value"].As<Vec2f>();
+		auto vecValue = Vec2f(parser["Value"]);
 		m_value = std::array<int, 2>({ (int)vecValue.x, (int)vecValue.y });
 	}
 	break;
 	case SliderType::Int3:
 	{
-		auto vecValue = parser["Value"].As<Vec3f>();
+		auto vecValue = Vec3f(parser["Value"]);
 		m_value = std::array<int, 3>({ (int)vecValue.x, (int)vecValue.y, (int)vecValue.z });
 	}
 	break;
 	case SliderType::Int4:
 	{
-		auto vecValue = parser["Value"].As<Vec4f>();
+		auto vecValue = Vec4f(parser["Value"]);
 		m_value = std::array<int, 4>({ (int)vecValue.x, (int)vecValue.y, (int)vecValue.z, (int)vecValue.w });
 	}
 	break;
@@ -377,19 +377,19 @@ void Slider::Deserialize(Parser& parser)
 		break;
 	case SliderType::Float2:
 	{
-		auto vecValue = parser["Value"].As<Vec2f>();
+		auto vecValue = Vec2f(parser["Value"]);
 		m_value = std::array<float, 2>({ (float)vecValue.x, (float)vecValue.y });
 	}
 	break;
 	case SliderType::Float3:
 	{
-		auto vecValue = parser["Value"].As<Vec3f>();
+		auto vecValue = Vec3f(parser["Value"]);
 		m_value = std::array<float, 3>({ (float)vecValue.x, (float)vecValue.y, (float)vecValue.z });
 	}
 	break;
 	case SliderType::Float4:
 	{
-		auto vecValue = parser["Value"].As<Vec4f>();
+		auto vecValue = Vec4f(parser["Value"]);
 		m_value = std::array<float, 4>({ (float)vecValue.x, (float)vecValue.y, (float)vecValue.z, (float)vecValue.w });
 	}
 	break;

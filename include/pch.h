@@ -51,12 +51,7 @@ CppSer::Serializer& operator<<(const Vec4<T>& value)\
 	const std::string stringValue = value.ToString();\
 	*this << stringValue.c_str();\
 	return *this;\
-}\
-
-#define EXTRA_CPPSERIALIZER_PARSER \
-inline Math::Vec2f As() const\
-{\
-	return Math::Vec2f(m_content); \
-}\
+}
 
 #include <cpp_serializer/CppSerializer.h>
+using namespace CppSer;

@@ -1,8 +1,6 @@
 #pragma once
 #include "pch.h"
 
-using namespace CppSer;
-
 class BaseStyleVar
 {
 public:
@@ -101,7 +99,7 @@ public:
 		const std::unordered_map<std::string, StringSerializer> valueMap = parser.GetValueMap()[parser.GetCurrentDepth()];
 		if (valueMap.contains(name))
 		{
-			value = parser[name].As<Vec2f>();
+			value = Vec2f(parser[name]);
 			inherit = false;
 		}
 	}
