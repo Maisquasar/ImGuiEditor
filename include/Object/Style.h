@@ -1,5 +1,13 @@
 #pragma once
+#include <unordered_map>
+
 #include "pch.h"
+
+namespace CppSer
+{
+	class Parser;
+	class Serializer;
+}
 
 class BaseStyleVar
 {
@@ -25,8 +33,8 @@ public:
 	}
 
 	virtual void Serialize(std::string& content) const;
-	virtual void Serialize(Serializer& serializer) const {}
-	virtual void Deserialize(Parser& parser) {}
+	virtual void Serialize(CppSer::Serializer& serializer) const {}
+	virtual void Deserialize(CppSer::Parser& parser) {}
 public:
 	std::string name;
 	ImGuiStyleVar_ enumValue;

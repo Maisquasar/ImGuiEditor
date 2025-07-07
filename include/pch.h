@@ -16,7 +16,11 @@
 // Galaxy Headers
 #define IMGUI_IMPLEMENTATION
 #include <galaxymath/Maths.h>
+
 using namespace GALAXY;
+
+#include "cpp_serializer/CppSerializer.h"
+using namespace CppSer;
 
 #include <glad/glad.h>
 
@@ -27,31 +31,3 @@ using namespace GALAXY;
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #include <misc/cpp/imgui_stdlib.h>
-
-#define EXTRA_CPPSERIALIZER_SERIALIZER \
-template<typename T>\
-CppSer::Serializer& operator<<(const Vec2<T>& value)\
-{\
-	const std::string stringValue = value.ToString();\
-	*this << stringValue.c_str();\
-	return *this;\
-}\
-\
-template<typename T>\
-CppSer::Serializer& operator<<(const Vec3<T>& value)\
-{\
-	const std::string stringValue = value.ToString();\
-	*this << stringValue.c_str();\
-	return *this;\
-}\
-\
-template<typename T>\
-CppSer::Serializer& operator<<(const Vec4<T>& value)\
-{\
-	const std::string stringValue = value.ToString();\
-	*this << stringValue.c_str();\
-	return *this;\
-}
-
-#include <cpp_serializer/CppSerializer.h>
-using namespace CppSer;

@@ -18,9 +18,9 @@ void Image::PostInitialize()
 void Image::Draw()
 {
 	if (!m_isAButton)
-		ImGui::Image(reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(m_id)), p_size);
+		ImGui::Image(m_id, p_size);
 	else
-		ImGui::ImageButton(reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(m_id)), p_size);
+		ImGui::ImageButton("##", m_id, p_size);
 }
 
 void Image::DisplayOnInspector()

@@ -22,7 +22,7 @@ public:
 	std::string GetTypeName() const override { return "Button"; }
 private:
 	bool m_arrowButton = false;
-	ImGuiDir_ m_arrowDir = ImGuiDir_Down;
+	ImGuiDir m_arrowDir = ImGuiDir_Down;
 	bool m_small = false;
 	std::string m_text;
 };

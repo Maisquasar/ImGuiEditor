@@ -18,7 +18,7 @@ void ImageRect::PostInitialize()
 
 void ImageRect::Draw()
 {
-	ImGui::GetWindowDrawList()->AddImageRounded(reinterpret_cast<ImTextureID>(static_cast<uintptr_t>(m_id)), 
+	ImGui::GetWindowDrawList()->AddImageRounded(m_id, 
 		GetMin(), GetMax(), ImVec2(0, 0), ImVec2(1, 1), 
 		ImGui::ColorConvertFloat4ToU32(m_color), m_rounding, p_flags);
 }

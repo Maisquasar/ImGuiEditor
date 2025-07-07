@@ -145,7 +145,6 @@ void Input::DisplayOnInspector()
 	ImGui::CheckboxFlags("Ctrl enter for new line", &m_flags, ImGuiInputTextFlags_CtrlEnterForNewLine);
 	ImGui::CheckboxFlags("Escape clear all", &m_flags, ImGuiInputTextFlags_EscapeClearsAll);
 	ImGui::CheckboxFlags("Auto select all", &m_flags, ImGuiInputTextFlags_AutoSelectAll);
-	ImGui::CheckboxFlags("No markers", &m_flags, ImGuiInputTextFlags_NoMarkEdited);
 	ImGui::CheckboxFlags("No undo redo", &m_flags, ImGuiInputTextFlags_NoUndoRedo);
 	ImGui::CheckboxFlags("No horizontal scroll", &m_flags, ImGuiInputTextFlags_NoHorizontalScroll);
 	ImGui::CheckboxFlags("Chars decimal", &m_flags, ImGuiInputTextFlags_CharsDecimal);

@@ -50,7 +50,7 @@ void Button::DisplayOnInspector()
 	{
 		int arrowDir = (int)m_arrowDir;
 		ImGui::Combo("Arrow Direction", &arrowDir, ImGuiDirEnumToString());
-		m_arrowDir = (ImGuiDir_)arrowDir;
+		m_arrowDir = (ImGuiDir)arrowDir;
 	}
 	else
 	{
@@ -97,5 +97,5 @@ void Button::Deserialize(Parser& parser)
 	m_text = parser["Text"].As<std::string>();
 	m_small = parser["Small"].As<bool>();
 	m_arrowButton = parser["Arrow Button"].As<bool>();
-	m_arrowDir = (ImGuiDir_)parser["Arrow Direction"].As<int>();
+	m_arrowDir = (ImGuiDir)parser["Arrow Direction"].As<int>();
 }
